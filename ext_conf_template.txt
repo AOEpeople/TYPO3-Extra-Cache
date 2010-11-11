@@ -1,0 +1,11 @@
+	# cat=caching/enable/10; type=boolean; useCrawlerDirectUrlRequests: Use the "makeDirectRequest" feature of the crawler to perform URL requests
+useCrawlerDirectUrlRequests = 1
+
+  # cat=caching/static/20; type=input; label= path to level-1-cache for nc_staticFileCache
+path_StaticFileCache_level1 = typo3temp/tx_ncstaticfilecache_level1/
+
+	# cat=caching/static/20; type=options[disabled=0,tx_staticfilecache=staticfilecacheManager]; label=enableStaticCacheManager: Defines which static cache manager to use
+enableStaticCacheManager = staticfilecacheManager
+
+	# cat=logging//30; type=input; label=loggingPath: Defines which path is used to write logs to the file system
+loggingPath =
