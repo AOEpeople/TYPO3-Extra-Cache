@@ -8,6 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="pages.tx_extracache_cleanerstrategies">cache strategy</label>
 			<label index="pages.tx_extracache_events">cache event</label>
+			<label index="moduleFunction.tx_extracache_modfunc1">Static Cache Files</label>
 		</languageKey>
 	</data>
 </T3locallang>

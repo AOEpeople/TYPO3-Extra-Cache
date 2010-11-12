@@ -1,0 +1,30 @@
+<dataset>
+	<tx_ncstaticfilecache_file>
+		<uid>918434</uid>
+		<tstamp>1287580973</tstamp>
+		<crdate>1287580973</crdate>
+		<cache_timeout>86400000</cache_timeout>
+		<explanation is-null="yes" />
+		<pid>2</pid>
+		<host>www.example.com</host>
+		<file>/index.html</file>
+		<uri>/</uri>
+		<isdirty>0</isdirty>
+		<reg1>0</reg1>
+		<additionalhash>cdc0a8f9fe7f5e206d167723a90af880</additionalhash>
+	</tx_ncstaticfilecache_file>
+	<tx_ncstaticfilecache_file>
+		<uid>918435</uid>
+		<tstamp>1287580973</tstamp>
+		<crdate>1287580973</crdate>
+		<cache_timeout>86400000</cache_timeout>
+		<explanation is-null="yes" />
+		<pid>2</pid>
+		<host>www.example.com</host>
+		<file>/index.html</file>
+		<uri>/</uri>
+		<isdirty>0</isdirty>
+		<reg1>0</reg1>
+		<additionalhash>cdc0a8f9fe7f5e206d167723a90af880</additionalhash>
+	</tx_ncstaticfilecache_file>
+</dataset>
