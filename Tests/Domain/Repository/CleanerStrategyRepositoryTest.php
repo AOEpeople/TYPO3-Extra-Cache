@@ -60,4 +60,21 @@ class Tx_Extracache_Tests_Domain_Repository_CleanerStrategyRepositoryTest extend
 		$this->repository->addStrategy($strategy1);
 		$this->assertTrue ( $this->repository->hasStrategy ('key1') );
 	}
+	/**
+	 * test method getStrategy
+	 * @test
+	 */
+	public function canGetStrategy() {
+		$strategy1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
+		$this->repository->addStrategy($strategy1);
+		$this->assertEquals ( $this->repository->getStrategy ('key1'), $strategy1 );
+	}
+	/**
+	 * test method getStrategy
+	 * @test
+	 * @expectedException LogicException
+	 */
+	public function canNotGetStrategy() {
+		$this->repository->getStrategy ('unknownStrategy');
+	}
 }

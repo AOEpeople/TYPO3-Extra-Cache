@@ -25,6 +25,19 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements t3lib
 		$this->cleanerStrategies[] = $strategy;
 	}
 	/**
+	 * @param	string $key
+	 * @return	Tx_Extracache_Domain_Model_CleanerStrategy
+	 * @throws	LogicException
+	 */
+	public function getStrategy($key) {
+		foreach($this->getCleanerStrategies() as $strategy) {
+			if($strategy->getKey() === $key) {
+				return $strategy;
+			}
+		}
+		throw new LogicException('strategy '.$key.' is unknown (check with "hasStrategy" before calling "getStrategy")!');
+	}
+	/**
 	 * @return array
 	 */
 	public function getCleanerStrategies() {

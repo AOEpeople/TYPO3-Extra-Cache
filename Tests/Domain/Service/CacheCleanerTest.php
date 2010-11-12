@@ -13,8 +13,8 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Domain_Service_CacheCleaner
- * @package extracache
- * @subpackage Tests_Domain_Service
+ * @package extracache_tests
+ * @subpackage Domain_Service
  */
 class Tx_Extracache_Tests_Domain_Service_CacheCleanerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
