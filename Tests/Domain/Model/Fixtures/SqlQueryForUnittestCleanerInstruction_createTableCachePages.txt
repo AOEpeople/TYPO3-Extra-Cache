@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS `cache_pages` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `identifier` varchar(250) default '',
+  `crdate` int(11) unsigned NOT NULL default '0',
+  `content` mediumtext,
+  `tags` mediumtext,
+  `lifetime` int(11) unsigned NOT NULL default '0',
+  `page_id` int(11) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `cache_id` (`identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=14
