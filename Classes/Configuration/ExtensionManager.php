@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	/**

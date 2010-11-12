@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Domain_Repository_CleanerInstructionRepository {
 	/**
@@ -20,7 +20,6 @@ class Tx_Extracache_Domain_Repository_CleanerInstructionRepository {
 
 	/**
 	 * @param Tx_Extracache_Domain_Model_CleanerInstruction $cleanerInstruction
-	 * @param integer $pageId
 	 */
 	public function addCleanerInstruction(Tx_Extracache_Domain_Model_CleanerInstruction $cleanerInstruction) {
 		$this->cleanerInstructions[] = $cleanerInstruction;

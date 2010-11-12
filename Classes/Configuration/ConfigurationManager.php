@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleton {
 	/**
@@ -134,7 +134,6 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode, $key, $name);
 	}
 	/**
-	 * 
 	 * @param	string $key
 	 * @param	string $name
 	 * @return	Tx_Extracache_Domain_Model_Event

@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Validation_Validator_Argument extends Tx_Extbase_Validation_Validator_AbstractValidator {
 	/**

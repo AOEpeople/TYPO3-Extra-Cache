@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Domain_Repository_EventRepository implements t3lib_Singleton {
 	/**

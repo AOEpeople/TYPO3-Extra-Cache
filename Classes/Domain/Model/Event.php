@@ -11,6 +11,7 @@
 
 /**
  * entity-object
+ * @package extracache
  */
 class Tx_Extracache_Domain_Model_Event {
 	/**
