@@ -12,8 +12,7 @@
 /**
  * Abstract base class for extracache Database-Tests
  *
- * @package extracache
- * @subpackage Tests
+ * @package extracache_tests
  */
 abstract class Tx_Extracache_Tests_AbstractDatabaseTestcase extends tx_phpunit_database_testcase {
 	/**

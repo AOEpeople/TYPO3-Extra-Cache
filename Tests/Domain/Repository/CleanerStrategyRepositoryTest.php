@@ -13,10 +13,10 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Domain_Repository_CleanerStrategyRepository
- * @package extracache
- * @subpackage Tests_Domain_Repository
+ * @package extracache_tests
+ * @subpackage Domain_Repository
  */
-class Tx_Extracache_Tests_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
+class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * 
 	 * @var Tx_Extracache_Domain_Repository_CleanerStrategyRepository
@@ -44,11 +44,11 @@ class Tx_Extracache_Tests_Domain_Repository_CleanerStrategyRepositoryTest extend
 	public function addStrategy() {
 		$strategy1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
 		$strategy2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
-		$this->assertTrue ( count($this->repository->getCleanerStrategies ()) === 0 );
+		$this->assertTrue ( count($this->repository->getAllStrategies ()) === 0 );
 		$this->repository->addStrategy($strategy1);
-		$this->assertTrue ( count($this->repository->getCleanerStrategies ()) === 1 );
+		$this->assertTrue ( count($this->repository->getAllStrategies ()) === 1 );
 		$this->repository->addStrategy($strategy2);
-		$this->assertTrue ( count($this->repository->getCleanerStrategies ()) === 2 );
+		$this->assertTrue ( count($this->repository->getAllStrategies ()) === 2 );
 	}
 	/**
 	 * test method hasStrategy

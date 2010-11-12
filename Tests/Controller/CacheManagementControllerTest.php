@@ -8,15 +8,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . 'CacheManagementController.php';
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Domain' . DIRECTORY_SEPARATOR . 'Repository' . DIRECTORY_SEPARATOR . 'CacheDatabaseEntryRepository.php';
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Domain' . DIRECTORY_SEPARATOR . 'Repository' . DIRECTORY_SEPARATOR . 'CacheFileRepository.php';
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'View.php';
+
+require_once dirname ( __FILE__ ) . '/../AbstractTestcase.php';
+
 /**
  * Tx_Extracache_Controller_CacheManagementController test case.
- * @package extracache
+ * @package extracache_tests
+ * @subpackage Controller
  */
-class Tx_Extracache_Controller_CacheManagementControllerTest extends tx_phpunit_testcase {
+class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * @var Tx_Extracache_Controller_CacheManagementController
 	 */
@@ -37,6 +37,11 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends tx_phpunit_
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
+		$this->loadClass('Tx_Extracache_Controller_CacheManagementController');
+		$this->loadClass('Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository');
+		$this->loadClass('Tx_Extracache_Domain_Repository_CacheFileRepository');
+		$this->loadClass('Tx_Extracache_View_View');
+
 		$this->cacheDatabaseEntryRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheFileRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheFileRepository', array (), array (), '', FALSE );
 		$this->view = $this->getMock ( 'Tx_Extracache_View_View', array (), array (), '', FALSE );

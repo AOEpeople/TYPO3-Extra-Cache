@@ -27,7 +27,7 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategy {
 	public function getCleanerStrategyItemsProcFunc(array &$parameters) {
 		// sort items
 		$tempItems = array('key' => array(), 'name' => array());
-		foreach($this->getCleanerStrategyRepository()->getCleanerStrategies() as $strategy) {
+		foreach($this->getCleanerStrategyRepository()->getAllStrategies() as $strategy) {
 			$tempItems['key'][] = $strategy->getKey();
 			$tempItems['name'][] = $strategy->getName();
 		}

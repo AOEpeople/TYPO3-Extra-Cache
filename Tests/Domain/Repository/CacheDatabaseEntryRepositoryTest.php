@@ -11,7 +11,8 @@
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..'  . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Domain' . DIRECTORY_SEPARATOR . 'Repository' . DIRECTORY_SEPARATOR . 'CacheDatabaseEntryRepository.php';
 /**
  * Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository test case.
- * @package extracache
+ * @package extracache_tests
+ * @subpackage Domain_Repository
  */
 class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepositoryTest extends tx_phpunit_database_testcase {
 	/**

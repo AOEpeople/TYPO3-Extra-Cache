@@ -13,10 +13,10 @@ require_once dirname ( __FILE__ ) . '/../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Configuration_ConfigurationManager
- * @package extracache
- * @subpackage Tests_Configuration
+ * @package extracache_tests
+ * @subpackage Configuration
  */
-class Tx_Extracache_Tests_Configuration_ConfigurationManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
+class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * @var Tx_Extracache_Configuration_ConfigurationManager
 	 */
@@ -107,7 +107,7 @@ class Tx_Extracache_Tests_Configuration_ConfigurationManagerTest extends Tx_Extr
 	 * @test
 	 * @expectedException RuntimeException
 	 */
-	public function canNotCleanerStrategy() {
+	public function canNotAddCleanerStrategy() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->never () )->method ( 'addStrategy' );
 		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
 		$this->manager->addCleanerStrategy(0, '', '', '', '');

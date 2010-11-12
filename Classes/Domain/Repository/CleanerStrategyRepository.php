@@ -30,7 +30,7 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements t3lib
 	 * @throws	LogicException
 	 */
 	public function getStrategy($key) {
-		foreach($this->getCleanerStrategies() as $strategy) {
+		foreach($this->getAllStrategies() as $strategy) {
 			if($strategy->getKey() === $key) {
 				return $strategy;
 			}
@@ -40,7 +40,7 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements t3lib
 	/**
 	 * @return array
 	 */
-	public function getCleanerStrategies() {
+	public function getAllStrategies() {
 		return $this->cleanerStrategies;
 	}
 	/**
@@ -49,7 +49,7 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements t3lib
 	 */
 	public function hasStrategy($key) {
 		$hasStrategy = false;
-		foreach($this->getCleanerStrategies() as $strategy) {
+		foreach($this->getAllStrategies() as $strategy) {
 			if($strategy->getKey() === $key) {
 				$hasStrategy = true;
 				break;

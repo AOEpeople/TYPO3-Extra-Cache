@@ -13,10 +13,10 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Validation_Validator_Argument
- * @package extracache
- * @subpackage Tests_Validation_Validator
+ * @package extracache_tests
+ * @subpackage Validation_Validator
  */
-class Tx_Extracache_Tests_Validation_Validator_ArgumentTest extends Tx_Extracache_Tests_AbstractTestcase {
+class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * 
 	 * @var Tx_Extracache_Validation_Validator_Argument

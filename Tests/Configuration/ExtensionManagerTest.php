@@ -13,10 +13,10 @@ require_once dirname ( __FILE__ ) . '/../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Configuration_ExtensionManager
- * @package extracache
- * @subpackage Tests_Configuration
+ * @package extracache_tests
+ * @subpackage Configuration
  */
-class Tx_Extracache_Tests_Configuration_ExtensionManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
+class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * 
 	 * @var Tx_Extracache_Configuration_ExtensionManager
