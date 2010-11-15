@@ -10,7 +10,8 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
+ * @subpackage Persistence
  */
 class Tx_Extracache_Persistence_Typo3DbBackend {
 	/**
