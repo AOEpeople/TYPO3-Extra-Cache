@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * 
+ * @package extracache
  */
 class Tx_Extracache_Domain_Service_CacheCleaner {
 	/**
