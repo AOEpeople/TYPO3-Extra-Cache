@@ -143,7 +143,7 @@ class Tx_Extracache_Domain_Model_CleanerInstruction {
 	}
 
 	/**
-	 * Gets all child pages of a given page Id.
+	 * Gets all child pages of a given page Id (which doesn't contain this active cleanerStrategy)
 	 *
 	 * @param	integer		$pageId The page Id to fetch the children from
 	 * @return	array
@@ -151,7 +151,12 @@ class Tx_Extracache_Domain_Model_CleanerInstruction {
 	protected function getChildPages($pageId) {
 		$pages = array ();
 
-		$pageReocords = $this->getTypo3DbBackend()->selectQuery('uid,pid', 'pages', 'deleted=0 AND hidden=0 AND doktype < 199 AND pid=' . intval ( $pageId ));
+		$cleanerStrategy = $this->getCleanerStrategy()->getKey();
+		$sqlSelect = 'uid,pid';
+		$sqlFrom   = 'pages';
+		$sqlWhere  = 'deleted=0 AND hidden=0 AND doktype < 199 AND pid=' . intval ( $pageId );
+		$sqlWhere .= " AND (tx_extracache_cleanerstrategies='' OR (tx_extracache_cleanerstrategies!='$cleanerStrategy' AND tx_extracache_cleanerstrategies NOT LIKE '$cleanerStrategy,%' AND tx_extracache_cleanerstrategies NOT LIKE '%,$cleanerStrategy' AND tx_extracache_cleanerstrategies NOT LIKE '%,$cleanerStrategy,%'))";
+		$pageReocords = $this->getTypo3DbBackend()->selectQuery($sqlSelect, $sqlFrom, $sqlWhere);
 		foreach ( $pageReocords as $pageRecord ) {
 			$pages [] = $pageRecord ['uid'];
 			$pages = array_merge ( $pages, $this->getChildPages ( $pageRecord ['uid'] ) );
