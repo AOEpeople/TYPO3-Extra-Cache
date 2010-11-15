@@ -26,7 +26,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	private $tceMain;
 	/**
-	 * @var Tx_Extracache_Persistence_Typo3DbBackend
+	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $typo3DbBackend;
 
@@ -75,11 +75,11 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 		return $this->tceMain;
 	}
 	/**
-	 * @return Tx_Extracache_Persistence_Typo3DbBackend
+	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend =t3lib_div::makeInstance('Tx_Extracache_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend =t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}

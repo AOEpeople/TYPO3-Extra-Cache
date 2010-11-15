@@ -30,7 +30,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 */
 	private $mockedStaticFileCache;
 	/**
-	 * @var Tx_Extracache_Persistence_Typo3DbBackend
+	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $mockedTypo3DbBackend;
 	/**
@@ -47,10 +47,10 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 */
 	protected function setUp() {
 		$this->loadClass('Tx_Extracache_Domain_Model_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_Persistence_Typo3DbBackend');
+		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		$this->mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 		$this->mockedStaticFileCache = $this->getMock ( 'tx_ncstaticfilecache', array('deleteStaticCacheDirectory', 'processDirtyPagesElement'));
-		$this->mockedTypo3DbBackend  = $this->getMock ( 'Tx_Extracache_Persistence_Typo3DbBackend', array('deleteQuery','updateQuery'));
+		$this->mockedTypo3DbBackend  = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array('deleteQuery','updateQuery'));
 		$this->mockedTceMain = $this->getMock ( 't3lib_TCEmain', array(), array(), '', FALSE);
 	}
 	/**

@@ -34,7 +34,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	 */
 	private $mockedEventRepository;
 	/**
-	 * @var Tx_Extracache_Persistence_Typo3DbBackend
+	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $mockedTypo3DbBackend;
 	
@@ -47,12 +47,12 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->loadClass('Tx_Extracache_Domain_Service_CacheEventHandler');
 		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
-		$this->loadClass('Tx_Extracache_Persistence_Typo3DbBackend');
+		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		
 		$this->mockedCacheCleaner = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheCleaner', array(), array(), '', FALSE);
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array(), array(), '', FALSE);
 		$this->mockedEventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
-		$this->mockedTypo3DbBackend = $this->getMock ( 'Tx_Extracache_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
+		$this->mockedTypo3DbBackend = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
 
 		$this->cacheEventHandler = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheEventHandler', array('createCacheCleaner','getCleanerStrategyRepository','getEventRepository','getTypo3DbBackend'), array(), '', FALSE);
 		$this->cacheEventHandler->expects ( $this->any () )->method ( 'createCacheCleaner' )->will ( $this->returnValue ( $this->mockedCacheCleaner ) );

@@ -11,9 +11,9 @@
 
 /**
  * @package extracache
- * @subpackage Persistence
+ * @subpackage System_Persistence
  */
-class Tx_Extracache_Persistence_Typo3DbBackend {
+class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	/**
 	 * @param	string $eventKey
 	 * @return	array

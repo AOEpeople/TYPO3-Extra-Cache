@@ -9,20 +9,20 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../AbstractDatabaseTestcase.php';
+require_once dirname ( __FILE__ ) . '/../../AbstractDatabaseTestcase.php';
 
 /**
- * test case for Tx_Extracache_Persistence_Typo3DbBackend
+ * test case for Tx_Extracache_System_Persistence_Typo3DbBackend
  * @package extracache_tests
- * @subpackage Persistence
+ * @subpackage System_Persistence
  */
-class Tx_Extracache_Persistence_Typo3DbBackendTest extends Tx_Extracache_Tests_AbstractDatabaseTestcase {
+class Tx_Extracache_System_Persistence_Typo3DbBackendTest extends Tx_Extracache_Tests_AbstractDatabaseTestcase {
 	/**
 	 * @var array
 	 */
 	private $pageIds;
 	/**
-	 * @var Tx_Extracache_Persistence_Typo3DbBackend
+	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $typo3DbBackend;
 	
@@ -30,7 +30,7 @@ class Tx_Extracache_Persistence_Typo3DbBackendTest extends Tx_Extracache_Tests_A
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_Persistence_Typo3DbBackend');
+		$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -76,12 +76,12 @@ class Tx_Extracache_Persistence_Typo3DbBackendTest extends Tx_Extracache_Tests_A
 		// create table 'pages' manually (because it's faster than import the hole cms-extension)
 		$db = $this->useTestDatabase();
 
-		$db->admin_query( t3lib_div::getUrl( $PATH_tx_extracache . 'Tests/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
+		$db->admin_query( t3lib_div::getUrl( $PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
 
 		$this->importStdDB();
 		$this->importExtensions(array('extracache'));
 		$this->initializeCommonExtensions();
-		$this->importDataSet($PATH_tx_extracache . 'Tests/Persistence/Fixtures/TestRecordsForUnittestTypo3DbBackend.xml');
+		$this->importDataSet($PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/TestRecordsForUnittestTypo3DbBackend.xml');
 
 		/********** get UID's of records of certain tables *****/
 		$this->pageIds = array();
