@@ -26,10 +26,6 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @var	Tx_Extracache_Configuration_ExtensionManager
 	 */
 	protected $extensionManager;
-	/**
-	 * @var	boolean
-	 */
-	protected $isDispatched = false;
 
 	/**
 	 * Dispatches the content manager and determines whether the current request can be served from cache.
@@ -48,7 +44,6 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 				$this->initializeCacheManager ();
 				$this->getCacheManager()->process ();
 				if ($this->getCacheManager()->isProcessed ()) {
-					$this->isDispatched = true;
 					$this->flush ();
 				}
 
@@ -66,60 +61,7 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 			}
 		}
 	}
-	/**
-	 * Determines whether the request was dispatched.
-	 *
-	 * @return	boolean		Whether the request was dispatched
-	 */
-	public function isDispatched() {
-		return $this->isDispatched;
-	}
 
-	/**
-	 * @return	Tx_Extracache_System_StaticCache_AbstractManager
-	 */
-	protected function getCacheManager() {
-		return $this->cacheManager;
-	}
-	/**
-	 * @return Tx_Extracache_System_Event_Dispatcher
-	 */
-	protected function getEventDispatcher() {
-		if($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
-		}
-		return $this->eventDispatcher;
-		
-	}
-	/**
-	 * @return Tx_Extracache_Configuration_ExtensionManager
-	 */
-	protected function getExtensionManager() {
-		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
-		}
-		return $this->extensionManager;
-	}
-	/**
-	 * Initializes cacheManager-object
-	 *
-	 * @return	void
-	 */
-	protected function initializeCacheManager() {
-		$className = 'Tx_Extracache_System_StaticCache_' . $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
-		$typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
-		$request = t3lib_div::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
-		$this->cacheManager = t3lib_div::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
-	}
-	/**
-	 * Determines whether the static cache is enabled by extension configuration.
-	 *
-	 * @return	boolean		Whether the static cache is enabled
-	 */
-	protected function isStaticCacheEnabled() {
-		return ( bool ) $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
-	}
-	
 	/**
 	 * Flushes the cached representation to browser if the current request
 	 * could be served correctly by the cache manager.
@@ -151,20 +93,66 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	}
 
 	/**
+	 * @return	Tx_Extracache_System_StaticCache_AbstractManager
+	 */
+	protected function getCacheManager() {
+		return $this->cacheManager;
+	}
+	/**
+	 * @return Tx_Extracache_System_Event_Dispatcher
+	 */
+	protected function getEventDispatcher() {
+		if($this->eventDispatcher === NULL) {
+			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		}
+		return $this->eventDispatcher;
+		
+	}
+	/**
+	 * @return Tx_Extracache_Configuration_ExtensionManager
+	 */
+	protected function getExtensionManager() {
+		if($this->extensionManager === NULL) {
+			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+		}
+		return $this->extensionManager;
+	}
+
+	/**
 	 * Finishes the current request, dispatches shutdown actions and halts.
 	 *
 	 * @return	void
 	 */
 	protected function halt() {
+		$this->getCacheManager()->getFrontendUser ()->storeSessionData ();
+
 		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('msg' => 'Cache: Request served by static cache' ) );
-		
+
 		//@todo: we must process this event in tx_eft_system_staticCache_dispatcher
 		// so we can call this php-code in tx_eft_system_staticCache_dispatcher->halt():
-		// - $this->getCacheManager()->getFrontendUser ()->storeSessionData ()
 		// - tx_eft_shutdown::shutdown ();
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponseHalt');
-		$this->getEventDispatcher()->triggerEvent( $event );
+		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheResponseHalt', $this, array ('msg' => 'Cache: Request served by static cache' ) );
 		exit ();
+	}
+
+	/**
+	 * Initializes cacheManager-object
+	 *
+	 * @return	void
+	 */
+	protected function initializeCacheManager() {
+		$className = 'Tx_Extracache_System_StaticCache_' . $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
+		$typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+		$request = t3lib_div::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
+		$this->cacheManager = t3lib_div::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
+	}
+	/**
+	 * Determines whether the static cache is enabled by extension configuration.
+	 *
+	 * @return	boolean		Whether the static cache is enabled
+	 */
+	protected function isStaticCacheEnabled() {
+		return ( bool ) $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
 	}
 	
 	/**
