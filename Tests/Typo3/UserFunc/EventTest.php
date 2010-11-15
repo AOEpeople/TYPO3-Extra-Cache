@@ -9,14 +9,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractDatabaseTestcase.php';
+require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
  * test case for Tx_Extracache_Typo3_UserFunc_Event
  * @package extracache_tests
- * @subpackage Domain_Model
+ * @subpackage Typo3_UserFunc
  */
-class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_AbstractDatabaseTestcase {
+class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * @var array
 	 */
