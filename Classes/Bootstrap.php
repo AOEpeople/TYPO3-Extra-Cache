@@ -24,6 +24,8 @@ final class Bootstrap {
 		// this configurations must later be copied into the eft-extension
 		self::initializeDefaultCleanerStrategies();
 		self::initializeDefaultArguments();
+		
+		self::initializeEventHandling();
 	}
 	
 	/**
@@ -119,5 +121,14 @@ final class Bootstrap {
 		$key = '4';
 		$name = 'Update: Seite und Varianten der Seite';
 		$configurationManager->addCleanerStrategy($actions, $childrenMode, $elementsMode, $key, $name);
+	}
+	/**
+	 * Initializes the event-handling
+	 *
+	 * @return void
+	 */
+	static protected function initializeEventHandling() {
+		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		$dispatcher->addLazyLoadingHandler('onStaticCacheRequest', 'Tx_Extracache_System_StaticCache_EventHandler', 'handleEventOnStaticCacheRequest');
 	}
 }

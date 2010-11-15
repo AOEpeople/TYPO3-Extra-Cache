@@ -30,6 +30,14 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 		return $pages;
 	}
 	/**
+	 * @param	string $list
+	 * @return	string
+	 */
+	public function cleanIntList($list) {
+		return $this->getTypo3Db()->cleanIntList( $list );
+	}
+	
+	/**
 	 * @param string $sqlFrom
 	 * @param string $sqlWhere
 	 */

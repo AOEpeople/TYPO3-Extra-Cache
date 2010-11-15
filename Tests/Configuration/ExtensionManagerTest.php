@@ -33,7 +33,7 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 	protected function setUp() {
 		$this->originalExtConfig = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'];
 		$modifiedExtConfig = unserialize($this->originalExtConfig);
-		$modifiedExtConfig['path_StaticFileCache_level1'] = '/test_dir/dir2/';
+		$modifiedExtConfig['path_StaticFileCache'] = '/test_dir/dir2/';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = serialize($modifiedExtConfig);
 
 		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
@@ -45,7 +45,7 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 	 * @test
 	 */
 	public function get() {
-		$this->assertEquals($this->extensionManager->get('path_StaticFileCache_level1'), '/test_dir/dir2/');
+		$this->assertEquals($this->extensionManager->get('path_StaticFileCache'), '/test_dir/dir2/');
 	}
 	
 	/**
