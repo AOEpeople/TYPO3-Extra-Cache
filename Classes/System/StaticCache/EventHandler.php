@@ -214,7 +214,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		foreach ( $unprocessibleRequestArguments as $unprocessibleRequestArgument ) {
 			$key = $unprocessibleRequestArgument->getName();
 			$actions = $unprocessibleRequestArgument->getValue();
-			
+
 			if ($key === '*' && is_array ( $actions )) {
 				foreach ( $arguments as $argumentValues ) {
 					if (is_array ( $argumentValues )) {
@@ -225,8 +225,10 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 				}
 			} elseif (is_bool ( $actions ) && $actions) {
 				$result = isset ( $arguments [$key] );
-			} elseif (isset ( $arguments [$key] ) && is_array ( $arguments [$key] ) && is_array ( $actions )) {
+			} elseif (isset ( $arguments [$key] ) && is_array ( $arguments [$key] )=== TRUE && is_array ( $actions ) === TRUE) {
 				$result = $this->getMatchedArguments ( $arguments [$key], $actions );
+			} elseif(isset ( $arguments [$key] ) && is_array ( $arguments [$key] ) === FALSE && is_array ( $actions ) === FALSE && $arguments [$key] === $actions) {
+				$result = true;
 			}
 
 			if ($result) {
@@ -237,8 +239,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		return $result;
 	}
 
-	
-	
 	/**
 	 * @param array $checkMethods
 	 */
@@ -260,7 +260,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		if ($matches) {
 			foreach ( $matches as $argumentSubKey => $argumentSubValue ) {
 				if (is_array ( $actions [$argumentSubKey] ) && in_array ( $argumentSubValue, $actions [$argumentSubKey] ) || $actions [$argumentSubKey] === '*') {
-
 					$result = true;
 					break;
 				}

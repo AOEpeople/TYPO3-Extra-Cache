@@ -205,13 +205,88 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 		$this->eventHandler->handleEventOnStaticCacheRequest( $this->eventOnStaticCacheRequest );
 		$this->assertTrue( $this->eventOnStaticCacheRequest->isCanceled() );
 	}
+	/**
+	 * @test
+	 */
+	public function handleEventOnStaticCacheRequest_isUnprocessibleRequestAction() {
+		// request is processible
+		$requestIsProcessibleTest1 = array();
+		$requestIsProcessibleTest1['definedArguments'] = array( 'order' => 'value' );
+		$requestIsProcessibleTest1['unprocessibleArguments'] = array('basket' => true);
+		$requestIsProcessibleTest2 = array();
+		$requestIsProcessibleTest2['definedArguments'] = array( 'action' => 'show' );
+		$requestIsProcessibleTest2['unprocessibleArguments'] = array('action' => 'delete');
+		$requestIsProcessibleTest3 = array();
+		$requestIsProcessibleTest3['definedArguments'] = array( 'action' => 'show' );
+		$requestIsProcessibleTest3['unprocessibleArguments'] = array('*' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTest4 = array();
+		$requestIsProcessibleTest4['definedArguments'] = array( 'basket' => array('action' => 'show') );
+		$requestIsProcessibleTest4['unprocessibleArguments'] = array('*' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTest5 = array();
+		$requestIsProcessibleTest5['definedArguments'] = array( 'basket' => 'value' );
+		$requestIsProcessibleTest5['unprocessibleArguments'] = array('basket' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTest6 = array();
+		$requestIsProcessibleTest6['definedArguments'] = array( 'basket' => array('action' => 'show') );
+		$requestIsProcessibleTest6['unprocessibleArguments'] = array('basket' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTests = array();
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest1;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest2;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest3;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest4;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest5;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest6;
+		foreach($requestIsProcessibleTests as $requestIsProcessibleTest) {
+			$this->setUp();
+			$this->eventHandler->expects($this->any())->method('getCheckMethods')->will($this->returnValue( array('isUnprocessibleRequestAction' => FALSE)));
+			$this->request->expects ( $this->once () )->method ( 'getArguments' )->will ( $this->returnValue ( $requestIsProcessibleTest['definedArguments'] ) );
+			$unProcessibleArguments = $this->createArgumentObjects($requestIsProcessibleTest['unprocessibleArguments']);
+			$this->argumentRepository->expects ( $this->once () )->method ( 'getArgumentsByType' )->with ( Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible )->will ( $this->returnValue ( $unProcessibleArguments ) );
+			$this->eventHandler->handleEventOnStaticCacheRequest( $this->eventOnStaticCacheRequest );
+			$this->assertFalse( $this->eventOnStaticCacheRequest->isCanceled() );
+		}
 
-	
-	
-	
-	
-	
-	
-	
-	
+		// request is not processible
+		$requestIsProcessibleTest1 = array();
+		$requestIsProcessibleTest1['definedArguments'] = array( 'basket' => 'delete' );
+		$requestIsProcessibleTest1['unprocessibleArguments'] = array('basket' => true);
+		$requestIsProcessibleTest2 = array();
+		$requestIsProcessibleTest2['definedArguments'] = array( 'basket' => array('action' => 'delete') );
+		$requestIsProcessibleTest2['unprocessibleArguments'] = array('basket' => true);
+		$requestIsProcessibleTest3 = array();
+		$requestIsProcessibleTest3['definedArguments'] = array( 'action' => 'delete' );
+		$requestIsProcessibleTest3['unprocessibleArguments'] = array('action' => 'delete');
+		$requestIsProcessibleTest4 = array();
+		$requestIsProcessibleTest4['definedArguments'] = array( 'basket' => array('action' => 'insert') );
+		$requestIsProcessibleTest4['unprocessibleArguments'] = array('*' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTest5 = array();
+		$requestIsProcessibleTest5['definedArguments'] = array( 'basket' => array('action' => 'insert') );
+		$requestIsProcessibleTest5['unprocessibleArguments'] = array('basket' => array('action' => array('insert', 'update')));
+		$requestIsProcessibleTests = array();
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest1;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest2;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest3;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest4;
+		$requestIsProcessibleTests[] = $requestIsProcessibleTest5;
+		foreach($requestIsProcessibleTests as $requestIsProcessibleTest) {
+			$this->setUp();
+			$this->eventHandler->expects($this->any())->method('getCheckMethods')->will($this->returnValue( array('isUnprocessibleRequestAction' => FALSE)));
+			$this->request->expects ( $this->once () )->method ( 'getArguments' )->will ( $this->returnValue ( $requestIsProcessibleTest['definedArguments'] ) );
+			$unProcessibleArguments = $this->createArgumentObjects($requestIsProcessibleTest['unprocessibleArguments']);
+			$this->argumentRepository->expects ( $this->once () )->method ( 'getArgumentsByType' )->with ( Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible )->will ( $this->returnValue ( $unProcessibleArguments ) );
+			$this->eventHandler->handleEventOnStaticCacheRequest( $this->eventOnStaticCacheRequest );
+			$this->assertTrue( $this->eventOnStaticCacheRequest->isCanceled() );
+		}
+	}
+
+	/**
+	 * @param	array $configurationValue
+	 * @return	array
+	 */
+	private function createArgumentObjects(array $argumentsConfig) {
+		$arguments = array();
+		foreach($argumentsConfig as $name => $value) {
+			$arguments[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, $value);
+		}
+		return $arguments;
+	}
 }
