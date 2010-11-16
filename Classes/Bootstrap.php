@@ -130,6 +130,7 @@ final class Bootstrap {
 	 * @return void
 	 */
 	static protected function initializeEventHandling() {
+		/** @var $dispatcher Tx_Extracache_System_Event_Dispatcher */
 		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheRequest', 'Tx_Extracache_System_StaticCache_EventHandler', 'handleEventOnStaticCacheRequest');
 	}
