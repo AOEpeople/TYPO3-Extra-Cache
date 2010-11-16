@@ -19,7 +19,7 @@ class Tx_Extracache_Validation_Validator_Event extends Tx_Extbase_Validation_Val
 	 */
 	public function isValid($event) {
 		if($this->getEventRepository()->hasEvent($event->getKey())) {
-			$this->addError('event with key '.$event->getKey().' does already exist!');
+			$this->addError('event with key ' . $event->getKey() . ' does already exist!', 1289898441);
 		}
 		return (count($this->getErrors()) === 0);
 	}

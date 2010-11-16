@@ -28,7 +28,7 @@ class Tx_Extracache_Validation_Validator_Argument extends Tx_Extbase_Validation_
 	 */
 	private function checkName($name) {
 		if($name === '' || ($name !== '*' && (boolean) preg_match('/[^a-zA-Z0-9\_\-]/',$name) === TRUE)) {
-			$this->addError('name '.$name.' is not valid!');
+			$this->addError('name ' . $name . ' is not valid!', 1289897741);
 		}
 	}
 	/**
@@ -36,7 +36,7 @@ class Tx_Extracache_Validation_Validator_Argument extends Tx_Extbase_Validation_
 	 */
 	private function checkType($type) {
 		if(!in_array($type, Tx_Extracache_Domain_Model_Argument::getSupportedTypes())) {
-			$this->addError('type '.$type.' is not supported!');
+			$this->addError('type ' . $type . ' is not supported!', 1289897742);
 		}
 	}
 	/**
@@ -44,10 +44,10 @@ class Tx_Extracache_Validation_Validator_Argument extends Tx_Extbase_Validation_
 	 */
 	private function checkValue($value) {
 		if($value !== true && !is_array($value) && !is_string($value) ) {
-			$this->addError('value is not valid!');
+			$this->addError('value is not valid!', 1289897743);
 		}
 		if(is_array($value) && count($value) === 0) {
-			$this->addError('value is not valid (because value is an empty array)!');
+			$this->addError('value is not valid (because value is an empty array)!', 1289897744);
 		}
 	}
 }

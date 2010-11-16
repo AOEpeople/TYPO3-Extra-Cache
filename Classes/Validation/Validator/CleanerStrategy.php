@@ -19,7 +19,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 	 */
 	public function isValid($cleanerStrategy) {
 		if($this->getCleanerStrategyRepository()->hasStrategy($cleanerStrategy->getKey())) {
-			$this->addError('cleanerStrategy with key '.$cleanerStrategy->getKey().' does already exist!');
+			$this->addError('cleanerStrategy with key ' . $cleanerStrategy->getKey() . ' does already exist!', 1289897851);
 		}
 		$this->childrenModeIsValid( $cleanerStrategy->getChildrenMode() );
 		$this->elementModeIsValid( $cleanerStrategy->getElementsMode() );
@@ -50,7 +50,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 			(boolean) $actionsContainActionStaticDirty === FALSE &&
 			(boolean) $actionsContainActionTYPO3Clear === FALSE
 		) {
-			$this->addError('actions '.$actions.' does not contain a valid action!');
+			$this->addError('actions ' . $actions . ' do not contain any valid action!', 1289897852);
 		}
 	}
 	/**
@@ -58,7 +58,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 	 */
 	private function childrenModeIsValid($childrenMode) {
 		if(!in_array($childrenMode, Tx_Extracache_Domain_Model_CleanerStrategy::getSupportedChildModes())) {
-			$this->addError('childrenMode '.$childrenMode.' is not supported!');
+			$this->addError('childrenMode ' . $childrenMode . ' is not supported!', 1289897853);
 		}
 	}
 	/**
@@ -66,7 +66,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 	 */
 	private function elementModeIsValid($elementMode) {
 		if(!in_array($elementMode, Tx_Extracache_Domain_Model_CleanerStrategy::getSupportedElementModes())) {
-			$this->addError('elementMode '.$elementMode.' is not supported!');
+			$this->addError('elementMode ' . $elementMode . ' is not supported!', 1289897854);
 		}
 	}
 }
