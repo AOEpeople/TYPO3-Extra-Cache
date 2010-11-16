@@ -28,9 +28,11 @@ class Tx_Extracache_System_StaticCache_Response implements t3lib_Singleton {
 		return $this->content;
 	}
 	/**
-	 * @param string $content
+	 * @param	string $content
+	 * @return	Tx_Extracache_System_StaticCache_Response
 	 */
 	public function setContent($content) {
 		$this->content = $content;
+		return $this;
 	}
 }

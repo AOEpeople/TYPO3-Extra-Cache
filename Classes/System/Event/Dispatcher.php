@@ -74,7 +74,7 @@ class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
 	 * @param	mixed		$eventOrEventName Event Name (string) or tx_mvc_system_event_event Object
 	 * @param 	Object		$contextObject	The Object where the event is triggered (If first parameter is a string this is required to build correct event instance)
 	 * @param 	array		$infoData additional informations for the event (If first parameter is a string this is required to build correct event instance)
-	 * @return	tx_mvc_system_event_event
+	 * @return	Tx_Extracache_System_Event_Events_Event
 	 */
 	public function triggerEvent($eventOrEventName, $contextObject=null, $infoData=array()) {
 		if (!$eventOrEventName instanceof Tx_Extracache_System_Event_Events_Event) {

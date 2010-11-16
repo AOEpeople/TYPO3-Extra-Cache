@@ -40,9 +40,9 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheContextTest extends Tx
 	 * @test
 	 */
 	public function getMethods() {
-		$this->event->setStaticCacheContext( TRUE );		
+		$this->assertTrue( $this->event->setStaticCacheContext( TRUE ) === $this->event );		
 		$this->assertTrue( $this->event->getStaticCacheContext() === TRUE );
-		$this->event->setStaticCacheContext( FALSE );		
+		$this->assertTrue( $this->event->setStaticCacheContext( FALSE ) === $this->event );
 		$this->assertTrue( $this->event->getStaticCacheContext() === FALSE );
 	}
 }

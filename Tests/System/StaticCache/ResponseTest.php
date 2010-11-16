@@ -40,7 +40,7 @@ class Tx_Extracache_System_StaticCache_ResponseTest extends Tx_Extracache_Tests_
 	 * @test
 	 */
 	public function getMethods() {
-		$this->response->setContent('test-content');
+		$this->assertTrue( $this->response->setContent('test-content') === $this->response );
 		$this->assertTrue( $this->response->getContent() === 'test-content' );
 	}
 }

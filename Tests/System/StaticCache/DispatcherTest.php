@@ -51,18 +51,17 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array('get'));
 
 		$this->eventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array('triggerEvent'));
-		$this->eventDispatcher->expects($this->any())->method('triggerEvent')
-			->will($this->returnCallback(array($this, 'triggeredEventCallback')));
+		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 
 		$this->cacheManager = $this->getMock(
 			'Tx_Extracache_System_StaticCache_StaticFileCacheManager',
-			array('process', 'isProcessed', 'isRequestProcessible', 'logForeignArguments', 'loadCachedRepresentation'),
+			array('isRequestProcessible', 'logForeignArguments', 'loadCachedRepresentation'),
 			array(), '', FALSE
 		);
 
 		$this->dispatcher = $this->getMock(
 			'Tx_Extracache_System_StaticCache_Dispatcher',
-			array('isStaticCacheEnabled', 'initializeCacheManager', 'getCacheManager', 'getExtensionManager', 'getEventDispatcher', 'output', 'halt')
+			array('isStaticCacheEnabled', 'getCacheManager', 'getExtensionManager', 'getEventDispatcher', 'output', 'halt')
 		);
 		$this->dispatcher->expects($this->any())->method('halt');
 		$this->dispatcher->expects($this->any())->method('getCacheManager')->will($this->returnValue($this->cacheManager));
@@ -89,7 +88,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 * @test
 	 */
 	public function areExceptionsCaught() {
-		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnCallback(array($this, 'throwExceptionCallback')));
+		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will ( $this->throwException(new Exception('') ) );
 		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue(0));
 
 		$this->dispatcher->dispatch();
@@ -105,12 +104,35 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 * @return void
 	 * @test
 	 */
-	public function isStaticCacheDispatchedCorrectlyIfEnabled() {
+	public function staticCacheIsNotEnabled() {
+		$testContent = uniqid('testContent');
+
+		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(FALSE));
+		$this->dispatcher->expects($this->never())->method('output');
+		$this->dispatcher->expects($this->never())->method('halt');
+		$this->cacheManager->expects($this->never())->method('isRequestProcessible');
+		$this->cacheManager->expects($this->never())->method('logForeignArguments');
+		$this->cacheManager->expects($this->never())->method('loadCachedRepresentation');
+
+		$this->dispatcher->dispatch();
+
+		$this->assertEquals(0, count($this->triggeredEvents));
+	}
+	/**
+	 * Tests whether the instance is dispatched.
+	 *
+	 * @return void
+	 * @test
+	 */
+	public function staticCacheIsEnabled_cachedRepresentationIsNotAvailable() {
 		$testContent = uniqid('testContent');
 
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(TRUE));
-		$this->cacheManager->expects($this->any())->method('process');
-		$this->cacheManager->expects($this->once())->method('isProcessed')->will($this->returnValue(FALSE));
+		$this->dispatcher->expects($this->never())->method('output');
+		$this->dispatcher->expects($this->never())->method('halt');
+		$this->cacheManager->expects($this->any())->method('isRequestProcessible')->will($this->returnValue(FALSE));
+		$this->cacheManager->expects($this->never())->method('logForeignArguments');
+		$this->cacheManager->expects($this->never())->method('loadCachedRepresentation');
 
 		$this->dispatcher->dispatch();
 
@@ -120,24 +142,21 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
 		$this->assertFalse($this->triggeredEvents[1]->getStaticCacheContext());
 	}
-
 	/**
-	 * Test whether content is delivered is enabled and cached data is available.
+	 * Tests whether the instance is dispatched and content is delivered and cached data is available.
 	 *
 	 * @return void
 	 * @test
 	 */
-	public function isEventOnStaticCacheContextTriggeredIfStaticCacheIsAvailable() {
+	public function staticCacheIsEnabled_cachedRepresentationIsAvailable() {
 		$testContent = uniqid('testContent');
 
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(TRUE));
-		$this->cacheManager->expects($this->any())->method('process');
-		$this->cacheManager->expects($this->once())->method('isProcessed')->will($this->returnValue(TRUE));
-		$this->cacheManager->expects($this->once())->method('isRequestProcessible')->will($this->returnValue(TRUE));
-		$this->cacheManager->expects($this->once())->method('logForeignArguments');
-		$this->cacheManager->expects($this->once())->method('loadCachedRepresentation')->will($this->returnValue($testContent));
 		$this->dispatcher->expects($this->once())->method('output')->with($testContent);
 		$this->dispatcher->expects($this->once())->method('halt');
+		$this->cacheManager->expects($this->any())->method('isRequestProcessible')->will($this->returnValue(TRUE));
+		$this->cacheManager->expects($this->once())->method('logForeignArguments');
+		$this->cacheManager->expects($this->once())->method('loadCachedRepresentation')->will($this->returnValue($testContent));
 
 		$this->dispatcher->dispatch();
 
@@ -156,5 +175,6 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	public function triggeredEventCallback($event) {
 		$this->triggeredEvents[] = $event;
+		return $event;
 	}
 }

@@ -1,5 +1,3 @@
-
-
 <?php
 /***************************************************************
  * Copyright notice
@@ -43,7 +41,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcessTes
 	 */
 	public function getMethods() {
 		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response');
-		$this->event->setResponse( $response );		
+		$this->assertTrue( $this->event->setResponse( $response ) === $this->event );
 		$this->assertTrue( $this->event->getResponse() === $response );
 	}
 }

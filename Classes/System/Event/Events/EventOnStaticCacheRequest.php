@@ -47,15 +47,19 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 		return $this->request;
 	}
 	/**
-	 * @param tslib_feUserAuth $frontendUser
+	 * @param	tslib_feUserAuth $frontendUser
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
 	 */
 	public function setFrontendUser(tslib_feUserAuth $frontendUser) {
 		$this->frontendUser = $frontendUser;
+		return $this;
 	}
 	/**
-	 * @param Tx_Extracache_System_StaticCache_Request $request
+	 * @param	Tx_Extracache_System_StaticCache_Request $request
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
 	 */
 	public function setRequest(Tx_Extracache_System_StaticCache_Request $request) {
 		$this->request = $request;
+		return $this;
 	}
 }

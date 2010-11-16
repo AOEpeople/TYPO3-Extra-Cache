@@ -37,9 +37,11 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheContext extends Tx_Ext
 		return $this->staticCacheContext;
 	}
 	/**
-	 * @param boolean $staticCacheContext
+	 * @param	boolean $staticCacheContext
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheContext
 	 */
 	public function setStaticCacheContext($staticCacheContext) {
 		$this->staticCacheContext = $staticCacheContext;
+		return $this;
 	}
 }

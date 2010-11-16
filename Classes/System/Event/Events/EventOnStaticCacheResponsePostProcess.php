@@ -35,9 +35,11 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess ex
 		return $this->response;
 	}
 	/**
-	 * @param Tx_Extracache_System_StaticCache_Response $response
+	 * @param	Tx_Extracache_System_StaticCache_Response $response
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess
 	 */
 	public function setResponse(Tx_Extracache_System_StaticCache_Response $response) {
 		$this->response = $response;
+		return $this;
 	}
 }

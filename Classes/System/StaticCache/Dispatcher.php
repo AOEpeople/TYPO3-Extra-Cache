@@ -35,23 +35,16 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	public function dispatch() {
 		try {
 			if ($this->isStaticCacheEnabled ()) {
-				// we try to load the requested page from staticCache
-				//@todo: we must process this event in tx_eft_system_staticCache_dispatcher!
-				$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext');
-				$event->setStaticCacheContext( TRUE );
-				$this->getEventDispatcher()->triggerEvent( $event );
+				// 1. we try to load the requested page from staticCache
+				$this->triggerEventOnStaticCacheContext( TRUE );
 
-				$this->initializeCacheManager ();
-				$this->getCacheManager()->process ();
-				if ($this->getCacheManager()->isProcessed ()) {
+				// 2. check if request is processible
+				if($this->getCacheManager()->isRequestProcessible ()) {
 					$this->flush ();
 				}
 
-				// we don't any longer try to load the requested page from staticCache
-				//@todo: we must process this event in tx_eft_system_staticCache_dispatcher!
-				$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext');
-				$event->setStaticCacheContext( FALSE );
-				$this->getEventDispatcher()->triggerEvent( $event );
+				// 3. we don't any longer try to load the requested page from staticCache
+				$this->triggerEventOnStaticCacheContext( FALSE );
 			}
 		} catch ( Exception $e ) {
 			$message = 'Exception occured in method dispatch (exceptionClass: '.get_class($e).', exceptionMessage: '.$e->getMessage().')';
@@ -61,52 +54,33 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 			}
 		}
 	}
-
+	
 	/**
-	 * Flushes the cached representation to browser if the current request
-	 * could be served correctly by the cache manager.
+	 * Flushes the cached representation to browser
 	 *
 	 * @return	void
 	 */
 	protected function flush() {
-		if ($this->getCacheManager()->isRequestProcessible ()) {
-			$this->getCacheManager()->logForeignArguments ();			
-			$content = $this->getCacheManager()->loadCachedRepresentation ();
-			
-			if ($content !== false) {
-				//@todo: we must process this event in tx_eft_system_staticCache_dispatcher
-				// so we can call this methods:
-				// - tx_eft_system_staticCache_dispatcher->initializeFrontEnd
-				// - tx_eft_system_staticCache_dispatcher->processFrontendStartUpHook
-				/** @var $response Tx_Extracache_System_StaticCache_Response */
-				$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response');
-				$response->setContent( $content );
-				$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess');
-				$event->setResponse( $response );
-				$this->getEventDispatcher()->triggerEvent( $event );
-				
-				$this->sendStaticCacheHttpHeader ();
-				
-				$this->output($event->getResponse()->getContent());
-				$this->halt();
-			}
+		$this->getCacheManager()->logForeignArguments ();			
+		$content = $this->getCacheManager()->loadCachedRepresentation ();
+
+		if ($content !== false) {
+			$event = $this->triggerEventOnStaticCacheResponsePostProcess( $content );
+			$this->sendStaticCacheHttpHeader ();
+			$this->output( $event->getResponse()->getContent() );
+			$this->halt();
 		}
 	}
-
-	/**
-	 * Outputs the content.
-	 *
-	 * @param string $content
-	 * @return void
-	 */
-	protected function output($content) {
-		echo $content;
-	}
-
 	/**
 	 * @return	Tx_Extracache_System_StaticCache_AbstractManager
 	 */
 	protected function getCacheManager() {
+		if($this->cacheManager === NULL) {
+			$className = 'Tx_Extracache_System_StaticCache_' . $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
+			$typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$request = t3lib_div::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
+			$this->cacheManager = t3lib_div::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
+		}
 		return $this->cacheManager;
 	}
 	/**
@@ -145,18 +119,6 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheResponseHalt', $this, array ('msg' => 'Cache: Request served by static cache' ) );
 		exit ();
 	}
-
-	/**
-	 * Initializes cacheManager-object
-	 *
-	 * @return	void
-	 */
-	protected function initializeCacheManager() {
-		$className = 'Tx_Extracache_System_StaticCache_' . $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
-		$typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
-		$request = t3lib_div::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
-		$this->cacheManager = t3lib_div::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
-	}
 	/**
 	 * Determines whether the static cache is enabled by extension configuration.
 	 *
@@ -165,7 +127,16 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	protected function isStaticCacheEnabled() {
 		return ( bool ) $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
 	}
-	
+	/**
+	 * Outputs the content.
+	 *
+	 * @param string $content
+	 * @return void
+	 */
+	protected function output($content) {
+		echo $content;
+	}
+
 	/**
 	 * Sends a custom HTTP header to indicate the request was processed by the static cache.
 	 *
@@ -173,5 +144,26 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	private function sendStaticCacheHttpHeader() {
 		header ( 'X-StaticCache: 1' );
+	}
+	/**
+	 * @param boolean $staticCacheContext
+	 */
+	private function triggerEventOnStaticCacheContext($staticCacheContext) {
+		//@todo: we must process this event in tx_eft_system_staticCache_dispatcher!
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext')->setStaticCacheContext( $staticCacheContext );
+		$this->getEventDispatcher()->triggerEvent( $event );
+	}
+	/**
+	 * @param	string $content
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess
+	 */
+	private function triggerEventOnStaticCacheResponsePostProcess($content) {
+		//@todo: we must process this event in tx_eft_system_staticCache_dispatcher
+		// so we can call this methods:
+		// - tx_eft_system_staticCache_dispatcher->initializeFrontEnd
+		// - tx_eft_system_staticCache_dispatcher->processFrontendStartUpHook
+		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response')->setContent( $content );
+		$event    = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess')->setResponse( $response );
+		return $this->getEventDispatcher()->triggerEvent( $event );
 	}
 }
