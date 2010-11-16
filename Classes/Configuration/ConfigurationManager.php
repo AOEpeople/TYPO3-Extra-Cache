@@ -76,7 +76,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	/**
 	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
-	protected function getArgumentRepository() {
+	public function getArgumentRepository() {
 		if($this->argumentRepository === NULL) {
 			$this->argumentRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_ArgumentRepository');
 		}

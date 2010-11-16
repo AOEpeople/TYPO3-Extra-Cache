@@ -14,17 +14,19 @@
  * @package eft
  */
 final class Bootstrap {
+	const ExtensionKey = 'extracache';
+
 	/**
 	 * start
 	 */
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
+		self::initializeHooks();
 
 		// this configurations must later be copied into the eft-extension
 		self::initializeDefaultCleanerStrategies();
 		self::initializeDefaultArguments();
-		
 		self::initializeEventHandling();
 	}
 	
@@ -48,7 +50,21 @@ final class Bootstrap {
 		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_Argument' );
 		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_CleanerStrategy' );
 	}
-	
+
+	/**
+	 * Initializes hooks.
+	 *
+	 * @return void
+	 */
+	static protected function initializeHooks() {
+		$staticFileCacheHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php'];
+		$hookDirectory = 'EXT:' . self::ExtensionKey . '/Typo3/Hooks/StaticFileCache/';
+
+		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->initialize';
+		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->process';
+		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:DirtyPagesHook->process';
+	}
+
 	/**
 	 * initialize some default cleanerStrategies
 	 */
