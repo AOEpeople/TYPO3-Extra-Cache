@@ -39,7 +39,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		$checkMethods['isProcessingDirtyPages'] = FALSE;
 		$checkMethods['isFrontendUserLoggingOut'] = FALSE;
 		$checkMethods['isFrontendUserLoggingIn'] = FALSE;
-		//$checkMethods['isCachedRepresentationAvailable'] = TRUE; // this check must be done by Tx_Extracache_System_StaticCache_AbstractManager
 		$checkMethods['isUnprocessibleRequestAction'] = FALSE;
 		$checkMethods['isPageMailerExtensionRunning'] = FALSE;
 		$checkMethods['isCrawlerExtensionRunning'] = FALSE;

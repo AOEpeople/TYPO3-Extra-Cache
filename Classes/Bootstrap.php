@@ -53,6 +53,7 @@ final class Bootstrap {
 	 * initialize some default cleanerStrategies
 	 */
 	static protected function initializeDefaultArguments() {
+		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
 		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 		$configurationManager->addArgument(Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, 'eft', true);
 		$configurationManager->addArgument(Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, 'eftdslconfig', true);
@@ -92,6 +93,7 @@ final class Bootstrap {
 	 * initialize some default cleanerStrategies
 	 */
 	static protected function initializeDefaultCleanerStrategies() {
+		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
 		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear + Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate;
