@@ -15,7 +15,6 @@
  */
 class Tx_Extracache_System_StaticCache_StaticFileCacheManager extends Tx_Extracache_System_StaticCache_AbstractManager implements t3lib_Singleton {
 	/**
-	 * @param 	integer	$level optional, default is NULL
 	 * @return	string
 	 */
 	protected function getCachedFolder() {
