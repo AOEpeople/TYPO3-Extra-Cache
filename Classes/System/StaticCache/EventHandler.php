@@ -134,12 +134,24 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	protected function isCrawlerExtensionRunning(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$result = false;
-		if (t3lib_extMgm::isLoaded ( 'crawler' ) && $event->getRequest()->getServerVariable ( 'HTTP_X_T3CRAWLER' )) {
-			list ( $crawlerQueueId, $crawlerQueueHash ) = explode ( ':', $event->getRequest()->getServerVariable ( 'HTTP_X_T3CRAWLER' ) );
+		if (t3lib_extMgm::isLoaded ( 'crawler' ) && NULL !== $crawlerHeader = $event->getRequest()->getServerVariable ( 'HTTP_X_T3CRAWLER' )) {
+			list ( $crawlerQueueId, $crawlerQueueHash ) = explode ( ':', $crawlerHeader );
 			$queueRecords = $this->getStorage()->selectQuery ( 'qid,set_id', 'tx_crawler_queue', 'qid=' . intval ( $crawlerQueueId ),'','1' );
 			$result = ($queueRecords && $crawlerQueueHash == $this->getCrawlerQueueHash ( $queueRecords [0] ));
 		}
 		return $result;
+	}	
+	/**
+	 * Determines whether a valid frontend user session is currently active.
+	 *
+	 * @return	boolean
+	 */
+	protected function isFrontendUserActive(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
+		$frontendUser = $event->getFrontendUser ();
+		if (isset ( $frontendUser->user ['uid'] ) && $frontendUser->user ['uid']) {
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Determines whether a frontend user currently tries to log in.
@@ -164,19 +176,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		return (isset ( $loginData ['status'] ) && $loginData ['status'] == 'logout');
 	}
 	/**
-	 * Determines whether dirty pages are processed.
-	 *
-	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
-	 * @return	boolean
-	 */
-	protected function isProcessingDirtyPages(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
-		//@TODO: we must use a real-existing "extracache-constant"!
-		$requestHeader = 'HTTP_' . str_replace('-', '_', tx_eft_typo3_ncstaticfilecache_processDirtyPages::HTTP_Request_Header);
-
-		$result = (isset($_SERVER[$requestHeader]) && $_SERVER[$requestHeader]);
-		return $result;
-	}
-	/**
 	 * Determines whether the page mailer extension is running and initiated the current request.
 	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
 	 * @return	boolean
@@ -187,6 +186,17 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 			$result = TRUE;
 		}
 		return $result;
+	}
+	/**
+	 * Determines whether dirty pages are processed.
+	 *
+	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
+	 * @return	boolean
+	 */
+	protected function isProcessingDirtyPages(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
+		//@TODO: we must use a real-existing "extracache-constant"!
+		$requestHeader = 'HTTP_' . str_replace('-', '_', tx_eft_typo3_ncstaticfilecache_processDirtyPages::HTTP_Request_Header);
+		return ( $event->getRequest()->getServerVariable($requestHeader) !== NULL );
 	}
 	/**
 	 * Determines whether the current request cannot be answered by pre-caching in general.
