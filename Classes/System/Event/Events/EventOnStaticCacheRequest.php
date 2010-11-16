@@ -29,6 +29,10 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 	 * @var Tx_Extracache_System_StaticCache_Request
 	 */
 	private $request;
+	/**
+	 * @var string
+	 */
+	private $reasonForCancelation;
 
 	/**
 	 * override constructor
@@ -47,6 +51,13 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 		return $this->request;
 	}
 	/**
+	 * @return string
+	 */
+	public function getReasonForCancelation() {
+		return $this->reasonForCancelation;
+	}
+
+	/**
 	 * @param	tslib_feUserAuth $frontendUser
 	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
 	 */
@@ -60,6 +71,14 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 	 */
 	public function setRequest(Tx_Extracache_System_StaticCache_Request $request) {
 		$this->request = $request;
+		return $this;
+	}
+	/**
+	 * @param	string $reasonForCancelation
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
+	 */
+	public function setReasonForCancelation($reasonForCancelation) {
+		$this->reasonForCancelation = $reasonForCancelation;
 		return $this;
 	}
 }

@@ -42,9 +42,12 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequestTest extends Tx
 	public function getMethods() {
 		$request = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Request');
 		$frontendUser = t3lib_div::makeInstance ( 'tslib_feUserAuth' );
+		$reasonForCancelation = 'test';
 		$this->assertTrue( $this->event->setFrontendUser( $frontendUser ) === $this->event );
 		$this->assertTrue( $this->event->setRequest( $request ) === $this->event );
+		$this->assertTrue( $this->event->setReasonForCancelation( $reasonForCancelation ) === $this->event );
 		$this->assertTrue( $this->event->getFrontendUser() === $frontendUser );
 		$this->assertTrue( $this->event->getRequest() === $request );
+		$this->assertTrue( $this->event->getReasonForCancelation() === $reasonForCancelation );
 	}
 }

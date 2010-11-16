@@ -23,10 +23,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	private $checkMethods;
 	/**
-	 * @var Tx_Extracache_System_Event_Dispatcher
-	 */
-	private $dispatcher;
-	/**
 	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $storage;
@@ -55,7 +51,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 			$checkResult = call_user_func_array ( array ($this, $method ), array ($event) );
 			if ($checkResult !== $expected) {
 				$event->cancel();
-				$this->getDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('msg' => 'Check "' . $method . '" prevents from using static caching' ) );
+				$event->setReasonForCancelation( 'Check "' . $method . '" prevents from using static caching' );
 				break;
 			}
 		}
@@ -75,15 +71,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	protected function getCheckMethods() {
 		return $this->checkMethods;
-	}
-	/**
-	 * @return Tx_Extracache_System_Event_Dispatcher
-	 */
-	protected function getDispatcher() {
-		if($this->dispatcher === NULL) {
-			$this->dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
-		}
-		return $this->dispatcher;
 	}
 	/**
 	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend

@@ -22,10 +22,6 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	 */
 	private $argumentRepository;
 	/**
-	 * @var Tx_Extracache_System_Event_Dispatcher
-	 */
-	private $dispatcher;
-	/**
 	 * @var Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
 	 */
 	private $eventOnStaticCacheRequest;
@@ -51,11 +47,9 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	 */
 	protected function setUp() {
 		$this->argumentRepository = $this->getMock('Tx_Extracache_Domain_Repository_ArgumentRepository', array(), array(), '', FALSE);
-		$this->dispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->storage = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		$this->eventHandler = $this->getMock('Tx_Extracache_System_StaticCache_EventHandler', array('getArgumentRepository', 'getCheckMethods', 'getDispatcher', 'getStorage'));
+		$this->eventHandler = $this->getMock('Tx_Extracache_System_StaticCache_EventHandler', array('getArgumentRepository', 'getCheckMethods', 'getStorage'));
 		$this->eventHandler->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
-		$this->eventHandler->expects($this->any())->method('getDispatcher')->will($this->returnValue($this->dispatcher));
 		$this->eventHandler->expects($this->any())->method('getStorage')->will($this->returnValue($this->storage));
 
 		$this->frontendUser = $this->getMock('tslib_feUserAuth', array(), array(), '', FALSE);
@@ -69,7 +63,6 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	 */
 	protected function tearDown() {
 		unset($this->argumentRepository);
-		unset($this->dispatcher);
 		unset($this->storage);
 		unset($this->eventHandler);
 	}

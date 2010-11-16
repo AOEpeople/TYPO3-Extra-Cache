@@ -66,9 +66,10 @@ abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase 
 	 * local event listener that puts all events to $this->triggeredEvents.
 	 *
 	 * @param mixed $event
-	 * @return void
+	 * @return mixed
 	 */
 	public function triggeredEventCallback($event) {
 		$this->triggeredEvents[] = $event;
+		return $event;
 	}
 }
