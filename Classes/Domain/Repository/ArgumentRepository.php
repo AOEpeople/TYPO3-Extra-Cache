@@ -16,7 +16,7 @@ class Tx_Extracache_Domain_Repository_ArgumentRepository implements t3lib_Single
 	/**
 	 * @var array
 	 */
-	private $arguments;
+	private $arguments = array();
 	
 	/**
 	 * @param Tx_Extracache_Domain_Model_Argument $argument

@@ -64,6 +64,6 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 * @return Tx_Extracache_Domain_Model_Event
 	 */
 	private function createEvent() {
-		return new Tx_Extracache_Domain_Model_Event('testname');
+		return new Tx_Extracache_Domain_Model_Event('testkey', 'testname');
 	}
 }
