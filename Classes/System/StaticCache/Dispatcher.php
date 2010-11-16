@@ -55,7 +55,7 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 			}
 		} catch ( Exception $e ) {
 			$message = 'Exception occured in method dispatch (exceptionClass: '.get_class($e).', exceptionMessage: '.$e->getMessage().')';
-			t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent ( 'onGeneralFailure', $this, array ('message' => $message ) );
+			$this->getEventDispatcher()->triggerEvent ( 'onGeneralFailure', $this, array ('message' => $message ) );
 			if ($this->getExtensionManager()->get ( 'developmentContext' ) == 1) {
 				throw $e;
 			}
@@ -78,6 +78,7 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 				// so we can call this methods:
 				// - tx_eft_system_staticCache_dispatcher->initializeFrontEnd
 				// - tx_eft_system_staticCache_dispatcher->processFrontendStartUpHook
+				/** @var $response Tx_Extracache_System_StaticCache_Response */
 				$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response');
 				$response->setContent( $content );
 				$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess');
@@ -86,10 +87,20 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 				
 				$this->sendStaticCacheHttpHeader ();
 				
-				echo $event->getResponse()->getContent();
+				$this->output($event->getResponse()->getContent());
 				$this->halt();
 			}
 		}
+	}
+
+	/**
+	 * Outputs the content.
+	 *
+	 * @param string $content
+	 * @return void
+	 */
+	protected function output($content) {
+		echo $content;
 	}
 
 	/**

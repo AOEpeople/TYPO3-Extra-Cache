@@ -9,6 +9,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once dirname(__FILE__) . '/Exception.php';
+
 /**
  * Abstract base class for extracache Tests
  *
@@ -36,5 +38,16 @@ abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase 
 			$this->classLoader = new Tx_Extbase_Utility_ClassLoader();
 		}
 		return $this->classLoader;
+	}
+
+	/**
+	 * Throws an exception to be used in the test cases only.
+	 *
+	 * @throws Tx_Extracache_Tests_Exception
+	 * @param string $message
+	 * @return void
+	 */
+	public function throwExceptionCallback() {
+		throw new Tx_Extracache_Tests_Exception('Test Exception');
 	}
 }

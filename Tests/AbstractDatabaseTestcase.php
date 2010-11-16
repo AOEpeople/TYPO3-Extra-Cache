@@ -9,6 +9,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once dirname(__FILE__) . '/Exception.php';
+
 /**
  * Abstract base class for extracache Database-Tests
  *
