@@ -20,7 +20,30 @@ abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase 
 	 * @var Tx_Extbase_Utility_ClassLoader
 	 */
 	private $classLoader;
-	
+
+	/**
+	 * @var array
+	 */
+	protected $triggeredEvents = array();
+
+	/**
+	 * Sets up this test case.
+	 *
+	 * @return void
+	 */
+	protected function setUp() {
+		$this->triggeredEvents = array();
+	}
+
+	/**
+	 * Cleans up this test case.
+	 *
+	 * @return void
+	 */
+	protected function tearDown() {
+		$this->triggeredEvents = array();
+	}
+
 	/**
 	 * @string
 	 */
@@ -36,5 +59,16 @@ abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase 
 			$this->classLoader = new Tx_Extbase_Utility_ClassLoader();
 		}
 		return $this->classLoader;
+	}
+
+	/**
+	 * Local callback used to capture events. This can be seen as our
+	 * local event listener that puts all events to $this->triggeredEvents.
+	 *
+	 * @param mixed $event
+	 * @return void
+	 */
+	public function triggeredEventCallback($event) {
+		$this->triggeredEvents[] = $event;
 	}
 }

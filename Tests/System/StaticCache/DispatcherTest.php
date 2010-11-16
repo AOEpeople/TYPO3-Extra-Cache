@@ -38,15 +38,10 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	private $cacheManager;
 
 	/**
-	 * @var array
-	 */
-	private $triggeredEvents;
-
-	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->triggeredEvents = array();
+		parent::setUp();
 
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array('get'));
 
@@ -73,7 +68,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 * Cleans up the environment after running a test.
 	 */
 	protected function tearDown() {
-		$this->triggeredEvents = array();
+		parent::tearDown();
 
 		unset($this->extensionManager);
 		unset($this->eventDispatcher);
@@ -164,17 +159,5 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[0]);
 		$this->assertTrue($this->triggeredEvents[0]->getStaticCacheContext());
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[1]);
-	}
-
-	/**
-	 * Local callback used to capture events. This can be seen as our
-	 * local event listener that puts all events to $this->triggeredEvents.
-	 *
-	 * @param mixed $event
-	 * @return void
-	 */
-	public function triggeredEventCallback($event) {
-		$this->triggeredEvents[] = $event;
-		return $event;
 	}
 }
