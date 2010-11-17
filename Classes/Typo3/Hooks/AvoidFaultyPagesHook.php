@@ -15,7 +15,7 @@
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesHook implements t3lib_Singleton {
+class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesHook {
 	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
 
 	/**

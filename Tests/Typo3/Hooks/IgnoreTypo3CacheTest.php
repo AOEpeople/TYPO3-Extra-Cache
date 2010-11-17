@@ -37,17 +37,16 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	/**
 	 * Sets up this test case.
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->cacheData = uniqid('cache');
 		$this->ignoreTypo3Cache = $this->getMock('Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache', array('getBackendUser'));
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->tsfe->all = $this->cacheData;
 	}
-
 	/**
 	 * Cleans this test case
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		unset($this->tsfe);
 		unset($this->ignoreTypo3Cache);
 	}
