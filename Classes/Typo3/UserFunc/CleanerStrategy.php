@@ -30,9 +30,10 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategy {
 		foreach($this->getCleanerStrategyRepository()->getAllStrategies() as $strategy) {
 			$tempItems['key'][] = $strategy->getKey();
 			$tempItems['name'][] = $strategy->getName();
+			$tempItems['sortname'][] = strtolower($strategy->getName());
 		}
-		array_multisort($tempItems['name'], SORT_ASC, $tempItems['key']);
-		
+		array_multisort($tempItems['sortname'], SORT_ASC, $tempItems['name'], $tempItems['key']);
+
 		// add Items
 		$items =& $parameters['items'];
 		for($i=0;$i<count($tempItems['key']);$i++) {

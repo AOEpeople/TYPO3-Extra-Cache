@@ -132,7 +132,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 			$this->isRequestProcessible = ($event->isCanceled() === FALSE);
 
 			if($event->isCanceled() && NULL !== $reasonForCancelation = $event->getReasonForCancelation() ) {
-				$this->getDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $reasonForCancelation ) );
+				$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => $reasonForCancelation ) );
 			}
 		}
 		return $this->isRequestProcessible;
@@ -162,7 +162,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	public function logForeignArguments() {
 		$filteredOriginalUri = Tx_Extracache_System_Tools_Uri::filterUriArguments ( $this->getRequest()->getFileNameWithQuery (), $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache) );
 		if (strpos ( $filteredOriginalUri, '?' ) !== false) {
-			$this->getDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => 'URI "' . $this->getRequest()->getFileNameWithQuery () . '" contains foreign arguments.' ) );
+			$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => 'URI "' . $this->getRequest()->getFileNameWithQuery () . '" contains foreign arguments.' ) );
 		}
 	}
 	/**

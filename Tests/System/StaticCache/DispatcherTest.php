@@ -90,7 +90,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('string', $this->triggeredEvents[0]);
-		$this->assertEquals('onGeneralFailure', $this->triggeredEvents[0]);
+		$this->assertEquals('onStaticCacheWarning', $this->triggeredEvents[0]);
 	}
 
 	/**

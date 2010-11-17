@@ -22,12 +22,16 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
+		
+/*
 		self::initializeHooks();
+		self::initializeEventHandling();
+*/
 
 		// this configurations must later be copied into the eft-extension
-		self::initializeDefaultCleanerStrategies();
 		self::initializeDefaultArguments();
-		self::initializeEventHandling();
+		self::initializeDefaultCleanerStrategies();
+		self::initializeDefaultCacheCleanerEvents();
 	}
 	
 	/**
@@ -141,13 +145,36 @@ final class Bootstrap {
 		$configurationManager->addCleanerStrategy($actions, $childrenMode, $elementsMode, $key, $name);
 	}
 	/**
-	 * Initializes the event-handling
-	 *
-	 * @return void
+	 * initialize some default cacheCleanerEvents
+	 */
+	static protected function initializeDefaultCacheCleanerEvents() {
+		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
+		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+		$configurationManager->addEvent('onUpdateProductCatalogueForClientId1', 'Produktkatalog-Update [client: congstar]');
+		$configurationManager->addEvent('onUpdateProductCatalogueForClientId2', 'Produktkatalog-Update [client: ebay]');
+		$configurationManager->addEvent('onUpdateProductCatalogueForClientId3', 'Produktkatalog-Update [client: RTL]');
+		$configurationManager->addEvent('onAddCongstarizerPicture', 'congstarizer-Bild in Gallerie einfügen');		
+	}
+	/**
+	 * initialize event-handler
 	 */
 	static protected function initializeEventHandling() {
-		/** @var $dispatcher Tx_Extracache_System_Event_Dispatcher */
 		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		self::addEventHandlerForLogging ( $dispatcher );
+		self::addEventHandlerForStaticCache ( $dispatcher );
+	}
+	/**
+	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
+	 */
+	static protected function addEventHandlerForLogging(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
+		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logInfo');
+		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
+		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
+	}
+	/**
+	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
+	 */
+	static protected function addEventHandlerForStaticCache(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
 		$dispatcher->addLazyLoadingHandler('onStaticCacheRequest', 'Tx_Extracache_System_StaticCache_EventHandler', 'handleEventOnStaticCacheRequest');
 	}
 }

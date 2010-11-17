@@ -40,7 +40,7 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategyTest extends Tx_Extracache_Tes
 		$this->cleanerStrategies = array();
 		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key1', 'aaaaa');
 		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key2', 'ccccc');
-		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key3', 'bbbbb');
+		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key3', 'BBBBB');
 		
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array(), array(), '', FALSE);
 		$this->mockedCleanerStrategyRepository->expects($this->any())->method('getAllStrategies')->will ( $this->returnValue ( $this->cleanerStrategies ) );
@@ -67,7 +67,7 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategyTest extends Tx_Extracache_Tes
 		$this->assertTrue( count($parameters['items']) === 3);
 		$this->assertTrue( $parameters['items'][0][0] === 'aaaaa');
 		$this->assertTrue( $parameters['items'][0][1] === 'key1');
-		$this->assertTrue( $parameters['items'][1][0] === 'bbbbb');
+		$this->assertTrue( $parameters['items'][1][0] === 'BBBBB');
 		$this->assertTrue( $parameters['items'][1][1] === 'key3');
 		$this->assertTrue( $parameters['items'][2][0] === 'ccccc');
 		$this->assertTrue( $parameters['items'][2][1] === 'key2');

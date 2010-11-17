@@ -40,7 +40,7 @@ class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_Abstrac
 		$this->events = array();
 		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'aaaaa');
 		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'ccccc');
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'bbbbb');
+		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'BBBBB');
 		
 		$this->mockedEventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
 		$this->mockedEventRepository->expects($this->any())->method('getEvents')->will ( $this->returnValue ( $this->events ) );
@@ -67,7 +67,7 @@ class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_Abstrac
 		$this->assertTrue( count($parameters['items']) === 3);
 		$this->assertTrue( $parameters['items'][0][0] === 'aaaaa');
 		$this->assertTrue( $parameters['items'][0][1] === 'key1');
-		$this->assertTrue( $parameters['items'][1][0] === 'bbbbb');
+		$this->assertTrue( $parameters['items'][1][0] === 'BBBBB');
 		$this->assertTrue( $parameters['items'][1][1] === 'key3');
 		$this->assertTrue( $parameters['items'][2][0] === 'ccccc');
 		$this->assertTrue( $parameters['items'][2][1] === 'key2');

@@ -5,5 +5,5 @@ if (!defined('TYPO3_MODE')) {
 
 
 // start bootstrap
-//require_once(t3lib_extMgm::extPath ( 'extracache' ) . 'Classes/Bootstrap.php');
-//Bootstrap::start();
+require_once(t3lib_extMgm::extPath ( 'extracache' ) . 'Classes/Bootstrap.php');
+Bootstrap::start();

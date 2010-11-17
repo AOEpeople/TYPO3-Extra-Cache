@@ -35,8 +35,9 @@ class Tx_Extracache_Typo3_UserFunc_Event {
 		foreach($this->getEventRepository()->getEvents() as $event) {
 			$tempItems['key'][] = $event->getKey();
 			$tempItems['name'][] = $event->getName();
+			$tempItems['sortname'][] = strtolower($event->getName());
 		}
-		array_multisort($tempItems['name'], SORT_ASC, $tempItems['key']);
+		array_multisort($tempItems['sortname'], SORT_ASC, $tempItems['name'], $tempItems['key']);
 
 		// add Items
 		$items =& $parameters['items'];

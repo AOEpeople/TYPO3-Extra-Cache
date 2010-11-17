@@ -48,7 +48,7 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 			}
 		} catch ( Exception $e ) {
 			$message = 'Exception occured in method dispatch (exceptionClass: '.get_class($e).', exceptionMessage: '.$e->getMessage().')';
-			$this->getEventDispatcher()->triggerEvent ( 'onGeneralFailure', $this, array ('message' => $message ) );
+			$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 			if ($this->getExtensionManager()->get ( 'developmentContext' ) == 1) {
 				throw $e;
 			}
