@@ -11,7 +11,7 @@
 
 /**
  * The bootstrap of extracache extension, initialising basic configurations
- * @package eft
+ * @package extracache
  */
 final class Bootstrap {
 	const ExtensionKey = 'extracache';
@@ -58,7 +58,7 @@ final class Bootstrap {
 	 */
 	static protected function initializeHooks() {
 		$staticFileCacheHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php'];
-		$hookDirectory = 'EXT:' . self::ExtensionKey . '/Typo3/Hooks/StaticFileCache/';
+		$hookDirectory = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/';
 
 		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->initialize';
 		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->process';
