@@ -95,7 +95,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	/**
 	 * Determines whether an extension is loaded.
 	 *
-	 * @param  $extensionKey
+	 * @param  string $extensionKey
 	 * @return boolean
 	 */
 	protected function isExtensionLoaded($extensionKey) {

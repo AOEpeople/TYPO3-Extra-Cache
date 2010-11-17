@@ -272,7 +272,7 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	}
 
 	/**
-	 * @param	array $configurationValue
+	 * @param	array $argumentsConfig
 	 * @return	array
 	 */
 	private function createArgumentObjects(array $argumentsConfig) {
