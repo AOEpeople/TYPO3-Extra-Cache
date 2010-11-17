@@ -110,13 +110,13 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	protected function halt() {
 		$this->getCacheManager()->getFrontendUser ()->storeSessionData ();
-
-		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('msg' => 'Cache: Request served by static cache' ) );
+		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('message' => 'Cache: Request served by static cache' ) );
 
 		//@todo: we must process this event in tx_eft_system_staticCache_dispatcher
 		// so we can call this php-code in tx_eft_system_staticCache_dispatcher->halt():
 		// - tx_eft_shutdown::shutdown ();
-		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheResponseHalt', $this, array ('msg' => 'Cache: Request served by static cache' ) );
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponseHalt');
+		$this->getEventDispatcher()->triggerEvent( $event );
 		exit ();
 	}
 	/**
