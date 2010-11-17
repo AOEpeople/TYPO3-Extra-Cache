@@ -7,12 +7,6 @@ path_StaticFileCache = typo3temp/tx_ncstaticfilecache/
 # cat=basic; type=options[disabled=0,nc_staticfilecache=StaticFileCacheManager]; label=enableStaticCacheManager: Defines which static cache manager to use
 enableStaticCacheManager = StaticFileCacheManager
 
-# cat=basic; type=input; label=loggingPath: Defines which path is used to write logs to the file system
-loggingPath =
-
-# cat=basic; type=string; label=Path to static cache
-cacheDir = typo3temp/tx_ncstaticfilecache/
-
 # cat=basic; type=string; label=Table of the static cache
 fileTable = tx_ncstaticfilecache_file
 

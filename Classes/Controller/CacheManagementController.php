@@ -26,6 +26,10 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	private $cacheFileRepository;
 	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private $extensionManager;
+	/**
 	 * @var Tx_Extracache_View_View
 	 */
 	private $view;
@@ -34,16 +38,17 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 * Initializes  controller
 	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository	$cacheDatabaseEntryRepository
 	 * @param Tx_Extracache_Domain_Repository_CacheFileRepository			$cacheFileRepository
+	 * @param Tx_Extracache_Configuration_ExtensionManager					$extensionManager
 	 * @param Tx_Extracache_View_View $view
 	 */
-	public function __construct(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepository, Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository, Tx_Extracache_View_View $view) {
+	public function __construct(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepository, Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository, Tx_Extracache_Configuration_ExtensionManager $extensionManager, Tx_Extracache_View_View $view) {
 		$this->setCacheDatabaseEntryRepository( $cacheDatabaseEntryRepository );
 		$this->setCacheFileRepository( $cacheFileRepository );
+		$this->setExtensionManager( $extensionManager );
 		$this->setView( $view );
 		$this->getView()->setTemplatePath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'Private' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR );
-		$conf = unserialize ( $GLOBALS ['TYPO3_CONF_VARS'] ['EXT'] ['extConf'] ['extracache'] );
-		$this->getCacheDatabaseEntryRepository()->setFileTable ( $conf ['fileTable'] );
-		$this->getCacheFileRepository()->setCacheDir ( PATH_site . $conf ['cacheDir'] );
+		$this->getCacheDatabaseEntryRepository()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
+		$this->getCacheFileRepository()->setCacheDir ( PATH_site . $this->getExtensionManager()->get('path_StaticFileCache') );
 	}
 
 	/**
@@ -140,6 +145,12 @@ class Tx_Extracache_Controller_CacheManagementController {
 		return $this->cacheFileRepository;
 	}
 	/**
+	 * @return Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private function getExtensionManager() {
+		return $this->extensionManager;
+	}
+	/**
 	 * @return Tx_Extracache_View_View
 	 */
 	private function getView() {
@@ -157,6 +168,12 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	private function setCacheFileRepository(Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository) {
 		$this->cacheFileRepository = $cacheFileRepository;
+	}
+	/**
+	 * @param Tx_Extracache_Configuration_ExtensionManager $extensionManager
+	 */
+	private function setExtensionManager(Tx_Extracache_Configuration_ExtensionManager $extensionManager) {
+		$this->extensionManager = $extensionManager;
 	}
 	/**
 	 * @param Tx_Extracache_View_View $view

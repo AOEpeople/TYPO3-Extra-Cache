@@ -30,6 +30,10 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 */
 	private $cacheFileRepository;
 	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private $extensionManager;
+	/**
 	 * @var Tx_Extracache_View_View
 	 */
 	private $view;
@@ -40,12 +44,14 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->loadClass('Tx_Extracache_Controller_CacheManagementController');
 		$this->loadClass('Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository');
 		$this->loadClass('Tx_Extracache_Domain_Repository_CacheFileRepository');
+		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
 		$this->loadClass('Tx_Extracache_View_View');
 
 		$this->cacheDatabaseEntryRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheFileRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheFileRepository', array (), array (), '', FALSE );
+		$this->extensionManager = $this->getMock ( 'Tx_Extracache_Configuration_ExtensionManager', array (), array (), '', FALSE );
 		$this->view = $this->getMock ( 'Tx_Extracache_View_View', array (), array (), '', FALSE );
-		$this->cacheManagementController = new Tx_Extracache_Controller_CacheManagementController ( $this->cacheDatabaseEntryRepository, $this->cacheFileRepository, $this->view);
+		$this->cacheManagementController = new Tx_Extracache_Controller_CacheManagementController ( $this->cacheDatabaseEntryRepository, $this->cacheFileRepository, $this->extensionManager, $this->view);
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -54,6 +60,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		unset($this->cacheManagementController);
 		unset($this->cacheDatabaseEntryRepository);
 		unset($this->cacheFileRepository);
+		unset($this->extensionManager);
 	}
 	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->indexAction()
@@ -66,7 +73,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheManagementController->indexAction ();
 	}
 	
-/**
+	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->allFilesAction()
 	 * @test
 	 */
@@ -75,7 +82,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheFileRepository->expects($this->once())->method('getAll');
 		$this->cacheManagementController->allFilesAction ();
 	}
-/**
+	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->deleteFileAction()
 	 * @test
 	 */
@@ -84,7 +91,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheFileRepository->expects($this->once())->method('removeFile');
 		$this->cacheManagementController->deleteFileAction ();
 	}
-/**
+	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->allDatabaseEntrysAction()
 	 * @test
 	 */
@@ -93,7 +100,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheDatabaseEntryRepository->expects($this->once())->method('getAll');
 		$this->cacheManagementController->allDatabaseEntrysAction ();
 	}
-/**
+	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->allFoldersAction()
 	 * @test
 	 */
@@ -102,7 +109,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheFileRepository->expects($this->once())->method('getAllFolders');
 		$this->cacheManagementController->allFoldersAction ();
 	}
-/**
+	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->deleteFolderAction()
 	 * @test
 	 */
