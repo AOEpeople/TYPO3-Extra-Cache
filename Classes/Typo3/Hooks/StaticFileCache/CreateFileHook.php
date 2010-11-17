@@ -92,7 +92,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			'isAnonymous' => $this->isAnonymous($frontend),
 		);
 
-		$event = $this->getNewEvent(self::EVENT_Initialize, $pageInformation, $parent, $parameters['TSFE']);
+		$event = $this->getNewEvent(self::EVENT_Process, $pageInformation, $parent, $parameters['TSFE']);
 		$this->getEventDispatcher()->triggerEvent($event);
 
 		$content = Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationPrefix . serialize($pageInformation) .
@@ -109,9 +109,13 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	protected function getWhiteListedArguments() {
 		$arguments = array();
 		$getArguments = $this->getGetArguments();
-		$argumentsWhitelist = $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_whitelist);
+		$whitelistArguments = $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_whitelist);
 
-		foreach ($argumentsWhitelist as $name => $definition) {
+		/** @var $whitelistArgument Tx_Extracache_Domain_Model_Argument */
+		foreach ($whitelistArguments as $whitelistArgument) {
+			$name = $whitelistArgument->getName();
+			$definition = $whitelistArgument->getValue();
+
 			if (isset($getArguments[$name])) {
 				if (is_array($definition)) {
 					$subArguments = array();
