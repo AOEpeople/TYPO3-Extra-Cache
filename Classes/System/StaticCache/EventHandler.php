@@ -9,6 +9,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath ( 'extracache' ) . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
+
 /**
  * @package extracache
  * @subpackage System_StaticCache
@@ -181,8 +183,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 * @return	boolean
 	 */
 	protected function isProcessingDirtyPages(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
-		//@TODO: we must use a real-existing "extracache-constant"!
-		$requestHeader = 'HTTP_' . str_replace('-', '_', tx_eft_typo3_ncstaticfilecache_processDirtyPages::HTTP_Request_Header);
+		$requestHeader = 'HTTP_' . str_replace('-', '_', Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header);
 		return ( $event->getRequest()->getServerVariable($requestHeader) !== NULL );
 	}
 	/**
