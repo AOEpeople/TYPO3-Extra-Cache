@@ -33,7 +33,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			// Adds the frontend user groups to the cache directory path:
 		$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
 			// Adds the frontend user groups to the static cache table:
-		$parameters['fieldValues'][self::FIELD_GroupList] = $frontendUserGroupList;
+		$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
 			// Defines the additionalHash value for database lookups:
 		$parameters['additionalHash'] = md5($frontendUserGroupList);
 			// Fixes a non speaking URI request (e.g. /index.php?id=13):

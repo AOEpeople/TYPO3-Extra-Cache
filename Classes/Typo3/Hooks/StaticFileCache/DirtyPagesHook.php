@@ -50,24 +50,22 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 		}
 
 		$dirtyElement = $parameters['dirtyElement'];
-		$groupList = $dirtyElement[self::FIELD_GroupList];
+		$groupList = $dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList];
 
 		$parameters['cacheDirectory'] = $this->getStaticCacheDirectory($dirtyElement);
 
-			// Only recache if the frontend user group is anonymous or none:
 		if (!$groupList || $groupList === '0,-1') {
+			// Only recache if the frontend user group is anonymous or none
 			try {
 				if ($this->recacheElement($dirtyElement, $parent) === TRUE) {
 					$parameters['cancelExecution'] = TRUE;
 				}
 			} catch (Exception $e) {
-				t3lib_div::devLog(
-					'Exception: ' . $exception->getMessage().' / '.$exception->getTraceAsString(), __CLASS__
-				);
+				$message = 'Exception: ' . $exception->getMessage().' / '.$exception->getTraceAsString();
+				$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 			}
-
-			// Remove the TYPO3 caches if there is a real frontend user group:
 		} else {
+			// Remove the TYPO3 caches if there is a real frontend user group
 			$this->removeCaches($dirtyElement['pid'], $groupList);
 		}
 	}
@@ -128,7 +126,8 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 		}
 
 		if($result === FALSE) {
-			t3lib_div::devLog('Re-caching ' . $urlToFetch . ' failed', __CLASS__);
+			$message = 'Re-caching ' . $urlToFetch . ' failed';
+			$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 		}
 
 		return $result;
@@ -148,7 +147,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 		if(!in_array($cacheKey, $this->removedCaches)) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				'cache_pages',
-				self::FIELD_GroupList . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($groupList, 'cache_pages') .
+				Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($groupList, 'cache_pages') .
 				' AND page_id=' . intval($pageId)
 			);
 			$this->removedCaches[] = $cacheKey;
@@ -162,7 +161,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 	 * @return string
 	 */
 	protected function getStaticCacheDirectory(array $dirtyElement) {
-		return $dirtyElement['host'] . '/' . $dirtyElement[self::FIELD_GroupList] . dirname($dirtyElement['file']);
+		return $dirtyElement['host'] . '/' . $dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] . dirname($dirtyElement['file']);
 	}
 
 	/**

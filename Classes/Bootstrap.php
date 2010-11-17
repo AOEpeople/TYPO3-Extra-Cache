@@ -22,10 +22,11 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
-		
+
 /*
 		self::initializeHooks();
 		self::initializeEventHandling();
+		self::initializeXClasses();
 */
 
 		// this configurations must later be copied into the eft-extension
@@ -67,6 +68,13 @@ final class Bootstrap {
 		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->initialize';
 		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->process';
 		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:DirtyPagesHook->process';
+	}
+	/**
+	 * Initializes XCLASSES
+	 */
+	static protected function initializeXClasses() {
+		// Define XCLASS for nc_staticfilecache info module:
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = t3lib_extMgm::extPath('extracache') . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
 	}
 
 	/**
@@ -170,6 +178,7 @@ final class Bootstrap {
 		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logInfo');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
+		$dispatcher->addLazyLoadingHandler('onStaticCacheFatalError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');
 	}
 	/**
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
