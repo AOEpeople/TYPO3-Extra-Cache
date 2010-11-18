@@ -9,6 +9,8 @@
 			<label index="pages.tx_extracache_cleanerstrategies">cache strategy</label>
 			<label index="pages.tx_extracache_events">cache event</label>
 			<label index="moduleFunction.tx_extracache_modfunc1">Static Cache Files</label>
+			<label index="scheduler_task_cleanUpRemovedFiles.name">Clean-Up: Remove files</label>
+			<label index="scheduler_task_cleanUpRemovedFiles.description">delete old files</label>
 		</languageKey>
 	</data>
 </T3locallang>

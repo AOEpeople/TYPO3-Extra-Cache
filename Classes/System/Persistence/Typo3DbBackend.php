@@ -67,7 +67,7 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	 * @param string $sqlLimit
 	 * @return array
 	 */
-	public function selectQuery($sqlSelect, $sqlFrom, $sqlWhere, $sqlOrderBy='', $sqlLimit='') {
+	public function selectQuery($sqlSelect, $sqlFrom, $sqlWhere='', $sqlOrderBy='', $sqlLimit='') {
 		return $this->getTypo3Db()->exec_SELECTgetRows ( $sqlSelect, $sqlFrom, $sqlWhere, '', $sqlOrderBy, $sqlLimit );
 	}
 	/**

@@ -24,10 +24,11 @@ final class Bootstrap {
 		self::initializeConstants();
 
 /*
-		self::initializeHooks();
 		self::initializeEventHandling();
+		self::initializeHooks();
 		self::initializeXClasses();
 */
+		self::initializeSchedulerTasks();
 
 		// this configurations must later be copied into the eft-extension
 		self::initializeDefaultArguments();
@@ -55,7 +56,6 @@ final class Bootstrap {
 		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_Argument' );
 		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_CleanerStrategy' );
 	}
-
 	/**
 	 * Initializes hooks.
 	 *
@@ -86,6 +86,22 @@ final class Bootstrap {
 
 		// Register hook to write gr_list to cache_pages:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/InsertPageIncache.php:&Tx_Extracache_Typo3_Hooks_InsertPageIncache';
+	}
+	/**
+	 * Initializes scheduler-tasks.
+	 *
+	 * @return void
+	 */
+	static protected function initializeSchedulerTasks() {
+		if (TYPO3_MODE == 'BE') {
+			// register scheduler-task to clean-up removed files:
+			require_once PATH_tx_extracache . 'Classes/Typo3/SchedulerTaskCleanUpRemovedFiles.php';
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles'] = array (
+				'extension'        => self::ExtensionKey,
+				'title'            => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_cleanUpRemovedFiles.name',
+				'description'      => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_cleanUpRemovedFiles.description',
+			);
+		}
 	}
 	/**
 	 * Initializes XCLASSES
@@ -193,6 +209,7 @@ final class Bootstrap {
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
 	 */
 	static protected function addEventHandlerForLogging(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
+		$dispatcher->addLazyLoadingHandler('onCleanUpRemovedFilesError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logInfo');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');

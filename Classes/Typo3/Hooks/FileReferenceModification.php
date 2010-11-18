@@ -125,7 +125,6 @@ class Tx_Extracache_Typo3_Hooks_FileReferenceModification {
 		if (!isset($this->isStaticCacheEnabled)) {
 			$this->isStaticCacheEnabled = (bool) t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager')->get('enableStaticCacheManager');
 		}
-
 		return $this->isStaticCacheEnabled;
 	}
 }
