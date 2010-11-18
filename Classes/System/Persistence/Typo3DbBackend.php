@@ -70,6 +70,16 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	public function selectQuery($sqlSelect, $sqlFrom, $sqlWhere, $sqlOrderBy='', $sqlLimit='') {
 		return $this->getTypo3Db()->exec_SELECTgetRows ( $sqlSelect, $sqlFrom, $sqlWhere, '', $sqlOrderBy, $sqlLimit );
 	}
+	/**
+	 * Escaping and quoting values for SQL statements.
+	 *
+	 * @param	string $str
+	 * @param	string $table
+	 * @return	string
+	 */
+	public function fullQuoteStr($str, $table) {
+		return $this->getTypo3Db()->fullQuoteStr($str, $table);
+	}
 
 	/**
 	 * @return	t3lib_DB

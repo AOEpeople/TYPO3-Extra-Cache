@@ -69,6 +69,9 @@ final class Bootstrap {
 		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->process';
 		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:DirtyPagesHook->process';
 
+		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = t3lib_extMgm::extPath('extracache') . 'Typo3/Hooks/FileReferenceModification.php:&Tx_Extracache_Typo3_Hooks_FileReferenceModification';
+
 		// Register pre-rendering cache to deliver statically published content:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&Tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
@@ -77,12 +80,12 @@ final class Bootstrap {
 
 		// Sends HTTP headers for debuging caching situations (if developmentContext is set)
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/SendCacheDebugHeader.php:&Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';
-		
+
 		// Register hook that ignores an existing TYPO3 cache (used to force regeneration):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/IgnoreTypo3Cache.php:Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache->ignoreExistingCache';
 
-		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = t3lib_extMgm::extPath('extracache') . 'Typo3/Hooks/FileReferenceModification.php:&Tx_Extracache_Typo3_Hooks_FileReferenceModification';
+		// Register hook to write gr_list to cache_pages:
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/InsertPageIncache.php:&Tx_Extracache_Typo3_Hooks_InsertPageIncache';
 	}
 	/**
 	 * Initializes XCLASSES
