@@ -18,6 +18,10 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 */
 	private $cleanerStrategyRepository;
 	/**
+	 * @var Tx_Extracache_System_Event_Dispatcher
+	 */
+	private $eventDispatcher;
+	/**
 	 * @var Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	private $eventRepository;
@@ -53,6 +57,15 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 		return $this->cleanerStrategyRepository;
 	}
 	/**
+	 * @return Tx_Extracache_System_Event_Dispatcher
+	 */
+	protected function getEventDispatcher() {
+		if($this->eventDispatcher === NULL) {
+			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		}
+		return $this->eventDispatcher;
+	}
+	/**
 	 * @return Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	protected function getEventRepository() {
@@ -79,7 +92,8 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 			try {
 				$this->processPage( $page, $eventKey );
 			} catch (Exception $e) {
-				//@TODO: log exceptions
+				$message = 'Exception on processPage "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
+				$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 			}
 		}
 	}

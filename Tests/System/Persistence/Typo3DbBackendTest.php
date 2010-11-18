@@ -49,13 +49,16 @@ class Tx_Extracache_System_Persistence_Typo3DbBackendTest extends Tx_Extracache_
 		$pages = $this->typo3DbBackend->getPagesWithCacheCleanerStrategyForEvent('event_1');
 		$this->assertTrue( count($pages) === 2 );
 		$this->assertTrue( $pages[0]['uid'] === $this->pageIds[0] );
+		$this->assertTrue( $pages[0]['title'] === 'page1' );
 		$this->assertTrue( $pages[0]['tx_extracache_cleanerstrategies'] === 'strategy_1' );
 		$this->assertTrue( $pages[1]['uid'] === $this->pageIds[1] );
+		$this->assertTrue( $pages[1]['title'] === 'page2' );
 		$this->assertTrue( $pages[1]['tx_extracache_cleanerstrategies'] === 'strategy_2' );
 
 		$pages = $this->typo3DbBackend->getPagesWithCacheCleanerStrategyForEvent('event_2');
 		$this->assertTrue( count($pages) === 1 );
 		$this->assertTrue( $pages[0]['uid'] === $this->pageIds[2] );
+		$this->assertTrue( $pages[0]['title'] === 'page3' );
 		$this->assertTrue( $pages[0]['tx_extracache_cleanerstrategies'] === 'strategy_1,strategy_2' );
 
 		$pages = $this->typo3DbBackend->getPagesWithCacheCleanerStrategyForEvent('event_3');
