@@ -47,9 +47,10 @@ class Tx_Extracache_Domain_Model_ArgumentTest extends Tx_Extracache_Tests_Abstra
 	 */
 	public function getSupportedTypes() {
 		$supportedTypes = Tx_Extracache_Domain_Model_Argument::getSupportedTypes();
-		$this->assertTrue( count($supportedTypes) === 3 );
-		$this->assertTrue( $supportedTypes[0] ===  Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache);
-		$this->assertTrue( $supportedTypes[1] ===  Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible);
-		$this->assertTrue( $supportedTypes[2] ===  Tx_Extracache_Domain_Model_Argument::TYPE_whitelist);
+		$this->assertEquals(4, count($supportedTypes));
+		$this->assertEquals(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache, $supportedTypes[0]);
+		$this->assertEquals(Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, $supportedTypes[1]);
+		$this->assertEquals(Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, $supportedTypes[2]);
+		$this->assertEquals(Tx_Extracache_Domain_Model_Argument::TYPE_frontendConfig, $supportedTypes[3]);
 	}
 }

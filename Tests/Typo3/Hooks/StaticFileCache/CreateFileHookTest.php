@@ -207,6 +207,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->frontend->id = 12345;
 		$this->frontend->type = 23456;
 		$this->frontend->config = $config;
+		$this->frontend->rootLine[0]['uid'] = 34567;
 		$parameters = array('TSFE' => $this->frontend);
 
 		$content = $this->createFileHook->process($parameters, $this->staticFileCache);
@@ -218,6 +219,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->assertEquals(12345, $pageInformation['id']);
 		$this->assertEquals(23456, $pageInformation['type']);
+		$this->assertEquals(34567, $pageInformation['firstRootlineId']);
 		$this->assertEquals($config, $pageInformation['config']);
 		$this->assertEquals(array(), $pageInformation['GET']);
 	}
@@ -233,6 +235,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->frontend->id = 12345;
 		$this->frontend->type = 23456;
 		$this->frontend->config = $config;
+		$this->frontend->rootLine[0]['uid'] = 34567;
 		$parameters = array('TSFE' => $this->frontend);
 
 		$content = $this->createFileHook->process($parameters, $this->staticFileCache);
@@ -244,6 +247,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->assertEquals(12345, $pageInformation['id']);
 		$this->assertEquals(23456, $pageInformation['type']);
+		$this->assertEquals(34567, $pageInformation['firstRootlineId']);
 		$this->assertEquals($config, $pageInformation['config']);
 		$this->assertEquals(array('whitelist' => 1), $pageInformation['GET']);
 	}

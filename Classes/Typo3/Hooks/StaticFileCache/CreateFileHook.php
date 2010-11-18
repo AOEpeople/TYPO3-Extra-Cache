@@ -89,7 +89,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			),
 			'GET' => $this->getWhiteListedArguments(),
 			'isAnonymous' => $this->isAnonymous($frontend),
-			'firstRootlineId' => $frontend->rootLine[0]['uid'],
+			'firstRootlineId' => (isset($frontend->rootLine[0]['uid']) ? $frontend->rootLine[0]['uid'] : NULL),
 		);
 
 		$event = $this->getNewEvent(self::EVENT_Process, $pageInformation, $parent, $frontend);
