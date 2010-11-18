@@ -44,9 +44,11 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	 * @see tslib_fe::getFromCache
 	 */
 	public function ignoreExistingCache(array $parameters, tslib_fe $parent) {
+			// This modification triggers invalidating the TYPO3 Cache and recaching:
 		if($this->isProcessingDirtyPages()) {
 			$parent->all = '';
 		}
+			// This modification just disables reading from and writing to the cache:
 		if ($this->isBackendUserActive()) {
 			$parameters['disableAcquireCacheData'] = TRUE;
 			$parent->no_cache = TRUE;
