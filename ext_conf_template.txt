@@ -1,6 +1,3 @@
-# cat=basic; type=boolean; label= useCrawlerDirectUrlRequests: Use the makeDirectRequest feature of the crawler to perform URL requests
-useCrawlerDirectUrlRequests = 1
-
 # cat=basic; type=input; label= path to cache for nc_staticFileCache
 path_StaticFileCache = typo3temp/tx_ncstaticfilecache/
 
