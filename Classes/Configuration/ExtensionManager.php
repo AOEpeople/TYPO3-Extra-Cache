@@ -38,13 +38,13 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	/**
 	 * @return boolean
 	 */
-	public function isStaticCacheEnabled() {
-		return ( bool ) $this->get ( 'enableStaticCacheManager' );
+	public function isDevelopmentContextSet() {
+		return (boolean) $this->get('developmentContext');
 	}
 	/**
 	 * @return boolean
 	 */
-	public function developmentContextIsSet() {
-		return (boolean) $this->get('developmentContext');
+	public function isStaticCacheEnabled() {
+		return ( bool ) $this->get ( 'enableStaticCacheManager' );
 	}
 }

@@ -75,7 +75,7 @@ class Tx_Extracache_System_LoggingEventHandler implements t3lib_Singleton {
 	 */
 	private function handle(Tx_Extracache_System_Event_Events_Event $event, $severity) {
 		$message = $this->getMessage($event);
-		if ($message !== NULL && ($this->getExtensionManager()->developmentContextIsSet() === TRUE || $severity >= self::LOG_WARNING)) {
+		if ($message !== NULL && ($this->getExtensionManager()->isDevelopmentContextSet() === TRUE || $severity >= self::LOG_WARNING)) {
 			$this->logMessage($message, $severity);
 		}
 	}

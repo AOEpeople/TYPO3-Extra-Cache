@@ -83,7 +83,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	public function areExceptionsCaught() {
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will ( $this->throwException(new Exception('') ) );
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue(FALSE));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue(FALSE));
 
 		$this->dispatcher->dispatch();
 

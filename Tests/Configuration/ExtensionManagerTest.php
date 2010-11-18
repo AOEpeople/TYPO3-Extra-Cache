@@ -57,11 +57,11 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$this->assertEquals($this->extensionManager->get('path_StaticFileCache'), '/test_dir/dir2/');
 	}
 	/**
-	 * Test method developmentContextIsSet
+	 * Test method isDevelopmentContextSet
 	 * @test
 	 */
-	public function developmentContextIsSet() {
-		$this->assertEquals($this->extensionManager->developmentContextIsSet(), FALSE);
+	public function isDevelopmentContextSet() {
+		$this->assertEquals($this->extensionManager->isDevelopmentContextSet(), FALSE);
 	}
 	/**
 	 * Test method isStaticCacheEnabled

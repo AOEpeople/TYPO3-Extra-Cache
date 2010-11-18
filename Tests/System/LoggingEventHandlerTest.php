@@ -58,7 +58,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	public function logFatalError() {
 		// message will every time be logged (it doesn't matter if developmentContext is TRUE or FALSE)
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( FALSE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( FALSE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logFatalError( $event );
 		$this->assertTrue( count($this->messages) === 1 );
@@ -72,7 +72,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	public function logInfo() {
 		// message will not be logged
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( FALSE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( FALSE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logInfo( $event );
 		$this->assertTrue( count($this->messages) === 0 );
@@ -80,7 +80,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 		// message will be logged
 		$this->setUp();
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( TRUE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logInfo( $event );
 		$this->assertTrue( count($this->messages) === 1 );
@@ -94,7 +94,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	public function logNotice() {
 		// message will not be logged
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( FALSE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( FALSE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logNotice( $event );
 		$this->assertTrue( count($this->messages) === 0 );
@@ -102,7 +102,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 		// message will be logged
 		$this->setUp();
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( TRUE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logNotice( $event );
 		$this->assertTrue( count($this->messages) === 1 );
@@ -116,7 +116,7 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	public function logWarning() {
 		// message will every time be logged (it doesn't matter if developmentContext is TRUE or FALSE)
 		$message = 'test-message';
-		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( FALSE ));
+		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue( FALSE ));
 		$event = $this->createSimpleEvent( $message );
 		$this->loggingEventHandler->logWarning( $event );
 		$this->assertTrue( count($this->messages) === 1 );
