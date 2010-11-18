@@ -77,6 +77,8 @@ final class Bootstrap {
 
 		// register hook to disable caching for faulty pages (e.g. if templaVoila could not render page):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/PostProcessContentHook.php:&Tx_Extracache_Typo3_Hooks_PostProcessContentHook->disableCachingOnFaultyPages';
+		// Register hook to store the template page id in TSFE used for TypoScript caching:
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/PostProcessContentHook.php:&Tx_Extracache_Typo3_Hooks_PostProcessContentHook->addTemplatePageId';
 
 		// Sends HTTP headers for debuging caching situations (if developmentContext is set)
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/SendCacheDebugHeader.php:&Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';
