@@ -35,6 +35,7 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$modifiedExtConfig = unserialize($this->originalExtConfig);
 		$modifiedExtConfig['path_StaticFileCache'] = '/test_dir/dir2/';
 		$modifiedExtConfig['developmentContext'] = 0;
+		$modifiedExtConfig['enableStaticCacheManager'] = 'StaticFileCacheManager';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = serialize($modifiedExtConfig);
 
 		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
@@ -61,5 +62,12 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 	 */
 	public function developmentContextIsSet() {
 		$this->assertEquals($this->extensionManager->developmentContextIsSet(), FALSE);
+	}
+	/**
+	 * Test method isStaticCacheEnabled
+	 * @test
+	 */
+	public function isStaticCacheEnabled() {
+		$this->assertEquals($this->extensionManager->isStaticCacheEnabled(), TRUE);
 	}
 }
