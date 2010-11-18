@@ -61,7 +61,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 					$parameters['cancelExecution'] = TRUE;
 				}
 			} catch (Exception $e) {
-				$message = 'Exception: ' . $exception->getMessage().' / '.$exception->getTraceAsString();
+				$message = 'Exception: ' . $e->getMessage().' / '.$e->getTraceAsString();
 				$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 			}
 		} else {
