@@ -65,6 +65,6 @@ class Tx_Extracache_Domain_Model_Argument {
 	 * @return array
 	 */
 	static public function getSupportedTypes() {
-		return array( self::TYPE_ignoreOnCreatingCache, self::TYPE_unprocessible, self::TYPE_whitelist);
+		return array( self::TYPE_ignoreOnCreatingCache, self::TYPE_unprocessible, self::TYPE_whitelist, self::TYPE_frontendConfig);
 	}
 }
