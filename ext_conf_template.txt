@@ -7,5 +7,5 @@ enableStaticCacheManager = StaticFileCacheManager
 # cat=basic; type=string; label=Table of the static cache
 fileTable = tx_ncstaticfilecache_file
 
-# cat=basic type=boolean; label=developmentContext: Defines whether to throw exceptions inside the staticCacheManager and logging some debug-data
+# cat=basic; type=boolean; label=developmentContext: Defines whether to throw exceptions inside the staticCacheManager and logging some debug-data
 developmentContext = 0
