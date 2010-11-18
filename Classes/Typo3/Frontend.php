@@ -240,6 +240,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	protected function getArgumentRepository() {
-		$this->getConfigurationManager()->getArgumentRepository();
+		return t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->getArgumentRepository();
 	}
 }
