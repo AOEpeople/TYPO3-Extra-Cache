@@ -65,12 +65,56 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 		$content = $this->getCacheManager()->loadCachedRepresentation ();
 
 		if ($content !== false) {
+			$this->initializeFrontEnd($content);
+
+			// @todo eft requires the frontend user to be registered:
+			// tx_eft_system_IoC_manager::getSingleton ( 'tx_eft_system_registry' )->set ( 'frontendUser', $frontendUser );
+
 			$event = $this->triggerEventOnStaticCacheResponsePostProcess( $content );
 			$this->sendStaticCacheHttpHeader ();
 			$this->output( $event->getResponse()->getContent() );
 			$this->halt();
 		}
 	}
+
+	/**
+	 * Initializes a light-weight front-end object (TSFE).
+	 * The UID and typeNum of the page is determined from the first line of the cached data.
+	 *
+	 * @param	string		$content The content to be used
+	 * @return	void
+	 */
+	protected function initializeFrontEnd($content) {
+		$pageInformation = $this->getCacheManager()->getPageInformationFromCachedRepresentation($content);
+
+		// Re-publish $_GET information if found in cached representation:
+		if (isset($pageInformation['GET'])) {
+			$_GET = array_merge($_GET, $pageInformation['GET']);
+		}
+
+		/** @var $frontend Tx_Extracache_Typo3_Frontend */
+		$frontend = t3lib_div::makeInstance(
+			'Tx_Extracache_Typo3_Frontend',
+			$pageInformation['id'],
+			$pageInformation['type'],
+			$pageInformation['MP']
+		);
+
+		// Restore only really necessary TypoScript config section of that page:
+		if (isset($pageInformation['config'])) {
+			$frontend->mergeConfiguration($pageInformation['config']);
+		}
+			// Sets the first rootline page id:
+		if (isset($pageInformation['firstRootlineId'])) {
+			$frontend->setFirstRootlineId($pageInformation['firstRootlineId']);
+		}
+
+		$frontend->fe_user = $this->getCacheManager()->getFrontendUser();
+		$frontend->finalizeFrontendUser ();
+
+		$GLOBALS['TSFE'] = $frontend;
+	}
+
 	/**
 	 * @return	Tx_Extracache_System_StaticCache_AbstractManager
 	 */

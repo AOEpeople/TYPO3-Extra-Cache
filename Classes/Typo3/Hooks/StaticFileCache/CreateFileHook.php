@@ -83,20 +83,20 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 		$pageInformation = array(
 			'id' => $frontend->id,
 			'type' => $frontend->type,
+			'MP' => $frontend->MP,
 			'config' => array(
 				'config' => $frontend->config['config'],
-				// Rootline is currently not required:
-				// 'rootline' => $frontend->config['rootLine'],
 			),
 			'GET' => $this->getWhiteListedArguments(),
 			'isAnonymous' => $this->isAnonymous($frontend),
+			'firstRootlineId' => $frontend->rootLine[0]['uid'],
 		);
 
 		$event = $this->getNewEvent(self::EVENT_Process, $pageInformation, $parent, $frontend);
 		$this->getEventDispatcher()->triggerEvent($event);
 
 		$content = Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationPrefix . serialize($pageInformation) .
-				Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix . LF . $parameters['content'];
+				Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix . "\n" . $parameters['content'];
 
 		return $content;
 	}

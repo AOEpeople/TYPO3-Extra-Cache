@@ -17,6 +17,7 @@ class Tx_Extracache_Domain_Model_Argument {
 	const TYPE_ignoreOnCreatingCache = 'ignoreOnCreatingCache';
 	const TYPE_unprocessible = 'unprocessible';
 	const TYPE_whitelist = 'whitelist';
+	const TYPE_frontendConfig = 'frontendConfig';
 
 	/**
 	 * @var string
