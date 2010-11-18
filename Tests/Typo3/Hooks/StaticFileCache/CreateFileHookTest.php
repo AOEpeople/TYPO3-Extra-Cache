@@ -48,6 +48,11 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	protected $eventDispatcher;
 
 	/**
+	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 */
+	protected $typoScriptCache;
+
+	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
@@ -63,15 +68,18 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 
+		$this->typoScriptCache = $this->getMock('Tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
+
 		$this->eventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array('triggerEvent'));
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 
 		$this->createFileHook = $this->getMock(
 			'Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
-			array('getArgumentRepository', 'getFrontendUserGroupList', 'getEventDispatcher', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
+			array('getArgumentRepository', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
 		$this->createFileHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
+		$this->createFileHook->expects($this->any())->method('getTypoScriptCache')->will($this->returnValue($this->typoScriptCache));
 	}
 
 	/**
@@ -202,6 +210,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	public function doesPageInformationAppearInCachedContent() {
 		$this->createFileHook->expects($this->once())->method('getGetArguments')->will($this->returnValue(array('argumentTest' => 1)));
+		$this->typoScriptCache->expects($this->once())->method('getTemplatePageId')->will($this->returnValue(987));
 
 		$config = array('config' => array('configTest' => 1));
 		$this->frontend->id = 12345;
@@ -220,6 +229,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->assertEquals(12345, $pageInformation['id']);
 		$this->assertEquals(23456, $pageInformation['type']);
 		$this->assertEquals(34567, $pageInformation['firstRootlineId']);
+		$this->assertEquals(987, $pageInformation['templatePageId']);
 		$this->assertEquals($config, $pageInformation['config']);
 		$this->assertEquals(array(), $pageInformation['GET']);
 	}
@@ -230,6 +240,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	public function doWhitelistArgumentsAppearInCachedContent() {
 		$this->createFileHook->expects($this->once())->method('getGetArguments')->will($this->returnValue(array('argumentTest' => 1, 'whitelist' => 1)));
+		$this->typoScriptCache->expects($this->once())->method('getTemplatePageId')->will($this->returnValue(987));
 
 		$config = array('config' => array('configTest' => 1));
 		$this->frontend->id = 12345;
@@ -248,6 +259,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->assertEquals(12345, $pageInformation['id']);
 		$this->assertEquals(23456, $pageInformation['type']);
 		$this->assertEquals(34567, $pageInformation['firstRootlineId']);
+		$this->assertEquals(987, $pageInformation['templatePageId']);
 		$this->assertEquals($config, $pageInformation['config']);
 		$this->assertEquals(array('whitelist' => 1), $pageInformation['GET']);
 	}
@@ -259,6 +271,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	public function isEventTriggeredOnProcessingCachedContent() {
 		$parameters = array('TSFE' => $this->frontend);
 		$this->createFileHook->process($parameters, $this->staticFileCache);
+		$this->typoScriptCache->expects($this->any())->method('getTemplatePageId');
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);

@@ -15,8 +15,13 @@
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesHook {
+class Tx_Extracache_Typo3_Hooks_PostProcessContentHook {
 	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
+
+	/**
+	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 */
+	protected $typoScriptCache;
 
 	/**
 	 * Disables the caching on faulty pages
@@ -39,5 +44,28 @@ class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesHook {
 	 */
 	private function hasTemplaVoilaError(tslib_fe $tsfe) {
 		return (stripos($tsfe->content, self::ERROR_TemplaVoila) !== FALSE);
+	}
+
+	/**
+	 * Adds the TypoScript template page id to the cached config array of TSFE.
+	 *
+	 * @param array $parameters
+	 * @param tslib_fe $parent
+	 * @return void
+	 */
+	public function addTemplatePageId(array $parameters, tslib_fe $parent) {
+		$parent->config[Tx_Extracache_Typo3_TypoScriptCache::CONFIG_Key] = $this->getTypoScriptCache()->getTemplatePageId($parent);
+	}
+
+	/**
+	 * Gets an instance of the TypoScript cache.
+	 *
+	 * @return Tx_Extracache_Typo3_TypoScriptCache
+	 */
+	protected function getTypoScriptCache() {
+		if($this->typoScriptCache === NULL) {
+			$this->typoScriptCache = t3lib_div::makeInstance('Tx_Extracache_Typo3_TypoScriptCache');
+		}
+		return $this->typoScriptCache;
 	}
 }

@@ -76,7 +76,7 @@ final class Bootstrap {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&Tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
 		// register hook to disable caching for faulty pages (e.g. if templaVoila could not render page):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/AvoidFaultyPagesHook.php:&Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesHook->disableCachingOnFaultyPages';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/PostProcessContentHook.php:&Tx_Extracache_Typo3_Hooks_PostProcessContentHook->disableCachingOnFaultyPages';
 
 		// Sends HTTP headers for debuging caching situations (if developmentContext is set)
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/SendCacheDebugHeader.php:&Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';

@@ -51,7 +51,12 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	/**
 	 * @var integer
 	 */
-	protected $firstRootlineId = 0;
+	protected $firstRootlineId;
+
+	/**
+	 * @var integer
+	 */
+	protected $templatePageId;
 
 	/**
 	 * Constructs this object as a light-weight TSFE.
@@ -103,6 +108,25 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 */
 	public function getFirstRootlineId() {
 		return $this->firstRootlineId;
+	}
+
+	/**
+	 * Sets the template page id.
+	 *
+	 * @param integer $templatePageId
+	 * @return void
+	 */
+	public function setTemplatePageId($templatePageId) {
+		$this->templatePageId = $templatePageId;
+	}
+
+	/**
+	 * Gets the template page id.
+	 *
+	 * @return integer
+	 */
+	public function getTemplatePageId() {
+		return $this->templatePageId;
 	}
 
 	/**
