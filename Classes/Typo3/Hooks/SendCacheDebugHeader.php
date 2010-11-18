@@ -31,7 +31,7 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	 * @return	void
 	 */
 	public function sendCacheDebugHeader(tslib_fe $parent) {
-		if ((boolean) $this->getExtensionManager()->get('developmentContext') === TRUE) {
+		if ($this->getExtensionManager()->developmentContextIsSet()) {
 			$cacheDebug = array();
 
 			if ($parent->isINTincScript()) {

@@ -54,7 +54,7 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 	 * @test
 	 */
 	public function dontSendHttpRequestHeader() {
-		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue( 0 ));
+		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( FALSE ));
 		$this->hook->expects($this->never())->method('sendHttpRequestHeader');
 		$this->tsfeMock->expects($this->never())->method('isINTincScript');
 		$this->tsfeMock->expects($this->never())->method('isEXTincScript');
@@ -65,14 +65,14 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 	 */
 	public function sendHttpRequestHeader() {
 		// page contains INTincScript
-		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue( 1 ));
+		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
 		$this->hook->expects($this->once())->method('sendHttpRequestHeader')->with( array('INT') );
 		$this->tsfeMock->expects($this->once())->method('isINTincScript')->will($this->returnValue( TRUE ));
 		$this->hook->sendCacheDebugHeader($this->tsfeMock);
 
 		// page contains EXTincScript
 		$this->setUp();
-		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue( 1 ));
+		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
 		$this->hook->expects($this->once())->method('sendHttpRequestHeader')->with( array('EXT') );
 		$this->tsfeMock->expects($this->once())->method('isEXTincScript')->will($this->returnValue( TRUE ));
 		$this->hook->sendCacheDebugHeader($this->tsfeMock);
@@ -80,14 +80,14 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 		// no-cache-flag is set
 		$this->setUp();
 		$this->tsfeMock->no_cache = 1;
-		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue( 1 ));
+		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
 		$this->hook->expects($this->once())->method('sendHttpRequestHeader')->with( array('no_cache') );
 		$this->hook->sendCacheDebugHeader($this->tsfeMock);
 
 		// cacheContentFlag is set
 		$this->setUp();
 		$this->tsfeMock->cacheContentFlag = 1;
-		$this->extensionManager->expects($this->once())->method('get')->with('developmentContext')->will($this->returnValue( 1 ));
+		$this->extensionManager->expects($this->once())->method('developmentContextIsSet')->will($this->returnValue( TRUE ));
 		$this->hook->expects($this->once())->method('sendHttpRequestHeader')->with( array('cached') );
 		$this->hook->sendCacheDebugHeader($this->tsfeMock);
 	}

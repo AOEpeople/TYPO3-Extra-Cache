@@ -34,10 +34,18 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$this->originalExtConfig = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'];
 		$modifiedExtConfig = unserialize($this->originalExtConfig);
 		$modifiedExtConfig['path_StaticFileCache'] = '/test_dir/dir2/';
+		$modifiedExtConfig['developmentContext'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = serialize($modifiedExtConfig);
 
 		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
 		$this->extensionManager = new Tx_Extracache_Configuration_ExtensionManager();
+	}
+	/**
+	 * Cleans up the environment after running a test.
+	 */
+	protected function tearDown() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = $this->originalExtConfig;
+		unset ( $this->extensionManager );
 	}
 	
 	/**
@@ -47,12 +55,11 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 	public function get() {
 		$this->assertEquals($this->extensionManager->get('path_StaticFileCache'), '/test_dir/dir2/');
 	}
-	
 	/**
-	 * Cleans up the environment after running a test.
+	 * Test method developmentContextIsSet
+	 * @test
 	 */
-	protected function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = $this->originalExtConfig;
-		unset ( $this->extensionManager );
+	public function developmentContextIsSet() {
+		$this->assertEquals($this->extensionManager->developmentContextIsSet(), FALSE);
 	}
 }

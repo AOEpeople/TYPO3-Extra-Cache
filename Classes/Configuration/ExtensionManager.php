@@ -35,4 +35,10 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	public function get($key) {
 		return $this->configuration[$key];
 	}
+	/**
+	 * @return boolean
+	 */
+	public function developmentContextIsSet() {
+		return (boolean) $this->get('developmentContext');
+	}
 }
