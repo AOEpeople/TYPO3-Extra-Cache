@@ -186,7 +186,7 @@ class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 *
 	 * @return	void
 	 */
-	private function sendStaticCacheHttpHeader() {
+	protected function sendStaticCacheHttpHeader() {
 		header ( 'X-StaticCache: 1' );
 	}
 	/**

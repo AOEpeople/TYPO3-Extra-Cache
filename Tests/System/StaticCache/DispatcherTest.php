@@ -55,12 +55,13 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 
 		$this->dispatcher = $this->getMock(
 			'Tx_Extracache_System_StaticCache_Dispatcher',
-			array('isStaticCacheEnabled', 'getCacheManager', 'getExtensionManager', 'getEventDispatcher', 'output', 'halt')
+			array('isStaticCacheEnabled', 'getCacheManager', 'getExtensionManager', 'getEventDispatcher', 'sendStaticCacheHttpHeader', 'output', 'halt')
 		);
 		$this->dispatcher->expects($this->any())->method('halt');
 		$this->dispatcher->expects($this->any())->method('getCacheManager')->will($this->returnValue($this->cacheManager));
 		$this->dispatcher->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
 		$this->dispatcher->expects($this->any())->method('getExtensionManager')->will($this->returnValue($this->extensionManager));
+		$this->dispatcher->expects($this->any())->method('sendStaticCacheHttpHeader');
 	}
 
 	/**
@@ -148,6 +149,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(TRUE));
 		$this->dispatcher->expects($this->once())->method('output')->with($testContent);
 		$this->dispatcher->expects($this->once())->method('halt');
+		$this->dispatcher->expects($this->once())->method('sendStaticCacheHttpHeader');
 		$this->cacheManager->expects($this->any())->method('isRequestProcessible')->will($this->returnValue(TRUE));
 		$this->cacheManager->expects($this->once())->method('logForeignArguments');
 		$this->cacheManager->expects($this->once())->method('loadCachedRepresentation')->will($this->returnValue($testContent));

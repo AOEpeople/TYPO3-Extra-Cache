@@ -125,10 +125,11 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 				$this->fe_user->fetchSessionData();
 			}
 				// Sets the group list of the logged in(!) frontend user:
-			if ($this->fe_user->isValidFrontendUser()) {
+			if (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid']))
+			if ($this->isValidFrontendUser()) {
 				$this->loginUser = 1;
 			}
-			$this->gr_list = $this->fe_user->getGroupList();
+			$this->gr_list = $this->getFrontendUserGroupList();
 		} else {
 			$this->initFEuser();
 			$this->initUserGroups();
@@ -240,6 +241,35 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	protected function getArgumentRepository() {
-		return t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->getArgumentRepository();
+		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
+		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+		return $configurationManager->getArgumentRepository();
+	}
+
+	/**
+	 * Determines whether the current frontend user is valid.
+	 *
+	 * @return boolean
+	 */
+	protected function isValidFrontendUser() {
+		return (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid']));
+	}
+
+	/**
+	 * Gets the frontend user group list.
+	 * CAVE: The anonymous groups (0,-1) and (0,-2) are already prepended!
+	 *
+	 * @return string
+	 */
+	protected function getFrontendUserGroupList() {
+		if ($this->isValidFrontendUser()) {
+			$frontendUserGroups = array_unique($this->fe_user->groupData['uid']);
+			sort($frontendUserGroups);
+			$frontendUserGroupList = '0,-2,' . implode(',', $frontendUserGroups);
+		} else {
+			$frontendUserGroupList = '0,-1';
+		}
+
+		return $frontendUserGroupList;
 	}
 }
