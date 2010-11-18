@@ -39,7 +39,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 		if($this->getEventRepository()->hasEvent($eventKey) === FALSE) {
 			throw new RuntimeException('event '.$eventKey.' is unknown!');
 		}
-		$this->processEvent($eventKey);
+		$this->processCacheEvent($eventKey);
 	}
 
 	/**
@@ -88,13 +88,16 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	/**
 	 * @param	string $eventKey
 	 */
-	private function processEvent($eventKey) {
+	private function processCacheEvent($eventKey) {
+		$message = 'start event "onProcessCacheEvent" with cacheEvent "'.$eventKey.'"';
+		$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventInfo', $this, array ('message' => $message ) );
+
 		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent($eventKey) as $page) {
 			try {
-				$this->processPage( $page, $eventKey );
+				$this->processPageWithCacheEvent( $page, $eventKey );
 			} catch (Exception $e) {
-				$message = 'Exception on processPage "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
-				$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
+				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
+				$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventError', $this, array ('message' => $message ) );
 			}
 		}
 	}
@@ -102,7 +105,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 * @param array $page
 	 * @param string $eventKey
 	 */
-	private function processPage(array $page, $eventKey) {
+	private function processPageWithCacheEvent(array $page, $eventKey) {
 		$cacheCleaner = $this->createCacheCleaner();
 
 		$strategies = explode(',', $page['tx_extracache_cleanerstrategies']);

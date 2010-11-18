@@ -93,7 +93,8 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'hasStrategy' )->with('test_strategy')->will ( $this->returnValue ( TRUE ) );
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'getStrategy' )->with('test_strategy')->will ( $this->returnValue ( $mockedCleanerStrategy ) );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with($mockedCleanerStrategy,11);
-		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' );		
+		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' );
+		$this->mockedEventDispatcher->expects ( $this->once () )->method ( 'triggerEvent' );
 		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 	/**
@@ -111,7 +112,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'getStrategy' )->with('test_strategy')->will ( $this->returnValue ( $mockedCleanerStrategy ) );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with($mockedCleanerStrategy,11);
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' )->will ( $this->throwException(new Exception('') ) );
-		$this->mockedEventDispatcher->expects ( $this->once () )->method ( 'triggerEvent' );
+		$this->mockedEventDispatcher->expects ( $this->exactly (2) )->method ( 'triggerEvent' );
 		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 	/**
