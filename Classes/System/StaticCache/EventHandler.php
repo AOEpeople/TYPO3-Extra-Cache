@@ -9,7 +9,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath ( 'extracache' ) . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
+require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
 
 /**
  * @package extracache

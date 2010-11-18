@@ -10,6 +10,7 @@
 
 /**
  * Hook to post-process entries in cache_pages to add the current group list.
+ * This is needed if we want to delete the TYPO3-cache for a certain fe-group-list
  * 
  * @package extracache
  * @subpackage Typo3_Hooks

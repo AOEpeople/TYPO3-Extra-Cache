@@ -264,21 +264,19 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 * creates the test-database and insert records
 	 */
 	private function createTestDB() {
-		$PATH_tx_extracache = t3lib_extMgm::extPath ( 'extracache' );
-		
 		global $TYPO3_DB;
 
 		$this->createDatabase();
 		// create tables 'pages' and 'cache_pages' manually (because it's faster than import the hole cms-extension)
 		$db = $this->useTestDatabase();
 
-		$db->admin_query( t3lib_div::getUrl( $PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
-		$db->admin_query( t3lib_div::getUrl( $PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
+		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
+		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
 		
 		$this->importStdDB();
 		$this->importExtensions(array('cms', 'realurl', 'nc_staticfilecache', 'extracache'));
 		$this->initializeCommonExtensions();
-		$this->importDataSet($PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/TestRecordsForUnittestCleanerInstruction.xml');
+		$this->importDataSet(PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/TestRecordsForUnittestCleanerInstruction.xml');
 
 		/********** get UID's of records of certain tables *****/
 		$this->pageIds = array();

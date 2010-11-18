@@ -71,20 +71,18 @@ class Tx_Extracache_System_Persistence_Typo3DbBackendTest extends Tx_Extracache_
 	 * creates the test-database and insert records
 	 */
 	private function createTestDB() {
-		$PATH_tx_extracache = t3lib_extMgm::extPath ( 'extracache' );
-		
 		global $TYPO3_DB;
 
 		$this->createDatabase();
 		// create table 'pages' manually (because it's faster than import the hole cms-extension)
 		$db = $this->useTestDatabase();
 
-		$db->admin_query( t3lib_div::getUrl( $PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
+		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
 
 		$this->importStdDB();
 		$this->importExtensions(array('extracache'));
 		$this->initializeCommonExtensions();
-		$this->importDataSet($PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/TestRecordsForUnittestTypo3DbBackend.xml');
+		$this->importDataSet(PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/TestRecordsForUnittestTypo3DbBackend.xml');
 
 		/********** get UID's of records of certain tables *****/
 		$this->pageIds = array();

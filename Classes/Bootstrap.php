@@ -70,7 +70,7 @@ final class Bootstrap {
 		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:DirtyPagesHook->process';
 
 		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = t3lib_extMgm::extPath('extracache') . 'Typo3/Hooks/FileReferenceModification.php:&Tx_Extracache_Typo3_Hooks_FileReferenceModification';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Typo3/Hooks/FileReferenceModification.php:&Tx_Extracache_Typo3_Hooks_FileReferenceModification';
 
 		// Register pre-rendering cache to deliver statically published content:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&Tx_Extracache_System_StaticCache_Dispatcher->dispatch';
@@ -92,7 +92,7 @@ final class Bootstrap {
 	 */
 	static protected function initializeXClasses() {
 		// Define XCLASS for nc_staticfilecache info module:
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = t3lib_extMgm::extPath('extracache') . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
 	}
 
 	/**

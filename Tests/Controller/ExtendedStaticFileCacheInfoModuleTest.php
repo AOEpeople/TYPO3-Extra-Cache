@@ -9,7 +9,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('extracache') . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php');
+require_once (PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php');
 require_once dirname ( __FILE__ ) . '/../AbstractTestcase.php';
 
 /**
