@@ -84,6 +84,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	 * @test
 	 */
 	public function canHandleEvent() {
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'knownEvent');
 		$mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 		$pagesWithCacheCleanerStrategy = array();
 		$pagesWithCacheCleanerStrategy[] = array('uid' => '11', 'title' => 'testPage', 'tx_extracache_cleanerstrategies' => 'test_strategy' );
@@ -93,13 +94,14 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'getStrategy' )->with('test_strategy')->will ( $this->returnValue ( $mockedCleanerStrategy ) );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with($mockedCleanerStrategy,11);
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' );		
-		$this->cacheEventHandler->handleEvent('knownEvent');
+		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 	/**
 	 * test method handleEvent
 	 * @test
 	 */
 	public function canHandleEventWithExceptionWhileProcessing() {
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'knownEvent');
 		$mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 		$pagesWithCacheCleanerStrategy = array();
 		$pagesWithCacheCleanerStrategy[] = array('uid' => '11', 'title' => 'testPage', 'tx_extracache_cleanerstrategies' => 'test_strategy' );
@@ -110,7 +112,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with($mockedCleanerStrategy,11);
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' )->will ( $this->throwException(new Exception('') ) );
 		$this->mockedEventDispatcher->expects ( $this->once () )->method ( 'triggerEvent' );
-		$this->cacheEventHandler->handleEvent('knownEvent');
+		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 	/**
 	 * test method handleEvent
@@ -118,7 +120,8 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	 * @expectedException RuntimeException
 	 */
 	public function canNotHandleEvent() {
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'unknownEvent');
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
-		$this->cacheEventHandler->handleEvent('unknownEvent');
+		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 }

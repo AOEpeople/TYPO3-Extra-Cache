@@ -31,10 +31,11 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	private $typo3DbBackend;
 
 	/**
-	 * @param	string $eventKey
+	 * @param	Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event
 	 * @throws	RuntimeException
 	 */
-	public function handleEvent($eventKey) {
+	public function handleEventOnProcessCacheEvent(Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event) {
+		$eventKey = $event->getCacheEvent();
 		if($this->getEventRepository()->hasEvent($eventKey) === FALSE) {
 			throw new RuntimeException('event '.$eventKey.' is unknown!');
 		}

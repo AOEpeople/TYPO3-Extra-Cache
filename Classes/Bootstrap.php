@@ -196,6 +196,7 @@ final class Bootstrap {
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
 	 */
 	static protected function addEventHandlerForStaticCache(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
+		$dispatcher->addLazyLoadingHandler('onProcessCacheEvent', 'Tx_Extracache_Domain_Service_CacheEventHandler', 'handleEventOnProcessCacheEvent');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheRequest', 'Tx_Extracache_System_StaticCache_EventHandler', 'handleEventOnStaticCacheRequest');
 	}
 }
