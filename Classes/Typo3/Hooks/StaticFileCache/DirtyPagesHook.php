@@ -145,11 +145,9 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 		// @todo Integrate logic for using the Caching Framework on Core Caches
 		$cacheKey = $pageId.'_'.$groupList;
 		if(!in_array($cacheKey, $this->removedCaches)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				'cache_pages',
-				Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($groupList, 'cache_pages') .
-				' AND page_id=' . intval($pageId)
-			);
+			$sqlFrom = 'cache_pages';
+			$sqlWhere = Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList . '=' . $this->getTypo3DbBackend()->fullQuoteStr($groupList, 'cache_pages') . ' AND page_id=' . intval($pageId);
+			$this->getTypo3DbBackend()->deleteQuery($sqlFrom, $sqlWhere);
 			$this->removedCaches[] = $cacheKey;
 		}
 	}

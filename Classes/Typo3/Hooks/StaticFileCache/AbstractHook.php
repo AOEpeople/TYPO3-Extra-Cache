@@ -19,32 +19,31 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	const FIELD_GroupList = 'tx_extracache_grouplist';
 
 	/**
-	 * @var Tx_Extracache_Configuration_ExtensionManager
-	 */
-	protected $extensionManager;
-
-	/**
 	 * @var Tx_Extracache_Configuration_ConfigurationManager
 	 */
-	protected $configurationManager;
+	private $configurationManager;
 
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
-	protected $eventDispatcher;
+	private $eventDispatcher;
+	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private $extensionManager;
+	/**
+	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
+	 */
+	private $typo3DbBackend;
 
 	/**
-	 * Gets an instance of the extension configuration manager.
+	 * Gets an instance of the argument repository.
 	 *
-	 * @return Tx_Extracache_Configuration_ExtensionManager
+	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
-	protected function getExtensionManager() {
-		if ($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
-		}
-		return $this->extensionManager;
+	protected function getArgumentRepository() {
+		$this->getConfigurationManager()->getArgumentRepository();
 	}
-
 	/**
 	 * Gets an instance of the configuration manager.
 	 *
@@ -56,16 +55,6 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 		}
 		return $this->configurationManager;
 	}
-
-	/**
-	 * Gets an instance of the argument repository.
-	 *
-	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
-	 */
-	protected function getArgumentRepository() {
-		$this->getConfigurationManager()->getArgumentRepository();
-	}
-
 	/**
 	 * @return Tx_Extracache_System_Event_Dispatcher
 	 */
@@ -75,7 +64,17 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 		}
 		return $this->eventDispatcher;
 	}
-
+	/**
+	 * Gets an instance of the extension configuration manager.
+	 *
+	 * @return Tx_Extracache_Configuration_ExtensionManager
+	 */
+	protected function getExtensionManager() {
+		if ($this->extensionManager === NULL) {
+			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+		}
+		return $this->extensionManager;
+	}
 	/**
 	 * Gets a new event.
 	 *
@@ -90,6 +89,15 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 			'Tx_Extracache_System_Event_Events_EventOnStaticFileCache',
 			$name, $this, $information, $parent, $frontend
 		);
+	}
+	/**
+	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend
+	 */
+	protected function getTypo3DbBackend() {
+		if($this->typo3DbBackend === NULL) {
+			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+		}
+		return $this->typo3DbBackend;
 	}
 
 	/**
