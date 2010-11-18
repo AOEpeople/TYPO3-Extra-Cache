@@ -45,6 +45,13 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 		$this->getTypo3Db()->exec_DELETEquery ( $sqlFrom, $sqlWhere );
 	}
 	/**
+	 * @param string $table
+	 * @param array $values
+	 */
+	public function insertQuery($table, array $values) {
+		$this->getTypo3Db()->exec_INSERTquery($table, $values);
+	}
+	/**
 	 * @param string $sqlFrom
 	 * @param string $sqlWhere
 	 * @param array $modifiedValues
