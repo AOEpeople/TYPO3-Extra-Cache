@@ -12,10 +12,12 @@
  * Hook to determine, block and re-queue modifications concerning file references.
  * This is required in combination with statically cached files.
  * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
+ * 
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_FileReferenceModification {
+class tx_Extracache_Typo3_Hooks_FileReferenceModification {
 	const TABLE_Queue = 'tx_extracache_fileremovequeue';
 
 	/**

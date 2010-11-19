@@ -11,14 +11,14 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * Test case for Tx_Extracache_System_StaticCache_Dispatcher
+ * Test case for tx_Extracache_System_StaticCache_Dispatcher
  *
  * @package extracache_tests
  * @subpackage System_StaticCache
  */
 class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * @var Tx_Extracache_System_StaticCache_Dispatcher
+	 * @var tx_Extracache_System_StaticCache_Dispatcher
 	 */
 	private $dispatcher;
 
@@ -54,7 +54,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		);
 
 		$this->dispatcher = $this->getMock(
-			'Tx_Extracache_System_StaticCache_Dispatcher',
+			'tx_Extracache_System_StaticCache_Dispatcher',
 			array('isStaticCacheEnabled', 'getCacheManager', 'getExtensionManager', 'getEventDispatcher', 'sendStaticCacheHttpHeader', 'output', 'halt')
 		);
 		$this->dispatcher->expects($this->any())->method('halt');

@@ -13,11 +13,13 @@ require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPage
 /**
  * Hook to ensure that there is no TYPO3 cached used.
  * The hook is called by the regular TYPO3 frontend object (TSFE).
+ * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
  *
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
+class tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	/**
 	 * @var t3lib_beUserAuth
 	 */
@@ -44,7 +46,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	 * @see tslib_fe::getFromCache
 	 */
 	public function ignoreExistingCache(array $parameters, tslib_fe $parent) {
-			// This modification triggers invalidating the TYPO3 Cache and recaching:
+		// This modification triggers invalidating the TYPO3 Cache and recaching:
 		if($this->isProcessingDirtyPages()) {
 			$parent->all = '';
 		}
@@ -84,7 +86,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	 * @return boolean
 	 */
 	private function isProcessingDirtyPages() {
-		$requestHeader = 'HTTP_' . str_replace('-', '_', Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header);
+		$requestHeader = 'HTTP_' . str_replace('-', '_', tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header);
 		return isset($_SERVER[$requestHeader]);
 	}
 }

@@ -13,14 +13,14 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_PostProcessContentHook
+ * Test case for tx_Extracache_Typo3_Hooks_PostProcessContentHook
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks
  */
 class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * @var Tx_Extracache_Typo3_Hooks_PostProcessContentHook
+	 * @var tx_Extracache_Typo3_Hooks_PostProcessContentHook
 	 */
 	private $hook;
 	/**
@@ -39,7 +39,7 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 	protected function setUp() {
 		$this->typoScriptCache = $this->getMock('Tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
 
-		$this->hook = $this->getMock('Tx_Extracache_Typo3_Hooks_PostProcessContentHook', array('getTypoScriptCache'));
+		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_PostProcessContentHook', array('getTypoScriptCache'));
 		$this->hook->expects($this->any())->method('getTypoScriptCache')->will($this->returnValue($this->typoScriptCache));
 
 		$this->tsfeMock = $this->getMock('tslib_fe', array(), array(), '', FALSE);
@@ -62,7 +62,7 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 	public function isNoCacheVariableSetOnTemplaVoilaError() {
 		$this->tsfeMock->no_cache = 0;
 
-		$this->tsfeMock->content = 'BEGIN ' . Tx_Extracache_Typo3_Hooks_PostProcessContentHook::ERROR_TemplaVoila . ' END';
+		$this->tsfeMock->content = 'BEGIN ' . tx_Extracache_Typo3_Hooks_PostProcessContentHook::ERROR_TemplaVoila . ' END';
 		$this->hook->disableCachingOnFaultyPages(array(), $this->tsfeMock);
 
 		$this->assertTrue((bool) $this->tsfeMock->no_cache);

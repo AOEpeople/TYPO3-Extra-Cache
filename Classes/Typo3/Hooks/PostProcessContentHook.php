@@ -12,10 +12,12 @@
  * Hook class for TYPO3 - is called before putting data into caches.
  * This hook avoids putting faulty pages (e.g. if templaVoila could not render page) into the cache.
  * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
+ * 
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_PostProcessContentHook {
+class tx_Extracache_Typo3_Hooks_PostProcessContentHook {
 	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
 
 	/**

@@ -11,10 +11,12 @@
 /**
  * Hook class for TYPO3 - Sends HTTP headers for debuging caching situations (if developmentContext is set)
  * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
+ * 
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
+class tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	const HTTP_Request_Header = 'X-TYPO3Cache';
 
 	/**
@@ -27,10 +29,11 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	 * header indicated whether *_INT, *_EXT objects are used or caching got
 	 * disabled during rendering by setting TSFE->set_no_cache().
 	 *
-	 * @param	tslib_fe		$parent The calling parent object
+	 * @param	array		$parameters Parameters delivered by the calling parent object (not used here)
+	 * @param	tslib_fe	$parent The calling parent object
 	 * @return	void
 	 */
-	public function sendCacheDebugHeader(tslib_fe $parent) {
+	public function sendCacheDebugHeader(array $parameters, tslib_fe $parent) {
 		if ($this->getExtensionManager()->isDevelopmentContextSet()) {
 			$cacheDebug = array();
 

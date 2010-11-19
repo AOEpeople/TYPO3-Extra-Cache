@@ -42,7 +42,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	protected function getArgumentRepository() {
-		$this->getConfigurationManager()->getArgumentRepository();
+		return $this->getConfigurationManager()->getArgumentRepository();
 	}
 	/**
 	 * Gets an instance of the configuration manager.

@@ -6,11 +6,18 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="pages.tx_extracache_cleanerstrategies">cache strategy</label>
-			<label index="pages.tx_extracache_events">cache event</label>
+			<label index="pages.tx_extracache_cleanerstrategies">cache strategies</label>
+			<label index="pages.tx_extracache_events">cache events</label>
 			<label index="moduleFunction.tx_extracache_modfunc1">Static Cache Files</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.name">Clean-Up: Remove files</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.description">delete old files</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pages.tx_extracache_cleanerstrategies">Cache-Strategien</label>
+			<label index="pages.tx_extracache_events">Cache-Events</label>
+			<label index="moduleFunction.tx_extracache_modfunc1">Statisch gecachte Dateien</label>
+			<label index="scheduler_task_cleanUpRemovedFiles.name">Clean-Up: Lösche Dateien</label>
+			<label index="scheduler_task_cleanUpRemovedFiles.description">Lösche alte Dateien</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -10,10 +10,12 @@
 ***************************************************************/
 
 /**
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
+ * 
  * @package extracache
  * @subpackage System_StaticCache
  */
-class Tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
+class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	/**
 	 * @var	Tx_Extracache_System_StaticCache_AbstractManager
 	 */

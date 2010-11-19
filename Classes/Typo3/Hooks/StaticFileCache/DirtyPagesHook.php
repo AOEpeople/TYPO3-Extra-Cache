@@ -10,12 +10,14 @@
 
 /**
  * Hook for nc_staticfilecache that is called on processing dirty pages.
+ * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
  *
  * @package extracache
  * @subpackage Typo3_Hooks_StaticFileCache
  *
  */
-class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
+class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
 	const EVENT_Process = 'onStaticFileCacheDirtyPagesProcess';
 	const HTTP_Request_Header = 'X-PROCESS-DIRTY-PAGES';
 

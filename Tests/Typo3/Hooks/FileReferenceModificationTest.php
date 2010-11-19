@@ -11,14 +11,14 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractDatabaseTestcase.php';
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_FileReferenceModification
+ * Test case for tx_Extracache_Typo3_Hooks_FileReferenceModification
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks
  */
 class Tx_Extracache_Typo3_Hooks_FileReferenceModificationTest extends Tx_Extracache_Tests_AbstractDatabaseTestcase {
 	/**
-	 * @var	tx_eft_typo3_hook_fileReferenceModificationHook
+	 * @var	tx_Extracache_Typo3_Hooks_FileReferenceModification
 	 */
 	private $hook;
 
@@ -31,9 +31,9 @@ class Tx_Extracache_Typo3_Hooks_FileReferenceModificationTest extends Tx_Extraca
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Typo3_Hooks_FileReferenceModification');
+		$this->loadClass('tx_Extracache_Typo3_Hooks_FileReferenceModification');
 
-		$this->hook = $this->getMock('Tx_Extracache_Typo3_Hooks_FileReferenceModification', array('isStaticCacheEnabled'));
+		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_FileReferenceModification', array('isStaticCacheEnabled'));
 		$this->tceMain = $this->getMock('t3lib_TCEmain', array(), array(), '', FALSE);
 
 		$this->createDatabase();
@@ -101,7 +101,7 @@ class Tx_Extracache_Typo3_Hooks_FileReferenceModificationTest extends Tx_Extraca
 		$this->hook->processDatamap_afterDatabaseOperations('update', 'test', '13', array(), $this->tceMain);
 		$this->hook->processDatamap_afterAllOperations($this->tceMain);
 
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', Tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, '');
+		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, '');
 
 		$this->assertEquals(
 			'testfile.jpg',
