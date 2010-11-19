@@ -49,7 +49,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 
 		$this->cacheManager = $this->getMock(
 			'Tx_Extracache_System_StaticCache_StaticFileCacheManager',
-			array('isRequestProcessible', 'logForeignArguments', 'loadCachedRepresentation'),
+			array('getCachedRepresentationWithoutPageInformation', 'isRequestProcessible', 'logForeignArguments', 'loadCachedRepresentation'),
 			array(), '', FALSE
 		);
 
@@ -69,7 +69,6 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	protected function tearDown() {
 		parent::tearDown();
-
 		unset($this->extensionManager);
 		unset($this->eventDispatcher);
 		unset($this->cacheManager);
@@ -85,14 +84,12 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	public function areExceptionsCaught() {
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will ( $this->throwException(new Exception('') ) );
 		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue(FALSE));
-
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('string', $this->triggeredEvents[0]);
 		$this->assertEquals('onStaticCacheWarning', $this->triggeredEvents[0]);
 	}
-
 	/**
 	 * Tests whether the instance is dispatched.
 	 *
@@ -101,14 +98,12 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	public function staticCacheIsNotEnabled() {
 		$testContent = uniqid('testContent');
-
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(FALSE));
 		$this->dispatcher->expects($this->never())->method('output');
 		$this->dispatcher->expects($this->never())->method('halt');
 		$this->cacheManager->expects($this->never())->method('isRequestProcessible');
 		$this->cacheManager->expects($this->never())->method('logForeignArguments');
 		$this->cacheManager->expects($this->never())->method('loadCachedRepresentation');
-
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(0, count($this->triggeredEvents));
@@ -121,14 +116,13 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	public function staticCacheIsEnabled_cachedRepresentationIsNotAvailable() {
 		$testContent = uniqid('testContent');
-
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(TRUE));
 		$this->dispatcher->expects($this->never())->method('output');
 		$this->dispatcher->expects($this->never())->method('halt');
 		$this->cacheManager->expects($this->any())->method('isRequestProcessible')->will($this->returnValue(FALSE));
 		$this->cacheManager->expects($this->never())->method('logForeignArguments');
 		$this->cacheManager->expects($this->never())->method('loadCachedRepresentation');
-
+		$this->cacheManager->expects($this->never())->method('getCachedRepresentationWithoutPageInformation');
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(2, count($this->triggeredEvents));
@@ -145,7 +139,6 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 	 */
 	public function staticCacheIsEnabled_cachedRepresentationIsAvailable() {
 		$testContent = uniqid('testContent');
-
 		$this->dispatcher->expects($this->once())->method('isStaticCacheEnabled')->will($this->returnValue(TRUE));
 		$this->dispatcher->expects($this->once())->method('output')->with($testContent);
 		$this->dispatcher->expects($this->once())->method('halt');
@@ -153,7 +146,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->cacheManager->expects($this->any())->method('isRequestProcessible')->will($this->returnValue(TRUE));
 		$this->cacheManager->expects($this->once())->method('logForeignArguments');
 		$this->cacheManager->expects($this->once())->method('loadCachedRepresentation')->will($this->returnValue($testContent));
-
+		$this->cacheManager->expects($this->once())->method('getCachedRepresentationWithoutPageInformation')->will($this->returnValue($testContent));
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(3, count($this->triggeredEvents));
