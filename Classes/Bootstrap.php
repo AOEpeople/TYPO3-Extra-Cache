@@ -72,6 +72,9 @@ final class Bootstrap {
 		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification.php:&tx_Extracache_Typo3_Hooks_FileReferenceModification';
 
+		// Register hook to remove cache TypoScript:
+		$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/Tx_Extracache_Typo3_TypoScriptCache.php:&Tx_Extracache_Typo3_TypoScriptCache->clearCachePostProc';
+
 		// Register pre-rendering cache to deliver statically published content:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
