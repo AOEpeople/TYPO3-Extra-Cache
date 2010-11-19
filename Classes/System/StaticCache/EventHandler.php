@@ -183,7 +183,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 * @return	boolean
 	 */
 	protected function isProcessingDirtyPages(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
-		$requestHeader = 'HTTP_' . str_replace('-', '_', Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header);
+		$requestHeader = 'HTTP_' . str_replace('-', '_', tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header);
 		return ( $event->getRequest()->getServerVariable($requestHeader) !== NULL );
 	}
 	/**

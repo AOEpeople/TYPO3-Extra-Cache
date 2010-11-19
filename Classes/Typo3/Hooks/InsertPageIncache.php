@@ -12,10 +12,12 @@
  * Hook to post-process entries in cache_pages to add the current group list.
  * This is needed if we want to delete the TYPO3-cache for a certain fe-group-list
  * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
+ * 
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class Tx_Extracache_Typo3_Hooks_InsertPageIncache {
+class tx_Extracache_Typo3_Hooks_InsertPageIncache {
 	/**
 	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */

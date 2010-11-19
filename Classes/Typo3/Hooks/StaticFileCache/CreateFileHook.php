@@ -10,12 +10,14 @@
 
 /**
  * Hook for nc_staticfilecache that is called on creating the file with the cached content.
+ * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
  *
  * @package extracache
  * @subpackage Typo3_Hooks_StaticFileCache
  *
  */
-class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
+class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
 	const EVENT_Initialize = 'onStaticFileCacheCreateFileInitialize';
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
 

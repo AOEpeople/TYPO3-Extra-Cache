@@ -11,14 +11,14 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_InsertPageIncache
+ * Test case for tx_Extracache_Typo3_Hooks_InsertPageIncache
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks
  */
 class Tx_Extracache_Typo3_Hooks_InsertPageIncacheTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * @var Tx_Extracache_Typo3_Hooks_InsertPageIncache
+	 * @var tx_Extracache_Typo3_Hooks_InsertPageIncache
 	 */
 	private $hook;
 	/**
@@ -35,11 +35,11 @@ class Tx_Extracache_Typo3_Hooks_InsertPageIncacheTest extends Tx_Extracache_Test
 	 */
 	protected function setUp() {
 		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
-		$this->loadClass('Tx_Extracache_Typo3_Hooks_InsertPageIncache');
+		$this->loadClass('tx_Extracache_Typo3_Hooks_InsertPageIncache');
 
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->typo3DbBackend = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		$this->hook = $this->getMock('Tx_Extracache_Typo3_Hooks_InsertPageIncache', array('getTypo3DbBackend'));
+		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_InsertPageIncache', array('getTypo3DbBackend'));
 		$this->hook->expects($this->any())->method('getTypo3DbBackend')->will($this->returnValue( $this->typo3DbBackend ));
 	}
 	/**

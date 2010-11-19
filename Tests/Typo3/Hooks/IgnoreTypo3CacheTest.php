@@ -11,7 +11,7 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
+ * Test case for tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks
@@ -26,7 +26,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 */
 	private $cacheData;
 	/**
-	 * @var Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
+	 * @var tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
 	 */
 	private $ignoreTypo3Cache;
 	/**
@@ -39,7 +39,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 */
 	protected function setUp() {
 		$this->cacheData = uniqid('cache');
-		$this->ignoreTypo3Cache = $this->getMock('Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache', array('getBackendUser'));
+		$this->ignoreTypo3Cache = $this->getMock('tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache', array('getBackendUser'));
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->tsfe->all = $this->cacheData;
 	}
@@ -57,7 +57,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 * @test
 	 */
 	public function isExistingCacheIgnoredOnGivenHttpHeader() {
-		$_SERVER['HTTP_' . str_replace('-', '_', Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header)]= TRUE;
+		$_SERVER['HTTP_' . str_replace('-', '_', tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header)]= TRUE;
 		$this->ignoreTypo3Cache->expects($this->once())->method('getBackendUser')->will($this->returnValue( NULL ));
 
 		$this->ignoreTypo3Cache->ignoreExistingCache (array(), $this->tsfe);

@@ -47,7 +47,7 @@ class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends tx_scheduler_
 	 * clean-up removed files
 	 */
 	protected function cleanUpRemovedFiles() {
-		$rows = $this->getTypo3DbBackend()->selectQuery('*', Tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue);
+		$rows = $this->getTypo3DbBackend()->selectQuery('*', tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue);
 		foreach ($rows as $row) {
 			$files = t3lib_div::trimExplode(',', $row['files'], true);
 			foreach ($files as $file) {
@@ -55,7 +55,7 @@ class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends tx_scheduler_
 					unlink(PATH_site . $file);
 				}
 			}
-			$this->getTypo3DbBackend()->deleteQuery(Tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, 'id=' . $row['id']);
+			$this->getTypo3DbBackend()->deleteQuery(tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, 'id=' . $row['id']);
 		}
 	}
 	/**

@@ -75,7 +75,7 @@ class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFilesTest extends Tx_Extrac
 		$rows = array();
 		$rows[] = $row;
 		$this->typo3DbBackend->expects ( $this->once () )->method ( 'selectQuery' )->will ( $this->returnValue ( $rows ) );
-		$this->typo3DbBackend->expects ( $this->once () )->method ( 'deleteQuery' )->with(Tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, 'id=1');
+		$this->typo3DbBackend->expects ( $this->once () )->method ( 'deleteQuery' )->with(tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue, 'id=1');
 		$this->assertTrue( $this->task->execute() );
 	}
 }

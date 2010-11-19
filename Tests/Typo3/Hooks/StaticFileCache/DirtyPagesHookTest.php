@@ -9,14 +9,14 @@
  ***************************************************************/
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook
+ * Test case for tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks_StaticFileCache
  */
 class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * @var Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook
+	 * @var tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook
 	 */
 	private $dirtyPagesHook;
 	/**
@@ -44,7 +44,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 
 		$this->dirtyPagesHook = $this->getMock(
-			'Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook',
+			'tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook',
 			array('getArgumentRepository', 'fetchUrl', 'getFileModificationTime', 'getEventDispatcher', 'getTypo3DbBackend')
 		);
 		$this->dirtyPagesHook->expects($this->never())->method('getArgumentRepository');
@@ -70,7 +70,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 	public function areDirtyPagesWithAnonymousGroupProcessed() {
 		$this->typo3DbBackend->expects($this->never())->method('deleteQuery');
 		$dirtyElement = array ();
-		$dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
+		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
 		$parameters = array ();
 		$parameters ['dirtyElement'] = $dirtyElement;
 		$this->dirtyPagesHook->process($parameters, $this->staticFileCache);
@@ -82,7 +82,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->typo3DbBackend->expects($this->once())->method('fullQuoteStr')->with('0,-5','cache_pages')->will($this->returnValue('\'0,-5\''));
 		$this->typo3DbBackend->expects($this->once())->method('deleteQuery')->with( 'cache_pages', 'tx_extracache_grouplist=\'0,-5\' AND page_id=0' );
 		$dirtyElement = array ();
-		$dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-5';
+		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-5';
 		$dirtyElement['pid'] = 0;
 		$parameters = array ();
 		$parameters['dirtyElement'] = $dirtyElement;
@@ -96,7 +96,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->dirtyPagesHook->expects($this->at(2))->method('fetchUrl');
 		$this->dirtyPagesHook->expects($this->at(3))->method('getFileModificationTime')->will($this->returnValue(11));
 		$dirtyElement = array ();
-		$dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
+		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
 		$dirtyElement['pid'] = 0;
 		$parameters = array ();
 		$cancelExecution = FALSE;
@@ -113,7 +113,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->dirtyPagesHook->expects($this->once())->method('fetchUrl');
 		$this->dirtyPagesHook->expects($this->exactly(2))->method('getFileModificationTime')->will($this->returnValue(10));
 		$dirtyElement = array();
-		$dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
+		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
 		$cancelExecution = FALSE;
 		$parameters = array ();
 		$parameters['dirtyElement'] = $dirtyElement;
@@ -128,7 +128,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 	 */
 	public function isEventTriggeredOnProcessingDirtyPages() {
 		$dirtyElement = array();
-		$dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
+		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
 		$parameters = array ();
 		$parameters['dirtyElement'] = $dirtyElement;
 
@@ -136,6 +136,6 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
-		$this->assertEquals(Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::EVENT_Process, $this->triggeredEvents[0]->getName());
+		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::EVENT_Process, $this->triggeredEvents[0]->getName());
 	}
 }

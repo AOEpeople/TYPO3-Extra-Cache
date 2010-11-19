@@ -22,13 +22,10 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
-
-/*
 		self::initializeEventHandling();
 		self::initializeHooks();
-		self::initializeXClasses();
-*/
 		self::initializeSchedulerTasks();
+		self::initializeXClasses();
 	}
 	
 	/**
@@ -52,6 +49,14 @@ final class Bootstrap {
 		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_CleanerStrategy' );
 	}
 	/**
+	 * initialize event-handler
+	 */
+	static protected function initializeEventHandling() {
+		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		self::addEventHandlerForLogging ( $dispatcher );
+		self::addEventHandlerForStaticCache ( $dispatcher );
+	}
+	/**
 	 * Initializes hooks.
 	 *
 	 * @return void
@@ -60,29 +65,29 @@ final class Bootstrap {
 		// Register hooks for nc_staticfilecache-extension
 		$staticFileCacheHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php'];
 		$hookDirectory = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/';
-		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->initialize';
-		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:CreateFileHook->process';
-		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:DirtyPagesHook->process';
+		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->initialize';
+		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->process';
+		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook->process';
 
 		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Typo3/Hooks/FileReferenceModification.php:&Tx_Extracache_Typo3_Hooks_FileReferenceModification';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification.php:&tx_Extracache_Typo3_Hooks_FileReferenceModification';
 
 		// Register pre-rendering cache to deliver statically published content:
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&Tx_Extracache_System_StaticCache_Dispatcher->dispatch';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
 		// register hook to disable caching for faulty pages (e.g. if templaVoila could not render page):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/PostProcessContentHook.php:&Tx_Extracache_Typo3_Hooks_PostProcessContentHook->disableCachingOnFaultyPages';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/PostProcessContentHook.php:&tx_Extracache_Typo3_Hooks_PostProcessContentHook->disableCachingOnFaultyPages';
 		// Register hook to store the template page id in TSFE used for TypoScript caching:
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/PostProcessContentHook.php:&Tx_Extracache_Typo3_Hooks_PostProcessContentHook->addTemplatePageId';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/PostProcessContentHook.php:&tx_Extracache_Typo3_Hooks_PostProcessContentHook->addTemplatePageId';
 
 		// Sends HTTP headers for debuging caching situations (if developmentContext is set)
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/SendCacheDebugHeader.php:&Tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/SendCacheDebugHeader.php:&tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';
 
 		// Register hook that ignores an existing TYPO3 cache (used to force regeneration):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/IgnoreTypo3Cache.php:Tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache->ignoreExistingCache';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/IgnoreTypo3Cache.php:tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache->ignoreExistingCache';
 
 		// Register hook to write gr_list to cache_pages:
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Typo3/Hooks/InsertPageIncache.php:&Tx_Extracache_Typo3_Hooks_InsertPageIncache';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/InsertPageIncache.php:&tx_Extracache_Typo3_Hooks_InsertPageIncache';
 	}
 	/**
 	 * Initializes scheduler-tasks.
@@ -106,14 +111,6 @@ final class Bootstrap {
 	static protected function initializeXClasses() {
 		// Define XCLASS for nc_staticfilecache info module:
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
-	}
-	/**
-	 * initialize event-handler
-	 */
-	static protected function initializeEventHandling() {
-		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
-		self::addEventHandlerForLogging ( $dispatcher );
-		self::addEventHandlerForStaticCache ( $dispatcher );
 	}
 	/**
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher

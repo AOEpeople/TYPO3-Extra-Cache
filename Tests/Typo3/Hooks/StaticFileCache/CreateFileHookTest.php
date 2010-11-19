@@ -11,7 +11,7 @@
 #require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * Test case for Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
+ * Test case for tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
  *
  * @package extracache_tests
  * @subpackage Typo3_Hooks_StaticFileCache
@@ -23,7 +23,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	protected $argumentRepository;
 
 	/**
-	 * @var Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
+	 * @var tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
 	 */
 	protected $createFileHook;
 
@@ -74,7 +74,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 
 		$this->createFileHook = $this->getMock(
-			'Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
+			'tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
 			array('getArgumentRepository', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
@@ -177,7 +177,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$parameters = array('fieldValues' => &$fieldValues, 'TSFE' => $this->frontend);
 		$this->createFileHook->initialize($parameters, $this->staticFileCache);
 
-		$this->assertEquals($fieldValues[Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::FIELD_GroupList], $frontendUserGroupList);
+		$this->assertEquals($fieldValues[tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::FIELD_GroupList], $frontendUserGroupList);
 	}
 
 	/**
@@ -201,7 +201,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
-		$this->assertEquals(Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Initialize, $this->triggeredEvents[0]->getName());
+		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Initialize, $this->triggeredEvents[0]->getName());
 	}
 
 	/**
@@ -275,6 +275,6 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->assertEquals(1, count($this->triggeredEvents));
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
-		$this->assertEquals(Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Process, $this->triggeredEvents[0]->getName());
+		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Process, $this->triggeredEvents[0]->getName());
 	}
 }
