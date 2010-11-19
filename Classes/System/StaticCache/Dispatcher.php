@@ -68,7 +68,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 		if ($content !== false) {
 			$this->initializeFrontEnd($content);
-			$event = $this->triggerEventOnStaticCacheResponsePostProcess( $content );
+			$event = $this->triggerEventOnStaticCacheResponsePostProcess( $this->getCacheManager()->getCachedRepresentationWithoutPageInformation( $content ) );
 			$this->sendStaticCacheHttpHeader ();
 			$this->output( $event->getResponse()->getContent() );
 			$this->halt();
