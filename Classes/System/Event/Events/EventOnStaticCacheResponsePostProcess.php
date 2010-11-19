@@ -22,6 +22,10 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess ex
 	 */
 	protected $name = 'onStaticCacheResponsePostProcess';
 	/**
+	 * @var tslib_feUserAuth
+	 */
+	private $frontendUser;
+	/**
 	 * @var Tx_Extracache_System_StaticCache_Response
 	 */
 	private $response;
@@ -31,10 +35,25 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess ex
 	 */
 	public function __construct(){}
 	/**
+	 * @return tslib_feUserAuth
+	 */
+	public function getFrontendUser() {
+		return $this->frontendUser;
+	}
+	/**
 	 * @return Tx_Extracache_System_StaticCache_Response
 	 */
 	public function getResponse() {
 		return $this->response;
+	}
+
+	/**
+	 * @param	tslib_feUserAuth $frontendUser
+	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
+	 */
+	public function setFrontendUser(tslib_feUserAuth $frontendUser) {
+		$this->frontendUser = $frontendUser;
+		return $this;
 	}
 	/**
 	 * @param	Tx_Extracache_System_StaticCache_Response $response

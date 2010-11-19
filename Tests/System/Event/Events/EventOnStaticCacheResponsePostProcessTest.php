@@ -40,8 +40,11 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcessTes
 	 * @test
 	 */
 	public function getMethods() {
+		$frontendUser = t3lib_div::makeInstance ( 'tslib_feUserAuth' );
 		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response');
+		$this->assertTrue( $this->event->setFrontendUser( $frontendUser ) === $this->event );
 		$this->assertTrue( $this->event->setResponse( $response ) === $this->event );
+		$this->assertTrue( $this->event->getFrontendUser() === $frontendUser );
 		$this->assertTrue( $this->event->getResponse() === $response );
 	}
 }
