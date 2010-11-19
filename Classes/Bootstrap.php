@@ -22,10 +22,10 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
-		self::initializeEventHandling();
-		self::initializeHooks();
+//		self::initializeEventHandling();
+//		self::initializeHooks();
 		self::initializeSchedulerTasks();
-		self::initializeXClasses();
+//		self::initializeXClasses();
 	}
 	
 	/**
