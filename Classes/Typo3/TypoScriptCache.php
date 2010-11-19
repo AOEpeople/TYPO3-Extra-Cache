@@ -55,7 +55,7 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	public function restore() {
 		// Only restore cached TypoScript if the content is cached:
 		$frontend = $this->getFrontend();
-		if ($frontend->cacheContentFlag && ! $this->isRestored) {
+		if ($frontend->cacheContentFlag && ! $this->isRestored || TRUE) {
 			$cacheFilePath = $this->getCacheFilePath();
 			// Fetch the cached information and restore it:
 			if (@is_file ( $cacheFilePath )) {
@@ -88,7 +88,7 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 		// Clone the Template rendering object since we don't want to influence the processing:
 		/** @var $template t3lib_TStemplate */
 		$template = clone $frontend->tmpl;
-		$template->start ( $frontend->sys_page->getRootLine(self::getTemplatePageId()));
+		$template->start ( $frontend->sys_page->getRootLine($this->getTemplatePageId($frontend)));
 
 		$keysToBeCached = array('lib.', 'tt_content', 'tt_content.');
 		/** @var $event Tx_Extracache_System_Event_Events_Event */
@@ -110,13 +110,13 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	 * @return	string
 	 */
 	private function getCacheFilePath() {
-		return $this->getCacheFolder () . 'page_' . self::getTemplatePageId() . '.php';
+		return $this->getCacheFolder () . 'page_' . $this->getTemplatePageId($this->getFrontend()) . '.php';
 	}
 	/**
 	 * @return string
 	 */
 	private function getCacheFolder() {
-		return PATH_site . 'typo3temp/tx_eft_typo3_typoScriptCache/';
+		return PATH_site . 'typo3temp/Tx_Extracache_Typo3_TypoScriptCache/';
 	}
 	/**
 	 * Persists the cache to the file system.
@@ -157,7 +157,7 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 			}
 
 			$intersections = array_intersect($absolutePageIds, $hierarchyPageIds);
-			$templatePageId = $intersections[0];
+			$templatePageId = array_shift($intersections);
 		}
 
 		return (int)$templatePageId;
