@@ -68,10 +68,6 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 		if ($content !== false) {
 			$this->initializeFrontEnd($content);
-
-			// @todo eft requires the frontend user to be registered:
-			// tx_eft_system_IoC_manager::getSingleton ( 'tx_eft_system_registry' )->set ( 'frontendUser', $frontendUser );
-
 			$event = $this->triggerEventOnStaticCacheResponsePostProcess( $content );
 			$this->sendStaticCacheHttpHeader ();
 			$this->output( $event->getResponse()->getContent() );
