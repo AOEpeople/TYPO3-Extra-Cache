@@ -16,14 +16,13 @@
  */
 class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extracache_System_Event_Events_Event {
 	/**
-	 * @var tx_ncstaticfilecache
-	 */
-	protected $parent;
-
-	/**
 	 * @var tslib_fe
 	 */
-	protected $frontend;
+	private $frontend;
+	/**
+	 * @var tx_ncstaticfilecache
+	 */
+	private $parent;
 
 	/**
 	 * Constructs this event.
@@ -36,13 +35,19 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extrac
 	 */
 	public function __construct($name, $contextObject, array $infos, tx_ncstaticfilecache $parent, tslib_fe $frontend = NULL) {
 		parent::__construct($name, $contextObject, $infos);
-		$this->parent = $parent;
-		$this->frontend = $frontend;
+		
+		$this->setParent( $parent );
+		if($frontend !== NULL) {
+			$this->setFrontend( $frontend );
+		}
 	}
-
 	/**
-	 * Gets the parent.
-	 *
+	 * @return tslib_fe
+	 */
+	public function getFrontend() {
+		return $this->frontend;
+	}
+	/**
 	 * @return tx_ncstaticfilecache
 	 */
 	public function getParent() {
@@ -50,31 +55,17 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extrac
 	}
 
 	/**
-	 * Sets the parent.
-	 *
-	 * @param tx_ncstaticfilecache $parent
-	 * @return void
-	 */
-	public function setParent($parent) {
-		$this->parent = $parent;
-	}
-
-	/**
-	 * Gets the frontend.
-	 *
-	 * @return tslib_fe
-	 */
-	public function getFrontend() {
-		return $this->frontend;
-	}
-
-	/**
-	 * Sets the frontend.
-	 *
 	 * @param tslib_fe $frontend
 	 * @return void
 	 */
-	public function setFrontend(tslib_fe $frontend) {
+	private function setFrontend(tslib_fe $frontend) {
 		$this->frontend = $frontend;
+	}
+	/**
+	 * @param tx_ncstaticfilecache $parent
+	 * @return void
+	 */
+	private function setParent(tx_ncstaticfilecache $parent) {
+		$this->parent = $parent;
 	}
 }
