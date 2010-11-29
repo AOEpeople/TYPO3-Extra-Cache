@@ -15,34 +15,30 @@
  */
 class Tx_Extracache_System_Tools_ObjectProxy {
 	/**
-	 * The calling parent object
-	 * @var object
+	 * File resource of the class source code
+	 * @var string
 	 */
-	protected $parent;
-
+	protected $classFile;
 	/**
 	 * Name of the wrapped class
 	 * @var string
 	 */
 	protected $className;
-
-	/**
-	 * File resource of the class source code
-	 * @var string
-	 */
-	protected $classFile;
-
-	/**
-	 * Name of a callback function of the parent object
-	 * @var string
-	 */
-	protected $parentCallback;
-
 	/**
 	 * Instance of the wrapped object (will be generated on demand)
 	 * @var object
 	 */
 	protected $instance;
+	/**
+	 * The calling parent object
+	 * @var object
+	 */
+	protected $parent;
+	/**
+	 * Name of a callback function of the parent object
+	 * @var string
+	 */
+	protected $parentCallback;
 
 	/**
 	 * Constructs this object.
@@ -79,7 +75,6 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 
 		return $result;
 	}
-
 	/**
 	 * Magic method that forwards a get action to the class members of the wrapped object.
 	 *
@@ -95,7 +90,6 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 
 		return $result;
 	}
-
 	/**
 	 * Magic method that forwards a set action to the class member of the wrapped object.
 	 *
@@ -119,7 +113,6 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	protected function hasInstance() {
 		return (isset($this->instance));
 	}
-
 	/**
 	 * Initializes the real object of this proxy.
 	 *
