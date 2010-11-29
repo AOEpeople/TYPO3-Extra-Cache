@@ -216,9 +216,7 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 		 * Sets the paths from where TypoScript resources are allowed to be used
 		 * 
 		 * @TODO: check, if we can set $template->allowedPaths on another way (now, we set it hardcoded)!
-		 * If we do not set this array, the mobilephone-images (if customer want to change his product in CSC
-		 * and wants there select a mobilephone) will not be shown in static-cache-context (because method t3lib_tstemplate->getFileName() return nothing)!!!
-		 * look at: http://bugs.aoedev.com/view.php?id=16425
+		 * If we do not set this array, some images will not be shown in static-cache-context (because method t3lib_tstemplate->getFileName() return nothing)!!!
 		 */ 
 		$template->allowedPaths = Array(
 			'media/',
