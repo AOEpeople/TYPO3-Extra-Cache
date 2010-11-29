@@ -244,6 +244,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * @return tslib_feUserAuth
 	 */
 	protected function initializeFrontendUser() {
+		/* @var $frontendUser ux_tslib_feUserAuth */
 		$frontendUser = $this->getFrontendUser ();
 
 		if ($frontendUser->isInitialized() !== TRUE) {
