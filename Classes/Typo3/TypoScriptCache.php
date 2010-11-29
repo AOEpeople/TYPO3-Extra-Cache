@@ -55,7 +55,8 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	public function restore() {
 		// Only restore cached TypoScript if the content is cached:
 		$frontend = $this->getFrontend();
-		if ($frontend->cacheContentFlag && ! $this->isRestored || TRUE) {
+		if ($frontend->cacheContentFlag && ! $this->isRestored) {
+		//if ($frontend->cacheContentFlag && ! $this->isRestored || TRUE) {
 			$cacheFilePath = $this->getCacheFilePath();
 			// Fetch the cached information and restore it:
 			if (@is_file ( $cacheFilePath )) {
