@@ -23,19 +23,21 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @var boolean Indicates that cached content is delivered
 	 */
 	public $cacheContentFlag = 1;
-
+	/**
+	 * Configuration array with TypoScript [config.]
+	 * @var array
+	 */
+	public $config = array();
 	/**
 	 * Defines an object proxy that will load the real object when it's required.
 	 * @var Tx_Extracache_System_Tools_ObjectProxy
 	 */
 	public $csConvObj;
-
 	/**
 	 * Defines an object proxy that will load the real object when it's required.
 	 * @var Tx_Extracache_System_Tools_ObjectProxy
 	 */
 	public $sys_page;
-
 	/**
 	 * Defines an object proxy that will load the real object when it's required.
 	 * @var Tx_Extracache_System_Tools_ObjectProxy
@@ -43,16 +45,9 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	public $tmpl;
 
 	/**
-	 * Configuration array with TypoScript [config.]
-	 * @var array
-	 */
-	public $config = array();
-
-	/**
 	 * @var integer
 	 */
 	protected $firstRootlineId;
-
 	/**
 	 * @var integer
 	 */
@@ -92,44 +87,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
-	 * Sets the first rootline id.
-	 *
-	 * @param integer $firstRootlineId
-	 * @return void
-	 */
-	public function setFirstRootlineId($firstRootlineId) {
-		$this->firstRootlineId = $firstRootlineId;
-	}
-
-	/**
-	 * Gets the first rootline id.
-	 *
-	 * @return integer
-	 */
-	public function getFirstRootlineId() {
-		return $this->firstRootlineId;
-	}
-
-	/**
-	 * Sets the template page id.
-	 *
-	 * @param integer $templatePageId
-	 * @return void
-	 */
-	public function setTemplatePageId($templatePageId) {
-		$this->templatePageId = $templatePageId;
-	}
-
-	/**
-	 * Gets the template page id.
-	 *
-	 * @return integer
-	 */
-	public function getTemplatePageId() {
-		return $this->templatePageId;
-	}
-
-	/**
 	 * Finalizes the initialization of the frontend user object.
 	 *
 	 * @return void
@@ -161,31 +118,16 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
-	 * Initializes a basic configuration of the TSFE object.
-	 *
-	 * @return void
+	 * @return integer
 	 */
-	protected function initializeConfiguration() {
-		$this->config = array(
-			'config' => array(),
-			'mainScript' => 'index.php',
-		);
-
-		$frontendConfigArguments = $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_frontendConfig);
-		/** @var $frontendConfigArgument Tx_Extracache_Domain_Model_Argument */
-		foreach ($frontendConfigArguments as $frontendConfigArgument) {
-			$this->config[$frontendConfigArgument->getName()] = $frontendConfigArgument->getValue();
-		}
+	public function getFirstRootlineId() {
+		return $this->firstRootlineId;
 	}
-
 	/**
-	 * Merges additional configuration with the current configuration.
-	 *
-	 * @param array $configuration
-	 * @return void
+	 * @return integer
 	 */
-	public function mergeConfiguration(array $configuration) {
-		$this->config = t3lib_div::array_merge_recursive_overrule($this->config, $configuration);
+	public function getTemplatePageId() {
+		return $this->templatePageId;
 	}
 
 	/**
@@ -203,7 +145,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 			// Load TCA stuff since enableFields() relies on TCA:
 		$this->getCompressedTCarray();
 	}
-
 	/**
 	 * Initializes the template object.
 	 * This method gets called as callback when the real object is created in the proxy object.
@@ -236,6 +177,74 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
+	 * Merges additional configuration with the current configuration.
+	 *
+	 * @param array $configuration
+	 * @return void
+	 */
+	public function mergeConfiguration(array $configuration) {
+		$this->config = t3lib_div::array_merge_recursive_overrule($this->config, $configuration);
+	}
+
+	/**
+	 * @param integer $firstRootlineId
+	 * @return void
+	 */
+	public function setFirstRootlineId($firstRootlineId) {
+		$this->firstRootlineId = $firstRootlineId;
+	}
+	/**
+	 * @param integer $templatePageId
+	 * @return void
+	 */
+	public function setTemplatePageId($templatePageId) {
+		$this->templatePageId = $templatePageId;
+	}
+
+	/**
+	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
+	 */
+	protected function getArgumentRepository() {
+		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
+		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+		return $configurationManager->getArgumentRepository();
+	}
+	/**
+	 * Gets the frontend user group list.
+	 * CAVE: The anonymous groups (0,-1) and (0,-2) are already prepended!
+	 *
+	 * @return string
+	 */
+	protected function getFrontendUserGroupList() {
+		if ($this->isValidFrontendUser()) {
+			$frontendUserGroups = array_unique($this->fe_user->groupData['uid']);
+			sort($frontendUserGroups);
+			$frontendUserGroupList = '0,-2,' . implode(',', $frontendUserGroups);
+		} else {
+			$frontendUserGroupList = '0,-1';
+		}
+
+		return $frontendUserGroupList;
+	}
+
+	/**
+	 * Initializes a basic configuration of the TSFE object.
+	 *
+	 * @return void
+	 */
+	protected function initializeConfiguration() {
+		$this->config = array(
+			'config' => array(),
+			'mainScript' => 'index.php',
+		);
+
+		$frontendConfigArguments = $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_frontendConfig);
+		/** @var $frontendConfigArgument Tx_Extracache_Domain_Model_Argument */
+		foreach ($frontendConfigArguments as $frontendConfigArgument) {
+			$this->config[$frontendConfigArgument->getName()] = $frontendConfigArgument->getValue();
+		}
+	}
+	/**
 	 * Initializes the class objects to use a proxy in the first step.
 	 *
 	 * @return void
@@ -256,18 +265,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 			$this, 't3lib_TStemplate', PATH_t3lib . 'class.t3lib_tstemplate.php'	, 'initializeTemplateCallback'
 		);
 	}
-
-	/**
-	 * Gets an instance of the argument repository.
-	 *
-	 * @return Tx_Extracache_Domain_Repository_ArgumentRepository
-	 */
-	protected function getArgumentRepository() {
-		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
-		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
-		return $configurationManager->getArgumentRepository();
-	}
-
 	/**
 	 * Determines whether the current frontend user is valid.
 	 *
@@ -275,23 +272,5 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 */
 	protected function isValidFrontendUser() {
 		return (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid']));
-	}
-
-	/**
-	 * Gets the frontend user group list.
-	 * CAVE: The anonymous groups (0,-1) and (0,-2) are already prepended!
-	 *
-	 * @return string
-	 */
-	protected function getFrontendUserGroupList() {
-		if ($this->isValidFrontendUser()) {
-			$frontendUserGroups = array_unique($this->fe_user->groupData['uid']);
-			sort($frontendUserGroups);
-			$frontendUserGroupList = '0,-2,' . implode(',', $frontendUserGroups);
-		} else {
-			$frontendUserGroupList = '0,-1';
-		}
-
-		return $frontendUserGroupList;
 	}
 }
