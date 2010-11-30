@@ -22,7 +22,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
 
 	/**
-	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected $typoScriptCache;
 
@@ -262,11 +262,11 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	/**
 	 * Gets an instance of the TypoScript cache.
 	 *
-	 * @return Tx_Extracache_Typo3_TypoScriptCache
+	 * @return tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected function getTypoScriptCache() {
 		if($this->typoScriptCache === NULL) {
-			$this->typoScriptCache = t3lib_div::makeInstance('Tx_Extracache_Typo3_TypoScriptCache');
+			$this->typoScriptCache = t3lib_div::makeInstance('tx_Extracache_Typo3_TypoScriptCache');
 		}
 		return $this->typoScriptCache;
 	}

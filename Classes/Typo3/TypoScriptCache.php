@@ -10,30 +10,24 @@
 
 /**
  * Handles caches of TypoScript.
+ * 
+ * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
  *
  * @package extracache
  * @subpackage Typo3
  */
-class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
-	const CONFIG_Key = 'Tx_Extracache_Typo3_TypoScriptCache';
+class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
+	const CONFIG_Key = 'tx_Extracache_Typo3_TypoScriptCache';
 	const EVENT_Generate = 'onTypoScriptCacheGenerate';
-
-	/**
-	 * @var	boolean
-	 */
-	private $isRestored = false;
 
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
 	private $eventDispatcher;
-
 	/**
-	 * @return tslib_fe
+	 * @var	boolean
 	 */
-	protected function getFrontend() {
-		return $GLOBALS['TSFE'];
-	}
+	private $isRestored = false;
 
 	/**
 	 * delete TypoScript-Cache if cacheCmd is 'all' or 'pages'
@@ -47,6 +41,45 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 			t3lib_div::rmdir($cacheFolder, true);
 		}
 	}
+
+	/**
+	 * Gets the most specific page id that was used to modify the TypoScript templates.
+	 *
+	 * @return integer
+	 */
+	public function getTemplatePageId(tslib_fe $frontend) {
+		if ($frontend instanceof Tx_Extracache_Typo3_Frontend) {
+			/** @var $frontend Tx_Extracache_Typo3_Frontend */
+			$templatePageId = $frontend->getTemplatePageId();
+		} elseif ($frontend->cacheContentFlag) {
+			$templatePageId = $frontend->config[self::CONFIG_Key];
+		} else {
+			$hierarchyPageIds = array();
+			$absolutePageIds = array();
+
+			foreach ($frontend->tmpl->hierarchyInfoToRoot as $hierarchyInfo) {
+				if (t3lib_div::testInt($hierarchyInfo['pid']) && $hierarchyInfo['pid'] > 0) {
+					$hierarchyPageIds[] = $hierarchyInfo['pid'];
+				}
+			}
+			foreach ($frontend->tmpl->absoluteRootLine as $absoluteInfo) {
+					$absolutePageIds[] = $absoluteInfo['uid'];
+			}
+
+			$intersections = array_intersect($absolutePageIds, $hierarchyPageIds);
+			$templatePageId = array_shift($intersections);
+		}
+
+		return (int)$templatePageId;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isAvailable() {
+		return @is_file($this->getCacheFilePath());
+	}
+
 	/**
 	 * Resotres the cached TypoScript configuration.
 	 *
@@ -74,8 +107,20 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 		}
 	}
 
-	public function isAvailable() {
-		return @is_file($this->getCacheFilePath());
+	/**
+	 * @return Tx_Extracache_System_Event_Dispatcher
+	 */
+	protected function getEventDispatcher() {
+		if ($this->eventDispatcher === NULL) {
+			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		}
+		return $this->eventDispatcher;
+	}
+	/**
+	 * @return tslib_fe
+	 */
+	protected function getFrontend() {
+		return $GLOBALS['TSFE'];
 	}
 
 	/**
@@ -117,7 +162,7 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	 * @return string
 	 */
 	private function getCacheFolder() {
-		return PATH_site . 'typo3temp/Tx_Extracache_Typo3_TypoScriptCache/';
+		return PATH_site . 'typo3temp/tx_Extracache_Typo3_TypoScriptCache/';
 	}
 	/**
 	 * Persists the cache to the file system.
@@ -131,46 +176,5 @@ class Tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 			t3lib_div::mkdir ( $cacheFolder );
 		}
 		t3lib_div::writeFile ( $this->getCacheFilePath (), serialize ( $cache ) );
-	}
-
-	/**
-	 * Gets the most specific page id that was used to modify the TypoScript templates.
-	 *
-	 * @return integer
-	 */
-	public function getTemplatePageId(tslib_fe $frontend) {
-		if ($frontend instanceof Tx_Extracache_Typo3_Frontend) {
-			/** @var $frontend Tx_Extracache_Typo3_Frontend */
-			$templatePageId = $frontend->getTemplatePageId();
-		} elseif ($frontend->cacheContentFlag) {
-			$templatePageId = $frontend->config[self::CONFIG_Key];
-		} else {
-			$hierarchyPageIds = array();
-			$absolutePageIds = array();
-
-			foreach ($frontend->tmpl->hierarchyInfoToRoot as $hierarchyInfo) {
-				if (t3lib_div::testInt($hierarchyInfo['pid']) && $hierarchyInfo['pid'] > 0) {
-					$hierarchyPageIds[] = $hierarchyInfo['pid'];
-				}
-			}
-			foreach ($frontend->tmpl->absoluteRootLine as $absoluteInfo) {
-					$absolutePageIds[] = $absoluteInfo['uid'];
-			}
-
-			$intersections = array_intersect($absolutePageIds, $hierarchyPageIds);
-			$templatePageId = array_shift($intersections);
-		}
-
-		return (int)$templatePageId;
-	}
-
-	/**
-	 * @return Tx_Extracache_System_Event_Dispatcher
-	 */
-	protected function getEventDispatcher() {
-		if ($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
-		}
-		return $this->eventDispatcher;
 	}
 }

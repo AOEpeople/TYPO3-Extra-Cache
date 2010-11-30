@@ -48,7 +48,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	protected $eventDispatcher;
 
 	/**
-	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected $typoScriptCache;
 
@@ -68,7 +68,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 
-		$this->typoScriptCache = $this->getMock('Tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
+		$this->typoScriptCache = $this->getMock('tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
 
 		$this->eventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array('triggerEvent'));
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
