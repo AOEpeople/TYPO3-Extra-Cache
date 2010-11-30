@@ -139,7 +139,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	}
 
 	/**
-	 * Loads the content the cached representation.
+	 * Loads the content of the cached representation.
 	 *
 	 * @return	mixed		The content of the cached representation (string)
 	 *						or false (boolean) if something went wrong
@@ -164,15 +164,6 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		if (strpos ( $filteredOriginalUri, '?' ) !== false) {
 			$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => 'URI "' . $this->getRequest()->getFileNameWithQuery () . '" contains foreign arguments.' ) );
 		}
-	}
-	/**
-	 * Sets the configuration service object to be used to fetch settings from.
-	 *
-	 * @param	tx_eft_typo3_eftConfigurationService	$configurationService The configuration service object
-	 * @return	void
-	 */
-	public function setConfigurationService(tx_eft_typo3_eftConfigurationService $configurationService) {
-		$this->configurationService = $configurationService;
 	}
 
 	/**

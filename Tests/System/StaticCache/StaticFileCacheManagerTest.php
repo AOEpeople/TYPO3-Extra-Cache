@@ -9,6 +9,7 @@
  ***************************************************************/
 
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+require_once dirname ( __FILE__ ) . '/Fixtures/ExtendedStaticFileCacheManager.php';
 
 /**
  * Test case for Tx_Extracache_System_StaticCache_StaticFileCacheManager
@@ -18,7 +19,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * @var Tx_Extracache_System_StaticCache_StaticFileCacheManager
+	 * @var ExtendedStaticFileCacheManager
 	 */
 	private $manager;
 	/**
@@ -33,6 +34,10 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 	 * @var Tx_Extracache_Configuration_ExtensionManager
 	 */
 	private $mockedExtensionManager;
+	/**
+	 * @var ux_tslib_feUserAuth
+	 */
+	private $mockedFrontendUser;
 	/**
 	 * @var Tx_Extracache_System_StaticCache_Request
 	 */
@@ -52,10 +57,13 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 		$this->mockedEventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->mockedEventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 		$this->mockedExtensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
+		$this->mockedFrontendUser = $this->getMock('ux_tslib_feUserAuth', array(), array(), '', FALSE);
 		$this->mockedRequest = $this->getMock('Tx_Extracache_System_StaticCache_Request', array(), array(), '', FALSE);
 		$this->mockedStorage = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		$this->manager = $this->getMock('Tx_Extracache_System_StaticCache_StaticFileCacheManager', array('getArgumentRepository'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
+		$this->manager = $this->getMock('ExtendedStaticFileCacheManager', array('getArgumentRepository','getFrontendUser','initializeFrontendUser'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
 		$this->manager->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->mockedArgumentRepository));
+		$this->manager->expects($this->any())->method('getFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
+		$this->manager->expects($this->any())->method('initializeFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -66,39 +74,54 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 		unset($this->mockedArgumentRepository);
 		unset($this->mockedEventDispatcher);
 		unset($this->mockedExtensionManager);
+		unset($this->mockedFrontendUser);
 		unset($this->mockedRequest);
 		unset($this->mockedStorage);
 	}
 
 	/**
-	 * Test Method getCachedRepresentationWithoutPageInformation
+	 * Test Method 'getCachedFolder'
 	 * @test
 	 */
-	public function getCachedRepresentationWithoutPageInformation() {
-		$content = 'Test-Content :-)';
-		$pageInformation = array('uid' => 1, 'name' => 'testPage');
-		$cachedContent = Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationPrefix.serialize($pageInformation).Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix.$content;
-		$cachedRepresentation = $this->manager->getCachedRepresentationWithoutPageInformation( $cachedContent );
-		$this->assertEquals($cachedRepresentation, $content);
+	public function getCachedFolder() {
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache/'));
+		$this->assertEquals( $this->manager->getCachedFolder(), 'typo3temp/tx_ncstaticfilecache/' );
+
+		$this->setUp();
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache'));
+		$this->assertEquals( $this->manager->getCachedFolder(), 'typo3temp/tx_ncstaticfilecache/' );
 	}
 	/**
-	 * Test Method getPageInformationFromCachedRepresentation
+	 * Test Method 'getCachedRepresentation'
 	 * @test
 	 */
-	public function getPageInformationFromCachedRepresentation() {
-		$content = 'Test-Content :-)';
-		$pageInformation = array('uid' => 1, 'name' => 'testPage');
-		$cachedContent = Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationPrefix.serialize($pageInformation).Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix.$content;
-		$cachedPageInformation = $this->manager->getPageInformationFromCachedRepresentation( $cachedContent );
-		$this->assertEquals($cachedPageInformation, $pageInformation);
+	public function getCachedRepresentation() {
+		// fileName contains no directory
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache/'));
+		$this->mockedRequest->expects($this->once())->method('getHostName')->will($this->returnValue('www.test-domain.com'));
+		$this->mockedRequest->expects($this->once())->method('getFileName')->will($this->returnValue('index.php'));
+		$this->mockedFrontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue('0,1'));
+		$this->assertEquals( $this->manager->getCachedRepresentation(), 'typo3temp/tx_ncstaticfilecache/www.test-domain.com/0,1/index.html' );
+		// fileName contains no directory
+		$this->setUp();
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache/'));
+		$this->mockedRequest->expects($this->once())->method('getHostName')->will($this->returnValue('www.test-domain.com'));
+		$this->mockedRequest->expects($this->once())->method('getFileName')->will($this->returnValue('/index.php'));
+		$this->mockedFrontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue('0,1'));
+		$this->assertEquals( $this->manager->getCachedRepresentation(), 'typo3temp/tx_ncstaticfilecache/www.test-domain.com/0,1/index.html' );
+
+		// fileName contains only a directory
+		$this->setUp();
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache/'));
+		$this->mockedRequest->expects($this->once())->method('getHostName')->will($this->returnValue('www.test-domain.com'));
+		$this->mockedRequest->expects($this->once())->method('getFileName')->will($this->returnValue('path/'));
+		$this->mockedFrontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue('0,1'));
+		$this->assertEquals( $this->manager->getCachedRepresentation(), 'typo3temp/tx_ncstaticfilecache/www.test-domain.com/0,1/path/index.html' );
+		$this->setUp();
+		$this->mockedExtensionManager->expects($this->once())->method('get')->with('path_StaticFileCache')->will($this->returnValue('typo3temp/tx_ncstaticfilecache/'));
+		$this->mockedRequest->expects($this->once())->method('getHostName')->will($this->returnValue('www.test-domain.com'));
+		$this->mockedRequest->expects($this->once())->method('getFileName')->will($this->returnValue('path'));
+		$this->mockedFrontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue('0,1'));
+		$this->assertEquals( $this->manager->getCachedRepresentation(), 'typo3temp/tx_ncstaticfilecache/www.test-domain.com/0,1/path/index.html' );
 	}
-	/**
-	 * Test Method isRequestProcessible
-	 * @test
-	 */
-/*
-	public function isRequestProcessible() {
-		$this->assertFalse( $this->manager->isRequestProcessible() );
-	}
-*/
 }
