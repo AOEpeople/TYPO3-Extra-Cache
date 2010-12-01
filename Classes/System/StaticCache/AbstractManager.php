@@ -124,6 +124,11 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 			/* @var $event Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest */
 			$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest')->setFrontendUser( $this->getFrontendUser() )->setRequest( $this->getRequest() );
 			$this->getDispatcher()->triggerEvent( $event );
+			/**
+			 * it's important, that we check if cached representation is available AFTER we have checked if we can respond
+			 * the request (otherwise a fatal-error can occur if FE-user is logging in or out; for more informations take a
+			 * look at: Tx_Extracache_System_StaticCache_EventHandler->__construct())!
+			 */
 			if($event->isCanceled() === FALSE && $this->isCachedRepresentationAvailable () === FALSE) {
 				$event->cancel();
 				$event->setReasonForCancelation( 'Check "isCachedRepresentationAvailable" prevents from using static caching' );
