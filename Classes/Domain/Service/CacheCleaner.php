@@ -9,8 +9,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-// if this class is used in TYPO3_BE-mode, the nc_staticfilecache-class is unknown, so we must require them
-require_once t3lib_extMgm::extPath ( 'nc_staticfilecache' ) . 'class.tx_ncstaticfilecache.php';
+// if this class is used in TYPO3_BE-mode, the nc_staticfilecache-class is under certain circumstances unknown, so we must require them
+if(class_exists('tx_ncstaticfilecache') === FALSE) {
+	require_once t3lib_extMgm::extPath ( 'nc_staticfilecache' ) . 'class.tx_ncstaticfilecache.php';
+}
 
 /**
  * @package extracache
