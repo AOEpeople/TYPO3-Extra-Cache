@@ -85,9 +85,9 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 	/**
 	 * Recaches the contents of an element.
 	 *
-	 * @param array $dirtyElement
-	 * @param tx_ncstaticfilecache $parent
-	 * @return void
+	 * @param	array $dirtyElement
+	 * @param	tx_ncstaticfilecache $parent
+	 * @return	boolean
 	 */
 	protected function recacheElement(array $dirtyElement, tx_ncstaticfilecache $parent) {
 		$absolutePath = PATH_site . $parent->getCacheDirectory() . $this->getStaticCacheDirectory($dirtyElement) . '/index.html';
