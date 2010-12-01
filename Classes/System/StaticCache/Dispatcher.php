@@ -99,7 +99,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 		}
 
 		/** @var $frontend Tx_Extracache_Typo3_Frontend */
-		$frontend = t3lib_div::makeInstance(
+		$GLOBALS['TSFE'] = t3lib_div::makeInstance(
 			'Tx_Extracache_Typo3_Frontend',
 			$pageInformation['id'],
 			$pageInformation['type'],
@@ -108,21 +108,19 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 			// Restore only really necessary TypoScript config section of that page:
 		if (isset($pageInformation['config'])) {
-			$frontend->mergeConfiguration($pageInformation['config']);
+			$GLOBALS['TSFE']->mergeConfiguration($pageInformation['config']);
 		}
 			// Sets the page id used to fetch the TypoScript template:
 		if (isset($pageInformation['templatePageId'])) {
-			$frontend->setTemplatePageId($pageInformation['templatePageId']);
+			$GLOBALS['TSFE']->setTemplatePageId($pageInformation['templatePageId']);
 		}
 			// Sets the first rootline page id:
 		if (isset($pageInformation['firstRootlineId'])) {
-			$frontend->setFirstRootlineId($pageInformation['firstRootlineId']);
+			$GLOBALS['TSFE']->setFirstRootlineId($pageInformation['firstRootlineId']);
 		}
 
-		$frontend->fe_user = $this->getCacheManager()->getFrontendUser();
-		$frontend->finalizeFrontendUser ();
-
-		$GLOBALS['TSFE'] = $frontend;
+		$GLOBALS['TSFE']->fe_user = $this->getCacheManager()->getFrontendUser();
+		$GLOBALS['TSFE']->finalizeFrontendUser ();
 	}
 
 	/**
