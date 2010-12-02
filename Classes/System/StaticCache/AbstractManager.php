@@ -159,7 +159,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	}
 	/**
 	 * Checks whether the URI contains arguments that could not be filtered/ignored and logs it.
-	 * This idicates missing RealURL configuration or other problems on generating URLs.
+	 * This can (NOT must) indicate missing RealURL configuration or other problems on generating URLs.
 	 *
 	 * @return	void
 	 */
