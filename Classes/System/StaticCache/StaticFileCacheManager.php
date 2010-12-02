@@ -19,7 +19,7 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManager extends Tx_Extraca
 	 */
 	protected function getCachedFolder() {
 		$cacheFolder = $this->getExtensionManager()->get('path_StaticFileCache');
-		$cachedFolder = rtrim($cacheFolder, '/') . '/';
+		$cacheFolder = rtrim($cacheFolder, '/') . '/';
 		return $cacheFolder;
 	}
 	/**
@@ -30,7 +30,6 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManager extends Tx_Extraca
 	protected function getCachedRepresentation() {
 		$cachedRepresentation = $this->getCachedFolder() . $this->getRequest()->getHostName() . '/' . $this->getCachedRepresentationGroupList() . '/';
 		$requestFileName = $this->getRequest()->getFileName();
-
 		if ($requestFileName && !Tx_Extracache_System_Tools_Uri::isIndexUri($requestFileName) && substr($requestFileName, -1) != '/') {
 			 $cachedRepresentation.= $requestFileName . '/' . Tx_Extracache_System_Tools_Uri::FILE_Index;
 		} elseif (substr($requestFileName, -1) == '/') {

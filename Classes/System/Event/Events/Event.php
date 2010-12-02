@@ -49,7 +49,7 @@ class Tx_Extracache_System_Event_Events_Event {
 	public function __construct($name, $contextObject, array $infos) {
 		$this->name = $name;
 		$this->contextObject = $contextObject;
-		$this->infos = $infos;
+		$this->setInfos( $infos );
 	}
 
 	/**
@@ -95,5 +95,12 @@ class Tx_Extracache_System_Event_Events_Event {
 	 */
 	public function isCanceled() {
 		return $this->canceled;
+	}
+
+	/**
+	 * @param array $infos
+	 */
+	public function setInfos(array $infos) {
+		$this->infos = $infos;
 	}
 }

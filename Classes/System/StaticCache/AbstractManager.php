@@ -123,15 +123,19 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		if (! isset ( $this->isRequestProcessible )) {
 			/* @var $event Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest */
 			$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest')->setFrontendUser( $this->getFrontendUser() )->setRequest( $this->getRequest() );
-			if( $this->isCachedRepresentationAvailable () === FALSE) {
+			$this->getDispatcher()->triggerEvent( $event );
+			/**
+			 * it's important, that we check if cached representation is available AFTER we have checked if we can respond
+			 * the request (otherwise a fatal-error can occur if FE-user is logging in or out; for more informations take a
+			 * look at: Tx_Extracache_System_StaticCache_EventHandler->__construct())!
+			 */
+			if($event->isCanceled() === FALSE && $this->isCachedRepresentationAvailable () === FALSE) {
 				$event->cancel();
 				$event->setReasonForCancelation( 'Check "isCachedRepresentationAvailable" prevents from using static caching' );
-			} else {
-				$this->getDispatcher()->triggerEvent( $event );
 			}
 			$this->isRequestProcessible = ($event->isCanceled() === FALSE);
 
-			if($event->isCanceled() && NULL !== $reasonForCancelation = $event->getReasonForCancelation() ) {
+			if($event->isCanceled() === TRUE && NULL !== $reasonForCancelation = $event->getReasonForCancelation() ) {
 				$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => $reasonForCancelation ) );
 			}
 		}
@@ -139,7 +143,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	}
 
 	/**
-	 * Loads the content the cached representation.
+	 * Loads the content of the cached representation.
 	 *
 	 * @return	mixed		The content of the cached representation (string)
 	 *						or false (boolean) if something went wrong
@@ -164,15 +168,6 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		if (strpos ( $filteredOriginalUri, '?' ) !== false) {
 			$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => 'URI "' . $this->getRequest()->getFileNameWithQuery () . '" contains foreign arguments.' ) );
 		}
-	}
-	/**
-	 * Sets the configuration service object to be used to fetch settings from.
-	 *
-	 * @param	tx_eft_typo3_eftConfigurationService	$configurationService The configuration service object
-	 * @return	void
-	 */
-	public function setConfigurationService(tx_eft_typo3_eftConfigurationService $configurationService) {
-		$this->configurationService = $configurationService;
 	}
 
 	/**
@@ -244,6 +239,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * @return tslib_feUserAuth
 	 */
 	protected function initializeFrontendUser() {
+		/* @var $frontendUser ux_tslib_feUserAuth */
 		$frontendUser = $this->getFrontendUser ();
 
 		if ($frontendUser->isInitialized() !== TRUE) {

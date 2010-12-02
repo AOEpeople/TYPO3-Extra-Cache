@@ -1,5 +1,3 @@
-
-
 <?php
 /***************************************************************
  * Copyright notice
@@ -29,7 +27,7 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 	private $tsfeMock;
 
 	/**
-	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	private $typoScriptCache;
 
@@ -37,7 +35,7 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->typoScriptCache = $this->getMock('Tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
+		$this->typoScriptCache = $this->getMock('tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
 
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_PostProcessContentHook', array('getTypoScriptCache'));
 		$this->hook->expects($this->any())->method('getTypoScriptCache')->will($this->returnValue($this->typoScriptCache));
@@ -80,6 +78,6 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 
 		$this->hook->addTemplatePageId(array(), $this->tsfeMock);
 
-		$this->assertEquals(987, $this->tsfeMock->config[Tx_Extracache_Typo3_TypoScriptCache::CONFIG_Key]);
+		$this->assertEquals(987, $this->tsfeMock->config[tx_Extracache_Typo3_TypoScriptCache::CONFIG_Key]);
 	}
 }

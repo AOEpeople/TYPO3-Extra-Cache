@@ -22,10 +22,10 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
-//		self::initializeEventHandling();
-//		self::initializeHooks();
+		self::initializeEventHandling();
+		self::initializeHooks();
 		self::initializeSchedulerTasks();
-//		self::initializeXClasses();
+		self::initializeXClasses();
 	}
 	
 	/**
@@ -72,6 +72,9 @@ final class Bootstrap {
 		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification.php:&tx_Extracache_Typo3_Hooks_FileReferenceModification';
 
+		// Register hook to remove cache TypoScript:
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = PATH_tx_extracache . 'Classes/Typo3/TypoScriptCache.php:&tx_Extracache_Typo3_TypoScriptCache->clearCachePostProc';
+
 		// Register pre-rendering cache to deliver statically published content:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
@@ -109,6 +112,10 @@ final class Bootstrap {
 	 * Initializes XCLASSES
 	 */
 	static protected function initializeXClasses() {
+		// Define XCLASSes for user authentication:
+		require_once PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']['tslib/class.tslib_feuserauth.php'] = PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
+
 		// Define XCLASS for nc_staticfilecache info module:
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
 	}
@@ -117,9 +124,9 @@ final class Bootstrap {
 	 */
 	static protected function addEventHandlerForLogging(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
 		$dispatcher->addLazyLoadingHandler('onCleanUpRemovedFilesError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
-		$dispatcher->addLazyLoadingHandler('onProcessCacheEventInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logInfo');
+		$dispatcher->addLazyLoadingHandler('onProcessCacheEventInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onProcessCacheEventError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
-		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logInfo');
+		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheFatalError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');

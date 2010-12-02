@@ -126,7 +126,7 @@ class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
 	 */
 	public function getFileNameWithQuery() {
 		if (!isset($this->fileNameWithQuery)) {
-			$this->fileNameWithQuery = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
+			$this->fileNameWithQuery = $this->getIndpEnvFromTypo3('TYPO3_SITE_SCRIPT');
 		}
 		return $this->fileNameWithQuery;
 	}
@@ -140,7 +140,7 @@ class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
 	 */
 	public function getHostName() {
 		if (!isset($this->hostName)) {
-			$this->hostName = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+			$this->hostName = $this->getIndpEnvFromTypo3('TYPO3_HOST_ONLY');
 		}
 		return $this->hostName;
 	}
@@ -167,5 +167,13 @@ class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
 			$result = $this->serverVariables[$name];
 		}
 		return $result;
+	}
+
+	/**
+	 * @param	string $getEnvName
+	 * @return	string
+	 */
+	protected function getIndpEnvFromTypo3($getEnvName) {
+		return t3lib_div::getIndpEnv( $getEnvName );
 	}
 }

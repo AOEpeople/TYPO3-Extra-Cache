@@ -86,9 +86,10 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->extensionManager->expects($this->once())->method('isDevelopmentContextSet')->will($this->returnValue(FALSE));
 		$this->dispatcher->dispatch();
 
-		$this->assertEquals(1, count($this->triggeredEvents));
-		$this->assertType('string', $this->triggeredEvents[0]);
-		$this->assertEquals('onStaticCacheWarning', $this->triggeredEvents[0]);
+		$this->assertEquals(2, count($this->triggeredEvents));
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertType('string', $this->triggeredEvents[1]);
+		$this->assertEquals('onStaticCacheWarning', $this->triggeredEvents[1]);
 	}
 	/**
 	 * Tests whether the instance is dispatched.
@@ -106,7 +107,8 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->cacheManager->expects($this->never())->method('loadCachedRepresentation');
 		$this->dispatcher->dispatch();
 
-		$this->assertEquals(0, count($this->triggeredEvents));
+		$this->assertEquals(1, count($this->triggeredEvents));
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
 	}
 	/**
 	 * Tests whether the instance is dispatched.
@@ -125,11 +127,12 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->cacheManager->expects($this->never())->method('getCachedRepresentationWithoutPageInformation');
 		$this->dispatcher->dispatch();
 
-		$this->assertEquals(2, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[0]);
-		$this->assertTrue($this->triggeredEvents[0]->getStaticCacheContext());
+		$this->assertEquals(3, count($this->triggeredEvents));
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
-		$this->assertFalse($this->triggeredEvents[1]->getStaticCacheContext());
+		$this->assertTrue($this->triggeredEvents[1]->getStaticCacheContext());
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[2]);
+		$this->assertFalse($this->triggeredEvents[2]->getStaticCacheContext());
 	}
 	/**
 	 * Tests whether the instance is dispatched and content is delivered and cached data is available.
@@ -149,9 +152,10 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->cacheManager->expects($this->once())->method('getCachedRepresentationWithoutPageInformation')->will($this->returnValue($testContent));
 		$this->dispatcher->dispatch();
 
-		$this->assertEquals(3, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[0]);
-		$this->assertTrue($this->triggeredEvents[0]->getStaticCacheContext());
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[1]);
+		$this->assertEquals(4, count($this->triggeredEvents));
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
+		$this->assertTrue($this->triggeredEvents[1]->getStaticCacheContext());
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[2]);
 	}
 }

@@ -21,7 +21,7 @@ class tx_Extracache_Typo3_Hooks_PostProcessContentHook {
 	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
 
 	/**
-	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected $typoScriptCache;
 
@@ -56,17 +56,17 @@ class tx_Extracache_Typo3_Hooks_PostProcessContentHook {
 	 * @return void
 	 */
 	public function addTemplatePageId(array $parameters, tslib_fe $parent) {
-		$parent->config[Tx_Extracache_Typo3_TypoScriptCache::CONFIG_Key] = $this->getTypoScriptCache()->getTemplatePageId($parent);
+		$parent->config[tx_Extracache_Typo3_TypoScriptCache::CONFIG_Key] = $this->getTypoScriptCache()->getTemplatePageId($parent);
 	}
 
 	/**
 	 * Gets an instance of the TypoScript cache.
 	 *
-	 * @return Tx_Extracache_Typo3_TypoScriptCache
+	 * @return tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected function getTypoScriptCache() {
 		if($this->typoScriptCache === NULL) {
-			$this->typoScriptCache = t3lib_div::makeInstance('Tx_Extracache_Typo3_TypoScriptCache');
+			$this->typoScriptCache = t3lib_div::makeInstance('tx_Extracache_Typo3_TypoScriptCache');
 		}
 		return $this->typoScriptCache;
 	}

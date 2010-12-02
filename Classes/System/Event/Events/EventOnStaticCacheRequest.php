@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * this event will be thrown, if a staticCache-Request exists and we must check, if we can respond the request
+ * this event will be thrown, when we must check, if we can respond the request
  * 
  * @package extracache
  * @subpackage System_Event_Events

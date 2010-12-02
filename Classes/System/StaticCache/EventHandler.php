@@ -34,9 +34,20 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	public function __construct() {
 		$checkMethods = array();
+
+		/**
+		 * It's important, that we don't use the staticCache, if a dirty page is in processing!
+		 */
 		$checkMethods['isProcessingDirtyPages'] = FALSE;
-		$checkMethods['isFrontendUserLoggingOut'] = FALSE;
+
+		/**
+		 * It's important, that we don't use the staticCache, if FE-user is logging in or out: Some extensions use hooks, which do some
+		 * stuff if FE-user is logging in or out. This hooks maybe need the object $GLOBALS['TSFE']->fe_user, which doesn't exist at the
+		 * moment (where we create/finalize the fe_user), when the hooks are called!
+		 */ 
+		$checkMethods['isFrontendUserLoggingOut'] = FALSE;	
 		$checkMethods['isFrontendUserLoggingIn'] = FALSE;
+
 		$checkMethods['isUnprocessibleRequestAction'] = FALSE;
 		$checkMethods['isPageMailerExtensionRunning'] = FALSE;
 		$checkMethods['isCrawlerExtensionRunning'] = FALSE;
@@ -188,7 +199,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	}
 	/**
 	 * Determines whether the current request cannot be answered by pre-caching in general.
-	 * The behaviour can be configured in common./unprocessibleRequestAction.
+	 * The behaviour can be configured via creating Tx_Extracache_Domain_Model_Argument-objects with Type Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible
 	 *
 	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
 	 * @return	boolean

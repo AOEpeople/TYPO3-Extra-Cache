@@ -24,7 +24,7 @@ class Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent extends Tx_Extr
 	 * name of cacheEvent
 	 * @var string
 	 */
-	protected $cacheEvent;
+	private $cacheEvent;
 	
 	/**
 	 * Constructs this event.

@@ -22,7 +22,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
 
 	/**
-	 * @var Tx_Extracache_Typo3_TypoScriptCache
+	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected $typoScriptCache;
 
@@ -37,41 +37,33 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 		$frontend = $this->getFrontend($parameters);
 
 		$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
-			// Adds the frontend user groups to the cache directory path:
+
+		// Adds the frontend user groups to the cache directory path:
 		$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
-			// Adds the frontend user groups to the static cache table:
+
+		// Adds the frontend user groups to the static cache table:
 		$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
-			// Defines the additionalHash value for database lookups:
+
+		// Defines the additionalHash value for database lookups:
 		$parameters['additionalHash'] = md5($frontendUserGroupList);
-			// Fixes a non speaking URI request (e.g. /index.php?id=13):
-		$this->fixNonSpeakingUri($parameters, $frontend);
-			// Modifies the URI to be cached to not contain any unwanted arguments:
+
+		// Fixes a non speaking URI request (e.g. /index.php?id=13):
+		list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);
+
+		// Modifies the URI to be cached to not contain any unwanted arguments:
 		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::filterUriArguments(
 			$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
 		);
 		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
-			// @todo Move to EFT
-			// Due to the disposal of scheme-specific markers the HTTP-check can be avoided in nc_staticfilecache:
-		// $parameters['isHttp'] = TRUE;
 
-			// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
-			// @todo BUFFALO_3-0: Reactivate anonymous page delivery
+		// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
+		// @todo BUFFALO_3-0: Reactivate anonymous page delivery
 		/*
 			if ($frontendUserGroupList !== '0,-1' && $this->isAnonymous($frontend)) {
 				$parameters['staticCacheable'] = FALSE;
 				// Override staticCacheable status and recreate with ignoring active frontend users:
 			} elseif ($parameters['staticCacheable'] === FALSE) {
 		*/
-
-		if ($parameters['staticCacheable'] === FALSE) {
-			$parameters['staticCacheable'] = (!$frontend->no_cache && !$frontend->isINTincScript() && !$frontend->isEXTincScript());
-		}
-
-			// Override staticCacheable status and check, if request is static cachable for t3blog-extension
-		// @todo Move to EFT
-//		if($parameters['staticCacheable'] === TRUE) {
-//			$parameters['staticCacheable'] = tx_eft_system_IoC_manager::create ( 'tx_eft_system_contentProcessor_t3blogProcessor' )->isStaticCachable();
-//		}
 
 		$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
 		$this->getEventDispatcher()->triggerEvent($event);
@@ -156,14 +148,15 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	/**
 	 * Fixes non speaking URLs.
 	 *
-	 * @param array $parameters
-	 * @param tslib_fe $frontend
-	 * @return void
+	 * @param	string $host
+	 * @param	string $uri
+	 * @param	tslib_fe $frontend
+	 * @return	array
 	 */
-	protected function fixNonSpeakingUri(array $parameters, tslib_fe $frontend) {
+	protected function fixNonSpeakingUri($host, $uri, tslib_fe $frontend) {
 		$matches = array();
 
-		if ($this->isCrawlerExtensionRunning($frontend) && preg_match('#^/index.php\?&?id=(\d+)$#', $parameters['uri'], $matches)) {
+		if ($this->isCrawlerExtensionRunning($frontend) && preg_match('#^/index.php\?&?id=(\d+)$#', $uri, $matches)) {
 			$speakingUri = $frontend->cObj->typoLink_URL(array('parameter' => $matches[1]));
 			$speakingUriParts = parse_url($speakingUri);
 			if(FALSE === $speakingUriParts){
@@ -172,14 +165,16 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			$speakingUrlPath = '/' . ltrim($speakingUriParts['path'], '/');
 				// Don't change anything if speaking URL is part of old URI:
 				// (it might be the case the using the speaking URL failed)
-			if (strpos($parameters['uri'], $speakingUrlPath) !== 0 || $speakingUrlPath === '/') {
+			if (strpos($uri, $speakingUrlPath) !== 0 || $speakingUrlPath === '/') {
 				if (isset($speakingUriParts['host'])) {
-					$parameters['host'] = $speakingUriParts['host'];
+					$host = $speakingUriParts['host'];
 				}
 
-				$parameters['uri'] = $speakingUrlPath;
+				$uri = $speakingUrlPath;
 			}
 		}
+
+		return array($host, $uri);
 	}
 
 	/**
@@ -267,11 +262,11 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	/**
 	 * Gets an instance of the TypoScript cache.
 	 *
-	 * @return Tx_Extracache_Typo3_TypoScriptCache
+	 * @return tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected function getTypoScriptCache() {
 		if($this->typoScriptCache === NULL) {
-			$this->typoScriptCache = t3lib_div::makeInstance('Tx_Extracache_Typo3_TypoScriptCache');
+			$this->typoScriptCache = t3lib_div::makeInstance('tx_Extracache_Typo3_TypoScriptCache');
 		}
 		return $this->typoScriptCache;
 	}

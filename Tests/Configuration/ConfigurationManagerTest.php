@@ -91,6 +91,8 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	public function canNotAddArgument() {
 		$this->mockedArgumentRepository->expects ( $this->never () )->method ( 'addArgument' );
 		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
+		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
+		
 		$this->manager->addArgument('', '', '');
 	}
 	/**
@@ -110,6 +112,7 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	public function canNotAddCleanerStrategy() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->never () )->method ( 'addStrategy' );
 		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
+		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
 		$this->manager->addCleanerStrategy(0, '', '', '', '');
 	}
 	/**
@@ -129,6 +132,7 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	public function canNotAddEvent() {
 		$this->mockedEventRepository->expects ( $this->never () )->method ( 'addEvent' );
 		$this->mockedEventValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
+		$this->mockedEventValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
 		$this->manager->addEvent('');
 	}
 

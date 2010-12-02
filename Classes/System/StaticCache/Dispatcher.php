@@ -34,20 +34,28 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 *
 	 * @return	void
 	 */
-	public function dispatch() {
+	public function dispatch() {		
 		try {
-			if ($this->isStaticCacheEnabled ()) {
-				// 1. we try to load the requested page from staticCache
-				$this->triggerEventOnStaticCacheContext( TRUE );
-
-				// 2. check if request is processible
-				if($this->getCacheManager()->isRequestProcessible ()) {
-					$this->flush ();
-				}
-
-				// 3. we don't any longer try to load the requested page from staticCache
-				$this->triggerEventOnStaticCacheContext( FALSE );
+			// 1. trigger event so that other extensions have the chance to do some stuff before we try to load the requested page from staticCache
+			if($this->triggerEventOnStaticCachePreprocess()->isCanceled() === TRUE) {
+				return;
 			}
+
+			// 2. check if staticCache is enabled
+			if ($this->isStaticCacheEnabled () === FALSE) {
+				return;
+			}
+
+			// 3. try to load the requested page from staticCache
+			$this->triggerEventOnStaticCacheContext( TRUE );
+
+			// 4. check if request is processible
+			if($this->getCacheManager()->isRequestProcessible ()) {
+				$this->flush ();
+			}
+
+			// 5. don't any longer try to load the requested page from staticCache
+			$this->triggerEventOnStaticCacheContext( FALSE );
 		} catch ( Exception $e ) {
 			$message = 'Exception occured in method dispatch (exceptionClass: '.get_class($e).', exceptionMessage: '.$e->getMessage().')';
 			$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
@@ -91,7 +99,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 		}
 
 		/** @var $frontend Tx_Extracache_Typo3_Frontend */
-		$frontend = t3lib_div::makeInstance(
+		$GLOBALS['TSFE'] = t3lib_div::makeInstance(
 			'Tx_Extracache_Typo3_Frontend',
 			$pageInformation['id'],
 			$pageInformation['type'],
@@ -100,21 +108,19 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 			// Restore only really necessary TypoScript config section of that page:
 		if (isset($pageInformation['config'])) {
-			$frontend->mergeConfiguration($pageInformation['config']);
+			$GLOBALS['TSFE']->mergeConfiguration($pageInformation['config']);
 		}
 			// Sets the page id used to fetch the TypoScript template:
 		if (isset($pageInformation['templatePageId'])) {
-			$frontend->setTemplatePageId($pageInformation['templatePageId']);
+			$GLOBALS['TSFE']->setTemplatePageId($pageInformation['templatePageId']);
 		}
 			// Sets the first rootline page id:
 		if (isset($pageInformation['firstRootlineId'])) {
-			$frontend->setFirstRootlineId($pageInformation['firstRootlineId']);
+			$GLOBALS['TSFE']->setFirstRootlineId($pageInformation['firstRootlineId']);
 		}
 
-		$frontend->fe_user = $this->getCacheManager()->getFrontendUser();
-		$frontend->finalizeFrontendUser ();
-
-		$GLOBALS['TSFE'] = $frontend;
+		$GLOBALS['TSFE']->fe_user = $this->getCacheManager()->getFrontendUser();
+		$GLOBALS['TSFE']->finalizeFrontendUser ();
 	}
 
 	/**
@@ -186,6 +192,14 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	protected function sendStaticCacheHttpHeader() {
 		header ( 'X-StaticCache: 1' );
+	}
+
+	/**
+	 * @return Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess
+	 */
+	private function triggerEventOnStaticCachePreprocess() {
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess');
+		return $this->getEventDispatcher()->triggerEvent( $event );
 	}
 	/**
 	 * @param boolean $staticCacheContext
