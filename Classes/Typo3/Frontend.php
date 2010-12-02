@@ -153,24 +153,8 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @return void
 	 */
 	public function initializeTemplateCallback(t3lib_TStemplate $template) {
-		/*
-		 * Sets the paths from where TypoScript resources are allowed to be used
-		 * 
-		 * @TODO: check, if we can set $template->allowedPaths on another way (now, we set it hardcoded)!
-		 * If we do not set this array, some images will not be shown in static-cache-context (because method t3lib_tstemplate->getFileName() return nothing)!!!
-		 */ 
-		$template->allowedPaths = Array(
-			'media/',
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],	// fileadmin/ path
-			'uploads/',
-			'typo3temp/',
-			't3lib/fonts/',
-			TYPO3_mainDir . 'ext/',
-			TYPO3_mainDir . 'sysext/',
-			TYPO3_mainDir . 'contrib/',
-			'typo3conf/ext/'
-		);
-			// typolink checks against linksaccrossdomains and thus needs at least the first rootline id:
+		$template->init();
+		// typolink checks against linksaccrossdomains and thus needs at least the first rootline id:
 		if ($this->firstRootlineId) {
 			$template->rootLine[0]['uid'] = $this->firstRootlineId;
 		}
