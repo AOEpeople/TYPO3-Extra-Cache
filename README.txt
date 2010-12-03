@@ -15,7 +15,7 @@ Overview of system related internals used or defined by the extension 'extracach
 	3. If statically cached content is available, modify the cached content (if required) and send it to the client
 
 
-3. Which interfaces provides this extension?
+3) Which interfaces provides this extension?
 	* You can define several arguments (take a look at class Tx_Extracache_Domain_Model_Argument for further information):
 		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addArgument( [type], [name], [value] );
 
@@ -29,8 +29,36 @@ Overview of system related internals used or defined by the extension 'extracach
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addLazyLoadingHandler( [eventName], [handlerObjectName], [handlerObjectMethod] );
 
+	* You can trigger cache-events:
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', [cacheEvent]);
+		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
 
-4) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()
+
+4) How can i define this:
+	4.1) Delete statically cached content of all subpages and all variants of page X and update statically cached content of page X if event 'onUpdateProductCatalogue' occur?
+			1. Install extension 'nc_staticfilecache'
+
+			2. activate option 'markDirtyInsteadOfDeletion' of nc_staticfilecache-Extension inside the extension-manager (this is important, so we can delete the TYPO3-cache, but the statically cached content is still there)
+
+			3. define cache-cleanerStrategies:
+			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, '0', 'Clear: Frontend-Cache (page with subpages)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent, '1', 'Clear: subpages (with variants)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, '2', 'Clear: page (only variants)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, '3', 'Update: page (without variants)');
+
+			4. define cache-event:
+			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+			$configurationManager->addEvent( 'onUpdateProductCatalogue', 'productCatalogue was updated' );
+
+			5. Configure page X in TYPO3-BE (add created cache-cleanerStrategies (in correct order, as you defined them) and cache-event to the page-properties of page X)
+
+			6. Process event 'onUpdatedProductCatalogue':
+			$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'onUpdateProductCatalogue');
+			t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
+
+
+5) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()
 
 	* Tx_Extracache_Validation_Validator_Argument
 		+ 1289897741: checkName() -> 'name is not valid'
