@@ -10,7 +10,9 @@
 ***************************************************************/
 
 /**
- * this event will be thrown, if the request could be respond by staticCacheDispatcher and some other extensions want to modify the response before the response will be send to the client
+ * this event will be thrown, if the request could be respond by staticCacheDispatcher and some other extensions want
+ * to modify the response before the response will be send to the client in:
+ *  - tx_Extracache_System_StaticCache_Dispatcher
  * 
  * @package extracache
  * @subpackage System_Event_Events

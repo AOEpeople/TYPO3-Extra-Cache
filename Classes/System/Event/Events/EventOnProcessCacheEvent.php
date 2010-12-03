@@ -9,7 +9,8 @@
 ***************************************************************/
 
 /**
- * This event will be thrown if cacheEvent should be processed
+ * This event will be thrown if cacheEvent should be processed.
+ * This event must be thrown by external extensions, which wants to use the feature 'cache-events'.
  * 
  * @package extracache
  * @subpackage System_Event_Events

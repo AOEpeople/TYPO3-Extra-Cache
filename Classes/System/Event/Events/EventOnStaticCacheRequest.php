@@ -10,7 +10,8 @@
 ***************************************************************/
 
 /**
- * this event will be thrown, when we must check, if we can respond the request
+ * this event will be thrown, when we must check, if we can respond the request in:
+ *  - Tx_Extracache_System_StaticCache_AbstractManager
  * 
  * @package extracache
  * @subpackage System_Event_Events

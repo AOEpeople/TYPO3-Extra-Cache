@@ -10,7 +10,8 @@
 ***************************************************************/
 
 /**
- * this event will be thrown, if a staticCacheContext will be reached or will be left
+ * this event will be thrown, if a staticCacheContext will be reached or will be left in:
+ *  - tx_Extracache_System_StaticCache_Dispatcher
  * 
  * @package extracache
  * @subpackage System_Event_Events

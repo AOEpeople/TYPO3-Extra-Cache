@@ -6,6 +6,9 @@ Overview of system related internals used or defined by the extension 'extracach
 	* Cache TYPO3-pages with nc_staticfilecache and modify statically cached content before sending it to the client
 	* Delete or update statically cached content if a certain event occur
 	* BE-modul for admins to show infos and delete statically cached content
+	* Scheduler-Task to clean-up removed files (files will not be deleted immediately (if editor delete them inside the TYPO3-BE), because
+	  statically cached content maybe have references to that files). Execute this scheduler-task not till then all statically cached content
+	  have been deleted or updated, so they have no more references to the deleted files!
 
 
 2) How does this extension works?
@@ -59,7 +62,6 @@ Overview of system related internals used or defined by the extension 'extracach
 
 
 5) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()
-
 	* Tx_Extracache_Validation_Validator_Argument
 		+ 1289897741: checkName() -> 'name is not valid'
 		+ 1289897742: checkType() -> 'type is not supported'

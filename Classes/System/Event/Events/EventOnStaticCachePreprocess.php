@@ -10,7 +10,8 @@
 ***************************************************************/
 
 /**
- * this event will be thrown, before the staticCache-Dispatcher try to load the requested page from staticCache
+ * this event will be thrown, before the staticCache-Dispatcher try to load the requested page from staticCache in:
+ *  - tx_Extracache_System_StaticCache_Dispatcher
  * 
  * @package extracache
  * @subpackage System_Event_Events

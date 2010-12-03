@@ -9,7 +9,8 @@
 ***************************************************************/
 
 /**
- * This event will be thrown whan static files are written or cleaned up.
+ * This event will be thrown when static files are written or cleaned up in:
+ *  - Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook
  * 
  * @package extracache
  * @subpackage System_Event_Events

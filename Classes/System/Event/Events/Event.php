@@ -10,6 +10,9 @@
 ***************************************************************/
 
 /**
+ * This generic event will be thrown to log some infos in:
+ *  - tx_Extracache_System_StaticCache_Dispatcher
+ * 
  * @package extracache
  * @subpackage System_Event_Events
  */
