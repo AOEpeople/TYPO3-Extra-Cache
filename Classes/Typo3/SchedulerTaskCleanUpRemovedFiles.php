@@ -15,7 +15,7 @@ require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification
  * scheduler-task to clean-up removed files
  * 
  * @package extracache
- * @subpackage Typo3_Hooks
+ * @subpackage Typo3
  */
 class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends tx_scheduler_Task {
 	/**
