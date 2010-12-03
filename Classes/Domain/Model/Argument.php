@@ -10,7 +10,8 @@
 ***************************************************************/
 
 /**
- * entity-object
+ * entity-object, which defines an argument.
+ * 
  * @package extracache
  */
 class Tx_Extracache_Domain_Model_Argument {
@@ -31,7 +32,8 @@ class Tx_Extracache_Domain_Model_Argument {
 	 */
 	const TYPE_whitelist = 'whitelist';
 	/**
-	 * 
+	 * define config, which should be placed in entity 'config' of object:
+	 *  - Tx_Extracache_Typo3_Frontend
 	 */
 	const TYPE_frontendConfig = 'frontendConfig';
 

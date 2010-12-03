@@ -38,13 +38,11 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 	 * @param integer $actions
 	 */
 	private function actionsAreValid($actions) {
-		$actionsContainActionNone = $actions & Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_None;
 		$actionsContainActionStaticUpdate = $actions & Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate;
 		$actionsContainActionStaticClear = $actions & Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear;
 		$actionsContainActionStaticDirty = $actions & Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty;
 		$actionsContainActionTYPO3Clear = $actions & Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear;
 		if(
-			(boolean) $actionsContainActionNone === FALSE &&
 			(boolean) $actionsContainActionStaticUpdate === FALSE &&
 			(boolean) $actionsContainActionStaticClear === FALSE &&
 			(boolean) $actionsContainActionStaticDirty === FALSE &&

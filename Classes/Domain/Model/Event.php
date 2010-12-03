@@ -10,7 +10,9 @@
 ***************************************************************/
 
 /**
- * entity-object
+ * entity-object, which defines a cache-event.
+ * A cache-event can be triggered to start processing cache-cleanerStrategies. A cache-event is a property of the TYPO3-record 'pages'.
+ * 
  * @package extracache
  */
 class Tx_Extracache_Domain_Model_Event {

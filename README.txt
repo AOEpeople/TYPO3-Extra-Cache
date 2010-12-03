@@ -1,7 +1,36 @@
 Overview of system related internals used or defined by the extension 'extracache'
 ------------------------------------------------------------------------------------------------------------------------
 
-1) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()
+1) What does this extension provides?
+	* Cache TYPO3-pages with nc_staticfilecache for different FE-user-groups
+	* Cache TYPO3-pages with nc_staticfilecache and modify statically cached content before sending it to the client
+	* Delete or update statically cached content if a certain event occur
+	* BE-modul for admins to show infos and delete statically cached content
+
+
+2) How does this extension works?
+	1. TYPO3-Frontend must be called via index.php
+	2. 'preprocessRequest'-Hook in tslib/index_ts.php will be used, to check, if the request can be responsed via statically cached content
+		(the statically cached content must be written before via nc_staticfilecache)
+	3. If statically cached content is available, modify the cached content (if required) and send it to the client
+
+
+3. Which interfaces provides this extension?
+	* You can define several arguments (take a look at class Tx_Extracache_Domain_Model_Argument for further information):
+		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addArgument( [type], [name], [value] );
+
+	* You can define several cache-cleanerStrategies (take a look at class Tx_Extracache_Domain_Model_CleanerStrategy for further information):
+		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addCleanerStrategy( [actions], [childrenMode], [elementsMode], [key], [name] );
+
+	* You can define several cache-events (take a look at class Tx_Extracache_Domain_Model_Event for further information):
+		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addEvent( [key], [name] );
+
+	* You can use several events to modfiy/add logic (the most important events are defined in Classes/System/Event/Events/) if you add your own eventHandler to Tx_Extracache_System_Event_Dispatcher: 
+		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );
+		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addLazyLoadingHandler( [eventName], [handlerObjectName], [handlerObjectMethod] );
+
+
+4) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()
 
 	* Tx_Extracache_Validation_Validator_Argument
 		+ 1289897741: checkName() -> 'name is not valid'

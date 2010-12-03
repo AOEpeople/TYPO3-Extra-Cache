@@ -65,27 +65,6 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	}
 
 	/**
-	 * Tests whether empty configuration is parsed and but not processed.
-	 * @test
-	 */
-	public function isEmptyConfigurationParsedAndNotProcessed() {
-		$this->createTestDB();
-
-		$pageId = $this->pageIds[0];
-		$this->mockedTceMain->expects($this->never())->method('clear_cacheCmd');
-		$this->mockedStaticFileCache->expects($this->never())->method('deleteStaticCacheDirectory');
-		$this->mockedStaticFileCache->expects($this->never())->method('processDirtyPagesElement');
-		$this->mockedTypo3DbBackend->expects($this->never())->method('updateQuery');
-		$this->mockedTypo3DbBackend->expects($this->never())->method('deleteQuery');
-
-		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_None;
-		$childrenMode = NULL;
-		$elementsMode = NULL;
-		$this->processCleanerInstruction($pageId, $actions, $childrenMode, $elementsMode);
-
-		$this->dropDatabase();
-	}
-	/**
 	 * Tests whether clearing TYPO3 cache is processed.
 	 * @test
 	 */

@@ -54,8 +54,6 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
 		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear + Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty, NULL, NULL);		
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_None, NULL, NULL);		
-		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, NULL, NULL);		
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, NULL, NULL);		
