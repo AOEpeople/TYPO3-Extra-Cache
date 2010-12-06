@@ -15,7 +15,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']) > 0) {
 </style>
 
 
-<h2>Alle Datenbankeinträge (<?php echo count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']). ' Einträge';?>):</h2>
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_allDatabaseentries').' ('.count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']). ' '.$GLOBALS['LANG']->getLL('entries').'):';?></h2>
 <table border="0" cellspacing="1" class="lrPadding" width="100%">
 	<tr class="bgColor5 tableheader">
 		<?php

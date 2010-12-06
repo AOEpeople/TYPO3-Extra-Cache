@@ -9,23 +9,22 @@
 <form name="setConfigGetFoldersWhichDoesNotContainFiles" action="index.php" method="GET">
 	<?php
 	$checked = '';
-	if($GLOBALS['BE_USER']->getModuleData('tx_staticfilecache_manager_getFoldersWhichDoesNotContainFiles') !== FALSE) {
+	if($GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles') !== FALSE) {
 		$checked = ' checked="checked"';
 	}
 	?>
 	<input type="hidden" name="action" value="setConfigGetFoldersWhichDoesNotContainFiles" />
 	<input onClick="javascript:this.form.submit();" type="checkbox" value="1" name="getFoldersWhichDoesNotContainFiles" <?php echo $checked;?> />
-	Ordner, welche keine Dateien enthalten, anzeigen
+	<?php echo $GLOBALS['LANG']->getLL('showEmptyDirectories');?>
 </form>
 <br /><br />
 
 
-<h2>Alle Ordner (<?php echo count($GLOBALS['view_data']['allFolders']). ' Einträge';?>):</h2>
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_allDirectories').' ('.count($GLOBALS['view_data']['allFolders']).' '.$GLOBALS['LANG']->getLL('entries').'):';?></h2>
 <table border="0" cellspacing="1" class="lrPadding" width="100%">
 	<tr class="bgColor5 tableheader">
-		
-		<th>Name</th>
-		<th>Aktion</th>
+		<th><?php echo $GLOBALS['LANG']->getLL('headline_entityName');?></th>
+		<th><?php echo $GLOBALS['LANG']->getLL('headline_entityAction');?></th>
 	</tr>
 
 <?php 
@@ -33,7 +32,7 @@ foreach($GLOBALS['view_data']['allFolders'] as $file){
 	?>
 	<tr class="bgColor4">
 		<td class="nowrap"><?php echo $file->getName(); ?></td>
-		<td class="nowrap"><a href="?action=deleteFolder&id=<?php echo $file->getIdentifier(); ?>">L&ouml;schen</a></td>
+		<td class="nowrap"><a href="?action=deleteFolder&id=<?php echo $file->getIdentifier(); ?>"><?php echo $GLOBALS['LANG']->getLL('entityActionDelete');?></a></td>
 	</tr>
 	<?php 
 }
