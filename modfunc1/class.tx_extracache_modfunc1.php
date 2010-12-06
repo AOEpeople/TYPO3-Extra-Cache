@@ -60,11 +60,13 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $SOBE, $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-		$cacheDatabaseEntryRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTableEventqueue  = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTablePages  = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTableStaticCache = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
 		$cacheFileRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheFileRepository' );
 		$extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		$view = t3lib_div::makeInstance ( 'Tx_Extracache_View_View' );
-		$this->cacheManagementController = t3lib_div::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepository, $cacheFileRepository, $extensionManager, $view);
+		$this->cacheManagementController = t3lib_div::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
 		
 		$action = t3lib_div::_GP ( 'action' );
 		if(empty($action)){

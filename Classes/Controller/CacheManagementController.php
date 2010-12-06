@@ -20,7 +20,15 @@ class Tx_Extracache_Controller_CacheManagementController {
 	/**
 	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
 	 */
-	private $cacheDatabaseEntryRepository;
+	private $cacheDatabaseEntryRepositoryForTableEventqueue;
+	/**
+	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
+	 */
+	private $cacheDatabaseEntryRepositoryForTablePages;
+	/**
+	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
+	 */
+	private $cacheDatabaseEntryRepositoryForTableStaticCache;
 	/**
 	 * @var Tx_Extracache_Domain_Repository_CacheFileRepository
 	 */
@@ -36,28 +44,65 @@ class Tx_Extracache_Controller_CacheManagementController {
 
 	/**
 	 * Initializes  controller
-	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository	$cacheDatabaseEntryRepository
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository	$cacheDatabaseEntryRepositoryForTableEventqueue
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository	$cacheDatabaseEntryRepositoryForTablePages
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository	$cacheDatabaseEntryRepositoryForTableStaticCache
 	 * @param Tx_Extracache_Domain_Repository_CacheFileRepository			$cacheFileRepository
 	 * @param Tx_Extracache_Configuration_ExtensionManager					$extensionManager
 	 * @param Tx_Extracache_View_View $view
 	 */
-	public function __construct(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepository, Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository, Tx_Extracache_Configuration_ExtensionManager $extensionManager, Tx_Extracache_View_View $view) {
-		$this->setCacheDatabaseEntryRepository( $cacheDatabaseEntryRepository );
+	public function __construct(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableEventqueue, Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTablePages, Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableStaticCache, Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository, Tx_Extracache_Configuration_ExtensionManager $extensionManager, Tx_Extracache_View_View $view) {
+		$this->setCacheDatabaseEntryRepositoryForTableEventqueue( $cacheDatabaseEntryRepositoryForTableEventqueue );
+		$this->setCacheDatabaseEntryRepositoryForTablePages( $cacheDatabaseEntryRepositoryForTablePages );
+		$this->setCacheDatabaseEntryRepositoryForTableStaticCache( $cacheDatabaseEntryRepositoryForTableStaticCache );
 		$this->setCacheFileRepository( $cacheFileRepository );
 		$this->setExtensionManager( $extensionManager );
 		$this->setView( $view );
 		$this->getView()->setTemplatePath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'Private' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR );
-		$this->getCacheDatabaseEntryRepository()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
+		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setFileTable ( 'tx_extracache_eventqueue' );
+		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setOrderBy( 'first_called_time,status' );
+		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFileTable ( 'pages' );
+		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'title' );
+		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
+		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setOrderBy( 'host,uri' );
 		$this->getCacheFileRepository()->setCacheDir ( PATH_site . $this->getExtensionManager()->get('path_StaticFileCache') );
 	}
 
 	/**
+	 * show all database-entries of table 'tx_extracache_eventqueue'
+	 * 
 	 * @return string
 	 */
-	public function allDatabaseEntrysAction() {
+	public function allDatabaseEntrysForTableEventqueueAction() {
 		try {
-			$this->getView()->assign ( 'allDatabaseEntrys', $this->getCacheDatabaseEntryRepository()->getAll () );
-			return $this->getView()->render ( 'allDatabaseEntrys' );
+			$this->getView()->assign ( 'allDatabaseEntrysForTableEventqueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->getAll () );
+			return $this->getView()->render ( 'allDatabaseEntrysForTableEventqueue' );
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * show all database-entries of table 'pages', where page-configuration for 'cleanerStrategies' or 'cacheEvents' is set
+	 * 
+	 * @return string
+	 */
+	public function allDatabaseEntrysForTablePagesAction() {
+		try {
+			$this->getView()->assign ( 'allDatabaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->query ( 'tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\'' ) );
+			return $this->getView()->render ( 'allDatabaseEntrysForTablePages' );
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * show all database-entries of staticCache-table
+	 * 
+	 * @return string
+	 */
+	public function allDatabaseEntrysForTableStaticCacheAction() {
+		try {
+			$this->getView()->assign ( 'allDatabaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->getAll () );
+			return $this->getView()->render ( 'allDatabaseEntrysForTableStaticCache' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
 		}
@@ -114,7 +159,12 @@ class Tx_Extracache_Controller_CacheManagementController {
 	public function indexAction() {
 		try {
 			$this->getView()->assign ( 'countFiles', $this->getCacheFileRepository()->countAll () );
-			$this->getView()->assign ( 'countDatbaseEntrys', $this->getCacheDatabaseEntryRepository()->countAll () );
+			$this->getView()->assign ( 'countDatbaseEntrysForTableEventqueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->countAll () );
+			$this->getView()->assign ( 'countDatbaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->count ( 'tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\'' ) );
+			$this->getView()->assign ( 'countDatbaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->countAll () );
+			$this->getView()->assign ( 'tableEventQueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->getFileTable () );
+			$this->getView()->assign ( 'tablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->getFileTable () );
+			$this->getView()->assign ( 'tableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->getFileTable () );
 			return $this->getView()->render ( 'index' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -135,8 +185,20 @@ class Tx_Extracache_Controller_CacheManagementController {
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
 	 */
-	private function getCacheDatabaseEntryRepository() {
-		return $this->cacheDatabaseEntryRepository;
+	private function getCacheDatabaseEntryRepositoryForTableEventqueue() {
+		return $this->cacheDatabaseEntryRepositoryForTableEventqueue;
+	}
+	/**
+	 * @return Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
+	 */
+	private function getCacheDatabaseEntryRepositoryForTablePages() {
+		return $this->cacheDatabaseEntryRepositoryForTablePages;
+	}
+	/**
+	 * @return Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
+	 */
+	private function getCacheDatabaseEntryRepositoryForTableStaticCache() {
+		return $this->cacheDatabaseEntryRepositoryForTableStaticCache;
 	}
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CacheFileRepository
@@ -158,10 +220,22 @@ class Tx_Extracache_Controller_CacheManagementController {
 	}
 
 	/**
-	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepository
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableEventqueue
 	 */
-	private function setCacheDatabaseEntryRepository(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepository) {
-		$this->cacheDatabaseEntryRepository = $cacheDatabaseEntryRepository;
+	private function setCacheDatabaseEntryRepositoryForTableEventqueue(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableEventqueue) {
+		$this->cacheDatabaseEntryRepositoryForTableEventqueue = $cacheDatabaseEntryRepositoryForTableEventqueue;
+	}
+	/**
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTablePages
+	 */
+	private function setCacheDatabaseEntryRepositoryForTablePages(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTablePages) {
+		$this->cacheDatabaseEntryRepositoryForTablePages = $cacheDatabaseEntryRepositoryForTablePages;
+	}
+	/**
+	 * @param Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableStaticCache
+	 */
+	private function setCacheDatabaseEntryRepositoryForTableStaticCache(Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository $cacheDatabaseEntryRepositoryForTableStaticCache) {
+		$this->cacheDatabaseEntryRepositoryForTableStaticCache = $cacheDatabaseEntryRepositoryForTableStaticCache;
 	}
 	/**
 	 * @param Tx_Extracache_Domain_Repository_CacheFileRepository $cacheFileRepository

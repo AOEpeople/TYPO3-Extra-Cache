@@ -18,7 +18,19 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 	 * @var string
 	 */
 	private $fileTable;
-	
+	/**
+	 * @var string
+	 */
+	private $orderBy='';
+
+	/**
+	 * @param string $where
+	 * @return integer
+	 */
+	public function count($where = ''){
+		$db = $GLOBALS['TYPO3_DB'];
+		return intval($db->exec_SELECTcountRows('*', $this->getFileTable(),$where));
+	}
 	/**
 	 * @return integer
 	 */
@@ -31,29 +43,47 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 	public function getAll() {
 		return $this->query();
 	}
-	
+	/**
+	 * @return string
+	 */
+	public function getFileTable() {
+		return $this->fileTable;
+	}
+
+	/**
+	 * @param string $where
+	 * @return array
+	 */
+	public function query($where = '1=1'){
+		$db = $GLOBALS['TYPO3_DB'];
+		$rows = $db->exec_SELECTgetRows('*', $this->getFileTable(), $where, '', $this->getOrderBy());
+		$entries = array();
+		foreach($rows as $row){
+			$entries[] = $this->createCacheDatabaseEntry( $row );
+		}
+		return $entries;
+	}
+
 	/**
 	 * @param string $fileTable
 	 */
 	public function setFileTable($fileTable) {
 		$this->fileTable = $fileTable;
 	}
-	
 	/**
-	 * @return string
+	 * @param string $orderBy
 	 */
-	protected function getFileTable() {
-		return $this->fileTable;
+	public function setOrderBy($orderBy) {
+		$this->orderBy = $orderBy;
 	}
 
 	/**
-	 * @param string $where
-	 * @return integer
+	 * @return string
 	 */
-	private function count($where = ''){
-		$db = $GLOBALS['TYPO3_DB'];
-		return intval($db->exec_SELECTcountRows('uid', $this->getFileTable(),$where));
+	protected function getOrderBy() {
+		return $this->orderBy;
 	}
+
 	/**
 	 * @param	array $row
 	 * @return	Tx_Extracache_Domain_Model_CacheDatabaseEntry
@@ -66,19 +96,5 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 			call_user_func(array($entry, $methodName), $value);
 		}
 		return $entry;
-	}
-	/**
-	 * @param string $where
-	 * @return array
-	 */
-	private function query($where = '1=1'){
-		$db = $GLOBALS['TYPO3_DB'];
-		$orderBy = 'host,uri';
-		$rows = $db->exec_SELECTgetRows('*', $this->getFileTable(), $where, '', $orderBy);
-		$entries = array();
-		foreach($rows as $row){
-			$entries[] = $this->createCacheDatabaseEntry( $row );
-		}
-		return $entries;
 	}
 }

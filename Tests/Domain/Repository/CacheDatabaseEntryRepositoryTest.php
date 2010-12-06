@@ -26,6 +26,7 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepositoryTest extends T
 	protected function setUp() {
 		$this->cacheDatabaseEntryRepository = new Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository ();
 		$this->cacheDatabaseEntryRepository->setFileTable('tx_ncstaticfilecache_file');
+		$this->cacheDatabaseEntryRepository->setOrderBy( 'host,uri' );
 		$this->assertTrue($this->createDatabase());
 		$this->useTestDatabase();
 		$this->importExtensions(array('nc_staticfilecache'));
@@ -41,10 +42,19 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepositoryTest extends T
 		
 	}
 	/**
+	 * Tests Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository->count()
+	 * @test
+	 */
+	public function canCount() {
+		$result = $this->cacheDatabaseEntryRepository->count ('uid=918434');
+		$this->assertType ( 'integer', $result );
+		$this->assertEquals ( 1, $result );
+	}
+	/**
 	 * Tests Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository->countAll()
 	 * @test
 	 */
-	public function countAll() {
+	public function canCountAll() {
 		$result = $this->cacheDatabaseEntryRepository->countAll ();
 		$this->assertType ( 'integer', $result );
 		$this->assertEquals ( 2, $result );
@@ -53,9 +63,22 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepositoryTest extends T
 	 * Tests Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository->getAll()
 	 * @test
 	 */
-	public function getAll() {
+	public function canGetAll() {
 		$result = $this->cacheDatabaseEntryRepository->getAll ();
 		$this->assertType ( 'array', $result );
+		$this->assertEquals( count($result), 2 );
+		foreach ($result as $item){
+			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheDatabaseEntry', $item );
+		}
+	}
+	/**
+	 * Tests Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository->query()
+	 * @test
+	 */
+	public function canQuery() {
+		$result = $this->cacheDatabaseEntryRepository->query ('uid=918434');
+		$this->assertType ( 'array', $result );
+		$this->assertEquals( count($result), 1 );
 		foreach ($result as $item){
 			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheDatabaseEntry', $item );
 		}

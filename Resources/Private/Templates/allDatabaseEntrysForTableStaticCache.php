@@ -1,8 +1,8 @@
 <?php
 $defaultColumns = array('tstamp','crdate','cache_timeout','host','uri','file','uid','pid','isdirty','explanation','additionalhash');
 $additionalColumns = array();
-if(count($GLOBALS['view_data']['allDatabaseEntrys']) > 0) {
-	$additionalColumns = array_diff($GLOBALS['view_data']['allDatabaseEntrys'][0]->getRecordKeys(), $defaultColumns);
+if(count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']) > 0) {
+	$additionalColumns = array_diff($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache'][0]->getRecordKeys(), $defaultColumns);
 	sort( $additionalColumns );
 }
 ?>
@@ -15,7 +15,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrys']) > 0) {
 </style>
 
 
-<h2>Alle Datenbankeinträge (<?php echo count($GLOBALS['view_data']['allDatabaseEntrys']). ' Einträge';?>):</h2>
+<h2>Alle Datenbankeinträge (<?php echo count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']). ' Einträge';?>):</h2>
 <table border="0" cellspacing="1" class="lrPadding" width="100%">
 	<tr class="bgColor5 tableheader">
 		<?php
@@ -29,7 +29,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrys']) > 0) {
 	</tr>
 
 	<?php 
-	foreach($GLOBALS['view_data']['allDatabaseEntrys'] as $databaseEntry){
+	foreach($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache'] as $databaseEntry){
 		$timeout = ($databaseEntry->getTstamp() > 0) ? t3lib_BEfunc::calcAge(($databaseEntry->getCache_timeout()),$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) : '';
 		?>
 		<tr class="bgColor4">
