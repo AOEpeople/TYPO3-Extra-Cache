@@ -24,16 +24,30 @@ class Tx_Extracache_Domain_Model_Event {
 	 * @var string
 	 */
 	private $name;
+	/**
+	 * define, when the event should be processed (0 ==> instantly, otherwise at the earliest in X seconds)
+	 * 
+	 * @var integer
+	 */
+	private $interval;
 	
 	/**
-	 * @param string $key
-	 * @param string $name
+	 * @param string	$key
+	 * @param string	$name
+	 * @param integer	$interval
 	 */
-	public function __construct($key, $name) {
+	public function __construct($key, $name, $interval) {
 		$this->key = $key;
 		$this->name = $name;
+		$this->interval = $interval;
 	}
 
+	/**
+	 * @return integer
+	 */
+	public function getInterval() {
+		return $this->interval;
+	}
 	/**
 	 * @return string
 	 */

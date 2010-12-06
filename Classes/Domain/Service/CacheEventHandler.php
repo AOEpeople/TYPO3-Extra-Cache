@@ -22,6 +22,10 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 */
 	private $eventDispatcher;
 	/**
+	 * @var Tx_Extracache_System_EventQueue
+	 */
+	private $eventQueue;
+	/**
 	 * @var Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	private $eventRepository;
@@ -32,14 +36,30 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 
 	/**
 	 * @param	Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event
-	 * @throws	RuntimeException
 	 */
 	public function handleEventOnProcessCacheEvent(Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event) {
-		$eventKey = $event->getCacheEvent();
-		if($this->getEventRepository()->hasEvent($eventKey) === FALSE) {
-			throw new RuntimeException('event '.$eventKey.' is unknown!');
+		$cacheEvent = $this->getCacheEvent( $event );
+		if($cacheEvent->getInterval() > 0) {
+			$this->getEventQueue()->addEvent( $cacheEvent );
+		} else {
+			$this->processCacheEvent( $cacheEvent->getKey() );
 		}
-		$this->processCacheEvent($eventKey);
+	}
+	/**
+	 * @param	string $eventKey
+	 */
+	public function processCacheEvent($eventKey) {
+		$message = 'start event "onProcessCacheEvent" with cacheEvent "'.$eventKey.'"';
+		$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventInfo', $this, array ('message' => $message ) );
+
+		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent($eventKey) as $page) {
+			try {
+				$this->processPageWithCacheEvent( $page, $eventKey );
+			} catch (Exception $e) {
+				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
+				$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventError', $this, array ('message' => $message ) );
+			}
+		}
 	}
 
 	/**
@@ -67,6 +87,15 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 		return $this->eventDispatcher;
 	}
 	/**
+	 * @return Tx_Extracache_System_EventQueue
+	 */
+	protected function getEventQueue() {
+		if($this->eventQueue === NULL) {
+			$this->eventQueue = t3lib_div::makeInstance('Tx_Extracache_System_EventQueue');
+		}
+		return $this->eventQueue;
+	}
+	/**
 	 * @return Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	protected function getEventRepository() {
@@ -86,20 +115,16 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	}
 
 	/**
-	 * @param	string $eventKey
+	 * @param	Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event
+	 * @return	Tx_Extracache_Domain_Model_Event
+	 * @throws	RuntimeException
 	 */
-	private function processCacheEvent($eventKey) {
-		$message = 'start event "onProcessCacheEvent" with cacheEvent "'.$eventKey.'"';
-		$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventInfo', $this, array ('message' => $message ) );
-
-		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent($eventKey) as $page) {
-			try {
-				$this->processPageWithCacheEvent( $page, $eventKey );
-			} catch (Exception $e) {
-				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
-				$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventError', $this, array ('message' => $message ) );
-			}
+	private function getCacheEvent(Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event) {
+		$eventKey = $event->getCacheEvent();
+		if($this->getEventRepository()->hasEvent($eventKey) === FALSE) {
+			throw new RuntimeException('event '.$eventKey.' is unknown!');
 		}
+		return $this->getEventRepository()->getEvent( $eventKey );
 	}
 	/**
 	 * @param array $page

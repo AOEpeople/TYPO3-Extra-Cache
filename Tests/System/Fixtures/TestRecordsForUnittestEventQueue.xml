@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<tx_extracache_eventqueue>
+		<event_interval>1000</event_interval>
+		<event_key>testEvent1</event_key>
+		<first_called_time>10000</first_called_time>
+		<status>0</status>
+	</tx_extracache_eventqueue>
+	<tx_extracache_eventqueue>
+		<event_interval>1000</event_interval>
+		<event_key>testEvent2</event_key>
+		<first_called_time>11000</first_called_time>
+		<status>0</status>
+	</tx_extracache_eventqueue>
+	<tx_extracache_eventqueue>
+		<event_interval>1000</event_interval>
+		<event_key>testEvent3</event_key>
+		<first_called_time>1000</first_called_time>
+		<status>1</status>
+	</tx_extracache_eventqueue>
+</dataset>

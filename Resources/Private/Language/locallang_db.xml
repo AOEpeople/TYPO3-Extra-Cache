@@ -11,6 +11,8 @@
 			<label index="moduleFunction.tx_extracache_modfunc1">Static Cache Files</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.name">Clean-Up: Remove files</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.description">delete old files</label>
+			<label index="scheduler_task_processEventQueue.name">Process: event-queue</label>
+			<label index="scheduler_task_processEventQueue.description">process event-queue</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages.tx_extracache_cleanerstrategies">Cache-Strategien</label>
@@ -18,6 +20,8 @@
 			<label index="moduleFunction.tx_extracache_modfunc1">Statisch gecachte Dateien</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.name">Clean-Up: Lösche Dateien</label>
 			<label index="scheduler_task_cleanUpRemovedFiles.description">Lösche alte Dateien</label>
+			<label index="scheduler_task_processEventQueue.name">Abarbeiten: Event-Queue</label>
+			<label index="scheduler_task_processEventQueue.description">Event-Queue abarbeiten</label>
 		</languageKey>
 	</data>
 </T3locallang>

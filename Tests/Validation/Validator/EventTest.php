@@ -49,7 +49,7 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 */
 	public function eventIsValid() {
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
-		$this->assertTrue( $this->validator->isValid( $this->createEvent() ) );
+		$this->assertTrue( $this->validator->isValid( $this->createEvent(0) ) );
 	}
 	/**
 	 * test method isValid
@@ -57,13 +57,18 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 */
 	public function eventIsNotValid() {
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( TRUE ) );
-		$this->assertFalse( $this->validator->isValid( $this->createEvent() ) );
+		$this->assertFalse( $this->validator->isValid( $this->createEvent(0) ) );
+
+		$this->setUp();
+		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
+		$this->assertFalse( $this->validator->isValid( $this->createEvent(-1) ) );
 	}
 
 	/**
+	 * @param integer $interval
 	 * @return Tx_Extracache_Domain_Model_Event
 	 */
-	private function createEvent() {
-		return new Tx_Extracache_Domain_Model_Event('testkey', 'testname');
+	private function createEvent($interval) {
+		return new Tx_Extracache_Domain_Model_Event('testkey', 'testname', $interval);
 	}
 }

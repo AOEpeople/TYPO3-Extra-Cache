@@ -30,3 +30,15 @@ CREATE TABLE tx_extracache_fileremovequeue (
 
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+
+#
+# Table structure for table 'tx_extracache_eventqueue'
+#
+CREATE TABLE tx_extracache_eventqueue (
+	id int(11) NOT NULL auto_increment,
+	event_key varchar(255) NOT NULL default '',
+	event_interval int(11) DEFAULT '0' NOT NULL,
+	first_called_time int(11) DEFAULT '0' NOT NULL,
+	status int(1) DEFAULT '0' NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB;

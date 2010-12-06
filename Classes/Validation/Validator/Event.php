@@ -21,6 +21,9 @@ class Tx_Extracache_Validation_Validator_Event extends Tx_Extbase_Validation_Val
 		if($this->getEventRepository()->hasEvent($event->getKey())) {
 			$this->addError('event with key ' . $event->getKey() . ' does already exist!', 1289898441);
 		}
+		if(is_integer( $event->getInterval() ) === FALSE || $event->getInterval() < 0) {
+			$this->addError('interval '.$event->getInterval().' is not a positive integer-value!', 1291388576);
+		}
 		return (count($this->getErrors()) === 0);
 	}
 	

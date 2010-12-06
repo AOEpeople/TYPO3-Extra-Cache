@@ -25,6 +25,25 @@ class Tx_Extracache_Domain_Repository_EventRepository implements t3lib_Singleton
 		$this->events[] = $event;
 	}
 	/**
+	 * @param	string $key
+	 * @return	Tx_Extracache_Domain_Model_Event
+	 * @throws	RuntimeException
+	 */
+	public function getEvent($key) {
+		$event = NULL;
+		foreach($this->getEvents() as $event) {
+			if($event->getKey() === $key) {
+				break;
+			}
+		}
+
+		if($event === NULL) {
+			throw new RuntimeException('event '.$key.' does not exist (check before with method hasEvent)!');
+		}
+
+		return $event;
+	}
+	/**
 	 * @return array
 	 */
 	public function getEvents() {

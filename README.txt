@@ -9,6 +9,8 @@ Overview of system related internals used or defined by the extension 'extracach
 	* Scheduler-Task to clean-up removed files (files will not be deleted immediately (if editor delete them inside the TYPO3-BE), because
 	  statically cached content maybe have references to that files). Execute this scheduler-task not till then all statically cached content
 	  have been deleted or updated, so they have no more references to the deleted files!
+	* Scheduler-Task to process cache-events. If you define cache-events and they should not processed instantly, than you must use this
+	  scheduler-task to process them later.
 
 
 2) How does this extension works?
@@ -76,3 +78,4 @@ Overview of system related internals used or defined by the extension 'extracach
 
 	* Tx_Extracache_Validation_Validator_Event
 		+ 1289898441: isValid() -> 'event with key does already exist'
+		+ 1291388576: isValid() -> 'interval is not a positive integer-value'

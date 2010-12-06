@@ -106,6 +106,14 @@ final class Bootstrap {
 				'title'            => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_cleanUpRemovedFiles.name',
 				'description'      => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_cleanUpRemovedFiles.description',
 			);
+
+			// register scheduler-task to process event-queue:
+			require_once PATH_tx_extracache . 'Classes/Typo3/SchedulerTaskProcessEventQueue.php';
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue'] = array (
+				'extension'        => self::ExtensionKey,
+				'title'            => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_processEventQueue.name',
+				'description'      => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_processEventQueue.description',
+			);
 		}
 	}
 	/**
@@ -126,6 +134,7 @@ final class Bootstrap {
 		$dispatcher->addLazyLoadingHandler('onCleanUpRemovedFilesError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onProcessCacheEventInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onProcessCacheEventError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
+		$dispatcher->addLazyLoadingHandler('onProcessEventQueueError', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheInfo', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');

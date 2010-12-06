@@ -41,8 +41,8 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 	 * @test
 	 */
 	public function addEvent() {
-		$event1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1');
-		$event2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'name2');
+		$event1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
+		$event2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'name2', 0);
 		$this->assertTrue ( count($this->repository->getEvents ()) === 0 );
 		$this->repository->addEvent($event1);
 		$this->assertTrue ( count($this->repository->getEvents ()) === 1 );
@@ -50,11 +50,26 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 		$this->assertTrue ( count($this->repository->getEvents ()) === 2 );
 	}
 	/**
+	 * test method getEvent
+	 * @test
+	 */
+	public function getEvent() {
+		$event1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
+		try {
+			$this->repository->getEvent( $event1->getKey() );
+			$this->assertTrue ( FALSE, 'method should throw Exception!' );
+		} catch(Exception $e) {
+			$this->assertType ( 'RuntimeException', $e );
+		}
+		$this->repository->addEvent( $event1 );
+		$this->assertEquals( $this->repository->getEvent( $event1->getKey() ), $event1 );
+	}
+	/**
 	 * test method hasEvent
 	 * @test
 	 */
 	public function hasEvent() {
-		$event = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1');
+		$event = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
 		$this->assertFalse ( $this->repository->hasEvent ('key1') );
 		$this->repository->addEvent($event);
 		$this->assertTrue ( $this->repository->hasEvent ('key1') );

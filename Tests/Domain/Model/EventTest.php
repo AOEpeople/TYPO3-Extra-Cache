@@ -26,7 +26,7 @@ class Tx_Extracache_Domain_Model_EventTest extends Tx_Extracache_Tests_AbstractT
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->event = new Tx_Extracache_Domain_Model_Event('eventKey', 'eventName');
+		$this->event = new Tx_Extracache_Domain_Model_Event('eventKey', 'eventName', 3600);
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -38,6 +38,7 @@ class Tx_Extracache_Domain_Model_EventTest extends Tx_Extracache_Tests_AbstractT
 	 * @test
 	 */
 	public function getFunctions() {
+		$this->assertTrue( $this->event->getInterval() === 3600 );
 		$this->assertTrue( $this->event->getKey() === 'eventKey' );
 		$this->assertTrue( $this->event->getName() === 'eventName' );
 	}

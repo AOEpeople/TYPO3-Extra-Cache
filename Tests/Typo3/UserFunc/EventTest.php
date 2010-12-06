@@ -38,9 +38,9 @@ class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_Abstrac
 		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
 		
 		$this->events = array();
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'aaaaa');
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'ccccc');
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'BBBBB');
+		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'aaaaa', 0);
+		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'ccccc', 0);
+		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'BBBBB', 0);
 		
 		$this->mockedEventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
 		$this->mockedEventRepository->expects($this->any())->method('getEvents')->will ( $this->returnValue ( $this->events ) );
