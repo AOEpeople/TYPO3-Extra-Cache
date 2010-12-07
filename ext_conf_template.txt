@@ -9,3 +9,6 @@ fileTable = tx_ncstaticfilecache_file
 
 # cat=basic; type=boolean; label=developmentContext: Defines whether to throw exceptions inside the staticCacheManager and logging some debug-data
 developmentContext = 0
+
+# cat=basic; type=boolean; label=Support FE-usergroups: Defines whether to support FE-usergroups
+supportFeUsergroups = 0

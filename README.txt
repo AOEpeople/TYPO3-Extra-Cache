@@ -2,8 +2,9 @@ Overview of system related internals used or defined by the extension 'extracach
 ------------------------------------------------------------------------------------------------------------------------
 
 1) What does this extension provides?
-	* Cache TYPO3-pages with nc_staticfilecache for different FE-user-groups
 	* Cache TYPO3-pages with nc_staticfilecache and modify statically cached content before sending it to the client
+	* Cache TYPO3-pages with nc_staticfilecache for different FE-user-groups (if option 'supportFeUsergroups' is enabled)
+	* Cache TYPO3-pages with nc_staticfilecache even if the URL contain GET-params (this extension can cache and/or ignore GET-params)
 	* Delete or update statically cached content if a certain event occur
 	* BE-modul for admins to show infos and delete statically cached content
 	* Scheduler-Task to clean-up removed files (files will not be deleted immediately (if editor delete them inside the TYPO3-BE), because
@@ -14,10 +15,17 @@ Overview of system related internals used or defined by the extension 'extracach
 
 
 2) How does this extension works?
-	1. TYPO3-Frontend must be called via index.php
-	2. 'preprocessRequest'-Hook in tslib/index_ts.php will be used, to check, if the request can be responsed via statically cached content
-		(the statically cached content must be written before via nc_staticfilecache)
-	3. If statically cached content is available, modify the cached content (if required) and send it to the client
+	2.1) Save content to staticCache
+		1. TYPO3-Frontend must be called (normaly) via index.php
+		2. At the End of the page-generation-process, nc_staticfilecache will create (if possible) a staticCache- and database-entry.
+		   nc_staticfilecache provides some hooks to modify the content, which should be cached. This extension uses that hooks, to
+		   modify the content, so that we can e.g. support different FE-usergroups.
+
+	2.2) LOAD statically cached content
+		1. TYPO3-Frontend must be called (normaly) via index.php
+		2. 'preprocessRequest'-Hook in tslib/index_ts.php will be used, to check, if the request can be responsed via statically cached content
+			(the statically cached content must be written before via nc_staticfilecache)
+		3. If statically cached content is available, modify the cached content (if required) and send it to the client
 
 
 3) Which interfaces provides this extension?
@@ -28,7 +36,7 @@ Overview of system related internals used or defined by the extension 'extracach
 		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addCleanerStrategy( [actions], [childrenMode], [elementsMode], [key], [name] );
 
 	* You can define several cache-events (take a look at class Tx_Extracache_Domain_Model_Event for further information):
-		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addEvent( [key], [name] );
+		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addEvent( [key], [name], [interval] );
 
 	* You can use several events to modfiy/add logic (the most important events are defined in Classes/System/Event/Events/) if you add your own eventHandler to Tx_Extracache_System_Event_Dispatcher: 
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );

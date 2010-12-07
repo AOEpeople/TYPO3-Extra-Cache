@@ -20,10 +20,6 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	const DATA_PageInformationSuffix = ']-->';
 
 	/**
-	 * @var string
-	 */
-	protected $cachedRepresentationGroupList;
-	/**
 	 * @var	tslib_feUserAuth
 	 */
 	protected $frontendUser;
@@ -35,6 +31,10 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	private $argumentRepository;
+	/**
+	 * @var string
+	 */
+	private $cachedRepresentationGroupList;
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
@@ -191,6 +191,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	abstract protected function getCachedRepresentation();
 	/**
 	 * Gets the frontend user group list that IS USED TO GET THE CACHED REPRESENTATION.
+	 * This method is only used in classes, which extends this class.
 	 *
 	 * @return string
 	 */
@@ -211,14 +212,6 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function getExtensionManager() {
 		return $this->extensionManager;
-	}
-	/**
-	 * Gets the frontend user group list.
-	 *
-	 * @return string
-	 */
-	protected function getFrontendUserGroupList() {
-		return $this->initializeFrontendUser()->getGroupList();
 	}
 	/**
 	 * @return Tx_Extracache_System_StaticCache_Request
@@ -311,5 +304,14 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function setStorage(Tx_Extracache_System_Persistence_Typo3DbBackend $storage) {
 		$this->storage = $storage;
+	}
+
+	/**
+	 * Gets the frontend user group list.
+	 *
+	 * @return string
+	 */
+	private function getFrontendUserGroupList() {
+		return $this->initializeFrontendUser()->getGroupList();
 	}
 }

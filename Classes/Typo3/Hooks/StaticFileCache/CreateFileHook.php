@@ -36,16 +36,19 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	public function initialize(array $parameters, tx_ncstaticfilecache $parent) {
 		$frontend = $this->getFrontend($parameters);
 
-		$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
+		// modify some data if we support FE-usergroups
+		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
+			$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
 
-		// Adds the frontend user groups to the cache directory path:
-		$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
+			// Adds the frontend user groups to the cache directory path:
+			$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
 
-		// Adds the frontend user groups to the static cache table:
-		$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
+			// Adds the frontend user groups to the static cache table:
+			$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
 
-		// Defines the additionalHash value for database lookups:
-		$parameters['additionalHash'] = md5($frontendUserGroupList);
+			// Defines the additionalHash value for database lookups:
+			$parameters['additionalHash'] = md5($frontendUserGroupList);
+		}
 
 		// Fixes a non speaking URI request (e.g. /index.php?id=13):
 		list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);

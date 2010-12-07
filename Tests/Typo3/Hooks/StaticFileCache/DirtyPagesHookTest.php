@@ -24,6 +24,10 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 	 */
 	private $eventDispatcher;
 	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private $extensionManager;
+	/**
 	 * @var tx_ncstaticfilecache
 	 */
 	private $staticFileCache;
@@ -42,13 +46,16 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->typo3DbBackend = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
 		$this->eventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
+		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
+		$this->extensionManager->expects($this->any())->method('isSupportForFeUsergroupsSet')->will($this->returnValue(TRUE));
 
 		$this->dirtyPagesHook = $this->getMock(
 			'tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook',
-			array('getArgumentRepository', 'fetchUrl', 'getFileModificationTime', 'getEventDispatcher', 'getTypo3DbBackend')
+			array('getArgumentRepository', 'fetchUrl', 'getFileModificationTime', 'getEventDispatcher', 'getExtensionManager', 'getTypo3DbBackend')
 		);
 		$this->dirtyPagesHook->expects($this->never())->method('getArgumentRepository');
 		$this->dirtyPagesHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
+		$this->dirtyPagesHook->expects($this->any())->method('getExtensionManager')->will($this->returnValue($this->extensionManager));
 		$this->dirtyPagesHook->expects($this->any())->method('getTypo3DbBackend')->will($this->returnValue($this->typo3DbBackend));
 	}
 	/**
@@ -106,9 +113,9 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 	 * @test
 	 */
 	public function process_isExecutionCancelled() {
-		$this->dirtyPagesHook->expects($this->at(1))->method('getFileModificationTime')->will($this->returnValue(10));
-		$this->dirtyPagesHook->expects($this->at(2))->method('fetchUrl');
-		$this->dirtyPagesHook->expects($this->at(3))->method('getFileModificationTime')->will($this->returnValue(11));
+		$this->dirtyPagesHook->expects($this->at(3))->method('getFileModificationTime')->will($this->returnValue(10));
+		$this->dirtyPagesHook->expects($this->at(4))->method('fetchUrl');
+		$this->dirtyPagesHook->expects($this->at(5))->method('getFileModificationTime')->will($this->returnValue(11));
 		$dirtyElement = array ();
 		$dirtyElement[tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::FIELD_GroupList] = '0,-1';
 		$dirtyElement['pid'] = 0;

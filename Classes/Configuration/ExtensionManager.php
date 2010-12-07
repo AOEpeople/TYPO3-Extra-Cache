@@ -47,4 +47,15 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	public function isStaticCacheEnabled() {
 		return ( bool ) $this->get ( 'enableStaticCacheManager' );
 	}
+	/**
+	 * if support for FE-usergroups is set, than the folder-structure is like this:
+	 * 		[staticFileCacheDir]/[domain]/[fe-userGroups]/[uri]/
+	 * otherwise the folder-structure is like this (as the default in nc_staticfilecache):
+	 * 		[staticFileCacheDir]/[domain]/[uri]/
+	 * 
+	 * @return boolean
+	 */
+	public function isSupportForFeUsergroupsSet() {
+		return (boolean) $this->get('supportFeUsergroups');
+	}
 }

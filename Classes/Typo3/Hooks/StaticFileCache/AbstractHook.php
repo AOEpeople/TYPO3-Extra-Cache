@@ -22,7 +22,6 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 * @var Tx_Extracache_Configuration_ConfigurationManager
 	 */
 	private $configurationManager;
-
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */

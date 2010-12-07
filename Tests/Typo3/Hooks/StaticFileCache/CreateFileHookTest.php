@@ -21,32 +21,30 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	protected $argumentRepository;
-
 	/**
 	 * @var tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
 	 */
 	protected $createFileHook;
-
 	/**
 	 * @var tx_ncstaticfilecache
 	 */
 	protected $staticFileCache;
-
 	/**
 	 * @var tslib_feUserAuth
 	 */
 	protected $frontendUser;
-
 	/**
 	 * @var tslib_fe
 	 */
 	protected $frontend;
-
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
 	protected $eventDispatcher;
-
+	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	protected $extensionManager;
 	/**
 	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
@@ -68,17 +66,21 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 
-		$this->typoScriptCache = $this->getMock('tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
-
 		$this->eventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array('triggerEvent'));
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 
+		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
+		$this->extensionManager->expects($this->any())->method('isSupportForFeUsergroupsSet')->will($this->returnValue(TRUE));
+
+		$this->typoScriptCache = $this->getMock('tx_Extracache_Typo3_TypoScriptCache', array('getTemplatePageId'));
+
 		$this->createFileHook = $this->getMock(
 			'tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
-			array('getArgumentRepository', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
+			array('getArgumentRepository', 'getExtensionManager', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
 		$this->createFileHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
+		$this->createFileHook->expects($this->any())->method('getExtensionManager')->will($this->returnValue($this->extensionManager));
 		$this->createFileHook->expects($this->any())->method('getTypoScriptCache')->will($this->returnValue($this->typoScriptCache));
 	}
 

@@ -25,6 +25,10 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	private $checkMethods;
 	/**
+	 * @var Tx_Extracache_Configuration_ExtensionManager
+	 */
+	private $extensionManager;
+	/**
 	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $storage;
@@ -48,12 +52,20 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		$checkMethods['isFrontendUserLoggingOut'] = FALSE;	
 		$checkMethods['isFrontendUserLoggingIn'] = FALSE;
 
+		/**
+		 * if we don't support FE-usergroups, no fe-user is allowed to be logged in
+		 */
+		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === FALSE) {
+			$checkMethods['isFrontendUserActive'] = FALSE;
+		}
+
 		$checkMethods['isUnprocessibleRequestAction'] = FALSE;
 		$checkMethods['isPageMailerExtensionRunning'] = FALSE;
 		$checkMethods['isCrawlerExtensionRunning'] = FALSE;
 		$checkMethods['isBackendUserActive'] = FALSE;
 		$this->setCheckMethods($checkMethods);
 	}
+	
 	/**
 	 * handle event 'onStaticCacheRequest' (this method checks if we can handle the request)
 	 * 
@@ -86,6 +98,15 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		return $this->checkMethods;
 	}
 	/**
+	 * @return Tx_Extracache_Configuration_ExtensionManager
+	 */
+	protected function getExtensionManager() {
+		if($this->extensionManager === NULL) {
+			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+		}
+		return $this->extensionManager;
+	}
+	/**
 	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	protected function getStorage() {
@@ -95,7 +116,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		return $this->storage;
 	}
 
-	
 	/**
 	 * Determines whether a valid backend user session is currently active.
 	 *

@@ -171,7 +171,12 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 	 * @return string
 	 */
 	protected function getStaticCacheDirectory(array $dirtyElement) {
-		return $dirtyElement['host'] . '/' . $dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] . dirname($dirtyElement['file']);
+		$cacheDir = $dirtyElement['host'];
+		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
+			$cacheDir .= '/' . $dirtyElement[Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList];
+		}
+		$cacheDir .= dirname($dirtyElement['file']);
+		return $cacheDir;
 	}
 
 	/**
