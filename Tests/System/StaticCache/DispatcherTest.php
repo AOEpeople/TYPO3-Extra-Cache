@@ -152,10 +152,10 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->cacheManager->expects($this->once())->method('getCachedRepresentationWithoutPageInformation')->will($this->returnValue($testContent));
 		$this->dispatcher->dispatch();
 
-		$this->assertEquals(4, count($this->triggeredEvents));
+		$this->assertEquals(5, count($this->triggeredEvents));
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
 		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
 		$this->assertTrue($this->triggeredEvents[1]->getStaticCacheContext());
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[2]);
+		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[3]);
 	}
 }

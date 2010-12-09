@@ -121,6 +121,11 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 		$GLOBALS['TSFE']->fe_user = $this->getCacheManager()->getFrontendUser();
 		$GLOBALS['TSFE']->finalizeFrontendUser ();
+		
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnInitializeFrontEnd');
+		$event->setFrontendUser($GLOBALS['TSFE']->fe_user);
+		$this->getEventDispatcher()->triggerEvent( $event );
+		
 	}
 
 	/**
