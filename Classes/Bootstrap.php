@@ -75,6 +75,9 @@ final class Bootstrap {
 		// Register hook to remove cache TypoScript:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = PATH_tx_extracache . 'Classes/Typo3/TypoScriptCache.php:&tx_Extracache_Typo3_TypoScriptCache->clearCachePostProc';
 
+		// Register hook to delete eventqueue-table:
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/ClearCachePostProc.php:&tx_Extracache_Typo3_Hooks_ClearCachePostProc->clearCachePostProc';
+
 		// Register pre-rendering cache to deliver statically published content:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
