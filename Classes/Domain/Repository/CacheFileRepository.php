@@ -26,26 +26,31 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	}
 	
 	/**
-	 * @return array
+	 * @param	string $searchPhrase
+	 * @return	array
 	 */
-	public function getAll() {
-		return $this->reconstitute ( $this->getFiles () );
+	public function getAll($searchPhrase) {
+		return $this->reconstitute ( $this->getFiles (), $searchPhrase );
 	}
 	/**
 	 * @param	boolean $getFoldersWhichDoesNotContainFiles get folders, which doesn't contain any files
+	 * @param	string	$searchPhrase
 	 * @return	array
 	 */
-	public function getAllFolders($getFoldersWhichDoesNotContainFiles = TRUE) {
+	public function getAllFolders($getFoldersWhichDoesNotContainFiles, $searchPhrase) {
 		$files = $this->getFolders ();
 		$folders = array ();
 		foreach ( $files as $file ) {
+			// get name
 			$name = '';
 			if ($getFoldersWhichDoesNotContainFiles === TRUE && $file->isDir ()) {
 				$name = $this->replacePath ( $file->getPathname() );
 			} elseif ($getFoldersWhichDoesNotContainFiles === FALSE && $file->isFile ()) {
 				$name = $this->replacePath ( $file->getPath() );
 			}
-			if (! isset ( $folders [$name] ) && '' !== $name) {
+
+			// check name
+			if ($name !== '' && ($searchPhrase === '' || strstr($name, $searchPhrase) !== FALSE) && isset ( $folders [$name] ) === FALSE) {
 				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
 				$cacheFile->setName ( $name );
 				$folders [$name] = $cacheFile;
@@ -117,15 +122,18 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	}
 
 	/**
-	 * @param Iterator $regexIterator
+	 * @param Iterator	$regexIterator
+	 * @param string	$searchPhrase
 	 * @return array
 	 */
-	private function reconstitute(Iterator $regexIterator) {
+	private function reconstitute(Iterator $regexIterator, $searchPhrase) {
 		$files = array ();
 		foreach ( $regexIterator as $fileName => $file ) {
-			$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
-			$cacheFile->setName ( $this->replacePath ( $fileName ) );
-			$files [] = $cacheFile;
+			if($searchPhrase === '' || strstr($fileName, $searchPhrase) !== FALSE) {
+				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
+				$cacheFile->setName ( $this->replacePath ( $fileName ) );
+				$files [] = $cacheFile;
+			}
 		}
 		sort( $files );
 		return $files;

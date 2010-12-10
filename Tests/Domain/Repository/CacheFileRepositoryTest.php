@@ -46,12 +46,22 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAll() {
-		$results = $this->cacheFileRepository->getAll ();
+		// don't use search
+		$results = $this->cacheFileRepository->getAll ('');
 		$this->assertType ( 'array', $results );
 		$this->assertEquals(2,count($results));
 		foreach($results as $result){
 			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
 			$this->assertTrue( in_array($result->getName(), array('test.html','test/test.html')) );
+		}
+
+		// use search
+		$results = $this->cacheFileRepository->getAll ('test/test');
+		$this->assertType ( 'array', $results );
+		$this->assertEquals(1,count($results));
+		foreach($results as $result){
+			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
+			$this->assertTrue( in_array($result->getName(), array('test/test.html')) );
 		}
 	}
 	/**
@@ -59,19 +69,32 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFolders() {
-		$results = $this->cacheFileRepository->getAllFolders ( TRUE );
+		// don't use search
+		$results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
 		$this->assertType ( 'array', $results );
 		$this->assertEquals(3,count($results));
 		foreach($results as $result){
 			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
 			$this->assertTrue( in_array($result->getName(), array('test','test/test2','test/test2/test3')) );
 		}
-		$results = $this->cacheFileRepository->getAllFolders ( FALSE );
+		$results = $this->cacheFileRepository->getAllFolders ( FALSE, '' );
 		$this->assertType ( 'array', $results );
 		$this->assertEquals(1,count($results));
 		foreach($results as $result){
 			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
 			$this->assertEquals( $result->getName(), 'test' );
 		}
+
+		// use search
+		$results = $this->cacheFileRepository->getAllFolders ( TRUE, 'test/test2' );
+		$this->assertType ( 'array', $results );
+		$this->assertEquals(2,count($results));
+		foreach($results as $result){
+			$this->assertType ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
+			$this->assertTrue( in_array($result->getName(), array('test/test2','test/test2/test3')) );
+		}
+		$results = $this->cacheFileRepository->getAllFolders ( FALSE, 'test/test2' );
+		$this->assertType ( 'array', $results );
+		$this->assertEquals(0,count($results));
 	}
 }

@@ -61,7 +61,8 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheFileRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheFileRepository', array (), array (), '', FALSE );
 		$this->extensionManager = $this->getMock ( 'Tx_Extracache_Configuration_ExtensionManager', array (), array (), '', FALSE );
 		$this->view = $this->getMock ( 'Tx_Extracache_View_View', array (), array (), '', FALSE );
-		$this->cacheManagementController = new Tx_Extracache_Controller_CacheManagementController ( $this->cacheDatabaseEntryRepositoryForTableEventqueue, $this->cacheDatabaseEntryRepositoryForTablePages, $this->cacheDatabaseEntryRepositoryForTableStaticCache, $this->cacheFileRepository, $this->extensionManager, $this->view);
+		$this->cacheManagementController = $this->getMock('Tx_Extracache_Controller_CacheManagementController', array('getModuleData'), array($this->cacheDatabaseEntryRepositoryForTableEventqueue, $this->cacheDatabaseEntryRepositoryForTablePages, $this->cacheDatabaseEntryRepositoryForTableStaticCache, $this->cacheFileRepository, $this->extensionManager, $this->view));
+		$this->cacheManagementController->expects($this->any())->method('getModuleData')->will($this->returnCallback(array($this, 'getModuleData')));
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -74,11 +75,38 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		unset($this->cacheFileRepository);
 		unset($this->extensionManager);
 	}
+
+	/**
+	 * @param	string $key
+	 * @return	mixed
+	 */
+	public function getModuleData($key) {
+		$value = NULL;
+		switch($key) {
+			case 'tx_extracache_manager_showFilesDetails':
+				$value = TRUE;
+			break;
+			case 'tx_extracache_manager_showDatabaseDetails':
+				$value = TRUE;
+			break;
+			case 'tx_extracache_manager_searchPhraseForFolders':
+				$value = '';
+			break;
+			case 'tx_extracache_manager_searchPhraseForFiles':
+				$value = '';
+			break;
+			case 'tx_extracache_manager_getFoldersWhichDoesNotContainFiles':
+				$value = FALSE;
+			break;
+		}
+		return $value;
+	}
+
 	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->indexAction()
 	 * @test
 	 */
-	public function indexAction() {
+	public function indexAction() {		
 		$this->view->expects($this->once())->method('render');
 		$this->cacheDatabaseEntryRepositoryForTableEventqueue->expects($this->once())->method('countAll');
 		$this->cacheDatabaseEntryRepositoryForTablePages->expects($this->once())->method('count');

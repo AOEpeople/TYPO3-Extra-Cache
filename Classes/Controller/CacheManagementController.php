@@ -118,7 +118,8 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function allFilesAction() {
 		try {
-			$this->getView()->assign ( 'allFiles', $this->getCacheFileRepository()->getAll () );
+			$searchPhraseForFiles = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForFiles');
+			$this->getView()->assign ( 'allFiles', $this->getCacheFileRepository()->getAll ($searchPhraseForFiles) );
 			return $this->getView()->render ( 'allFiles' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -129,8 +130,9 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function allFoldersAction() {
 		try {
-			$getFoldersWhichDoesNotContainFiles = $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles') === FALSE ? FALSE : TRUE;
-			$this->getView()->assign ( 'allFolders', $this->getCacheFileRepository()->getAllFolders ( $getFoldersWhichDoesNotContainFiles ) );
+			$searchPhraseForFolders = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForFolders');
+			$getFoldersWhichDoesNotContainFiles = $this->getModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles') === TRUE ? TRUE : FALSE;
+			$this->getView()->assign ( 'allFolders', $this->getCacheFileRepository()->getAllFolders ( $getFoldersWhichDoesNotContainFiles, $searchPhraseForFolders ) );
 			return $this->getView()->render ( 'allFolders' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -164,8 +166,9 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function indexAction() {
 		try {
-			$showDatabaseDetails = $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_showDatabaseDetails');
-			$showFilesDetails = $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_showFilesDetails');		
+			$showDatabaseDetails = $this->getModuleData('tx_extracache_manager_showDatabaseDetails') === TRUE ? TRUE : FALSE;
+			$showFilesDetails = $this->getModuleData('tx_extracache_manager_showFilesDetails') === TRUE ? TRUE : FALSE;
+	
 			$this->getView()->assign ( 'showDatabaseDetails', $showDatabaseDetails);
 			$this->getView()->assign ( 'showFilesDetails', $showFilesDetails);
 			$this->getView()->assign ( 'tableEventQueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->getFileTable () );
@@ -200,6 +203,28 @@ class Tx_Extracache_Controller_CacheManagementController {
 	/**
 	 * @return string
 	 */
+	public function setConfigSearchPhraseForFilesAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFiles', (string) t3lib_div::_GP('searchPhraseForFiles'));
+			return $this->allFilesAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
+	public function setConfigSearchPhraseForFoldersAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFolders', (string) t3lib_div::_GP('searchPhraseForFolders'));
+			return $this->allFoldersAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
 	public function setConfigShowDatabaseDetailsAction() {
 		try {
 			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showDatabaseDetails', (boolean) t3lib_div::_GP('showDatabaseDetails'));
@@ -218,6 +243,14 @@ class Tx_Extracache_Controller_CacheManagementController {
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
 		}
+	}
+
+	/**
+	 * @param	string $key
+	 * @return	string
+	 */
+	protected function getModuleData($key) {
+		return $GLOBALS['BE_USER']->getModuleData($key);
 	}
 
 	/**

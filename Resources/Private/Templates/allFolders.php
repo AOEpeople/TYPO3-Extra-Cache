@@ -6,6 +6,7 @@
 </style>
 
 
+<!-- show from to define if empty folder should also be displayed -->
 <form name="setConfigGetFoldersWhichDoesNotContainFiles" action="index.php" method="GET">
 	<?php
 	$checked = '';
@@ -20,6 +21,16 @@
 <br /><br />
 
 
+<!-- show from for folder-search -->
+<form name="setConfigSearchPhraseForFolders" action="index.php" method="GET">
+	<input type="hidden" name="action" value="setConfigSearchPhraseForFolders" />
+	<input type="text" name="searchPhraseForFolders" value="<?php echo $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_searchPhraseForFolders'); ?>" />
+	<input onClick="javascript:this.form.submit();" type="button" value="<?php echo $GLOBALS['LANG']->getLL('startFolderSearch');?>" />
+</form>
+<br /><br />
+
+
+<!-- show folder -->
 <h2><?php echo $GLOBALS['LANG']->getLL('headline_allDirectories').' ('.count($GLOBALS['view_data']['allFolders']).' '.$GLOBALS['LANG']->getLL('entries').'):';?></h2>
 <table border="0" cellspacing="1" class="lrPadding" width="100%">
 	<tr class="bgColor5 tableheader">
