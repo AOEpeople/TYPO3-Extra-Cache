@@ -60,10 +60,13 @@ class Tx_Extracache_Controller_CacheManagementController {
 		$this->setView( $view );
 		$this->getView()->setTemplatePath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'Private' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR );
 		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setFileTable ( 'tx_extracache_eventqueue' );
+		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setFieldForCountOperation( 'id' );
 		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setOrderBy( 'first_called_time,status' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFileTable ( 'pages' );
+		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFieldForCountOperation( 'uid' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'title' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
+		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFieldForCountOperation( 'uid' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setOrderBy( 'host,uri' );
 		$this->getCacheFileRepository()->setCacheDir ( PATH_site . $this->getExtensionManager()->get('path_StaticFileCache') );
 

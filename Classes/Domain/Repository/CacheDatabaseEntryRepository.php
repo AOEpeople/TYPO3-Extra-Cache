@@ -21,6 +21,10 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 	/**
 	 * @var string
 	 */
+	private $fieldForCountOperation='*';
+	/**
+	 * @var string
+	 */
 	private $orderBy='';
 
 	/**
@@ -29,7 +33,7 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 	 */
 	public function count($where = ''){
 		$db = $GLOBALS['TYPO3_DB'];
-		return intval($db->exec_SELECTcountRows('*', $this->getFileTable(),$where));
+		return intval($db->exec_SELECTcountRows($this->getFieldForCountOperation(), $this->getFileTable(),$where));
 	}
 	/**
 	 * @return integer
@@ -71,6 +75,12 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 		$this->fileTable = $fileTable;
 	}
 	/**
+	 * @param string $fieldForCountOperation
+	 */
+	public function setFieldForCountOperation($fieldForCountOperation) {
+		$this->fieldForCountOperation = $fieldForCountOperation;
+	}
+	/**
 	 * @param string $orderBy
 	 */
 	public function setOrderBy($orderBy) {
@@ -96,5 +106,11 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 			call_user_func(array($entry, $methodName), $value);
 		}
 		return $entry;
+	}
+	/**
+	 * @return string
+	 */
+	private function getFieldForCountOperation() {
+		return $this->fieldForCountOperation;
 	}
 }
