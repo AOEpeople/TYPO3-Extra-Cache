@@ -21,6 +21,8 @@
 			<label index="showAll">show all</label>
 			<label index="showAll">show all</label>
 			<label index="showEmptyDirectories">show empty directories</label>
+			<label index="showDatabaseDetails">show details of database entries</label>
+			<label index="showFilesDetails">show details of cache files</label>
 			<label index="table">table</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -38,6 +40,8 @@
 			<label index="showAllFiles">alle Dateien anzeigen</label>
 			<label index="showAllDirectories">alle Ordner anzeigen</label>
 			<label index="showEmptyDirectories">Ordner, welche keine Dateien enthalten, anzeigen </label>
+			<label index="showDatabaseDetails">Zeige Details von Datenbank Einträgen</label>
+			<label index="showFilesDetails">Zeige Details von Cache Dateien</label>
 			<label index="table">Tabelle</label>
 		</languageKey>
 	</data>

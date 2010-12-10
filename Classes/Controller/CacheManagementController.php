@@ -164,13 +164,23 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function indexAction() {
 		try {
-			$this->getView()->assign ( 'countFiles', $this->getCacheFileRepository()->countAll () );
-			$this->getView()->assign ( 'countDatbaseEntrysForTableEventqueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->countAll () );
-			$this->getView()->assign ( 'countDatbaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->count ( 'tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\'' ) );
-			$this->getView()->assign ( 'countDatbaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->countAll () );
+			$showDatabaseDetails = $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_showDatabaseDetails');
+			$showFilesDetails = $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_showFilesDetails');		
+			$this->getView()->assign ( 'showDatabaseDetails', $showDatabaseDetails);
+			$this->getView()->assign ( 'showFilesDetails', $showFilesDetails);
 			$this->getView()->assign ( 'tableEventQueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->getFileTable () );
 			$this->getView()->assign ( 'tablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->getFileTable () );
 			$this->getView()->assign ( 'tableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->getFileTable () );
+
+			if($showDatabaseDetails) {
+				$this->getView()->assign ( 'countDatbaseEntrysForTableEventqueue', $this->getCacheDatabaseEntryRepositoryForTableEventqueue()->countAll () );
+				$this->getView()->assign ( 'countDatbaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->count ( 'tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\'' ) );
+				$this->getView()->assign ( 'countDatbaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->countAll () );
+			}
+			if($showFilesDetails) {
+				$this->getView()->assign ( 'countFiles', $this->getCacheFileRepository()->countAll () );
+			}
+
 			return $this->getView()->render ( 'index' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -183,6 +193,28 @@ class Tx_Extracache_Controller_CacheManagementController {
 		try {
 			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles', (boolean) t3lib_div::_GP('getFoldersWhichDoesNotContainFiles'));
 			return $this->allFoldersAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
+	public function setConfigShowDatabaseDetailsAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showDatabaseDetails', (boolean) t3lib_div::_GP('showDatabaseDetails'));
+			return $this->indexAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
+	public function setConfigShowFilesDetailsAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showFilesDetails', (boolean) t3lib_div::_GP('showFilesDetails'));
+			return $this->indexAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
 		}
