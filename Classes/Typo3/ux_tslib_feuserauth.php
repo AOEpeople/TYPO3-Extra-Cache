@@ -10,8 +10,7 @@
 
 // under certain circumstances it can happen, that the tslib_feUserAuth-class is unknown, so we must require them
 if(class_exists('tslib_feUserAuth') === FALSE) {
-	// do not use PATH_tslib: this constant is not available in every 'TYPO3-BE-context'
-	require_once  t3lib_extMgm::extPath('cms') . 'tslib/class.tslib_feuserauth.php';
+	require_once  PATH_tslib. 'class.tslib_feuserauth.php';
 }
 
 /**
