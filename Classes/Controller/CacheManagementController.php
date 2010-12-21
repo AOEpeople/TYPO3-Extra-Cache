@@ -64,7 +64,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setOrderBy( 'first_called_time,status' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFileTable ( 'pages' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFieldForCountOperation( 'uid' );
-		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'title' );
+		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'pid ASC, title ASC' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFieldForCountOperation( 'uid' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setOrderBy( 'host,uri' );
