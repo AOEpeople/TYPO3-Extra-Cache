@@ -129,7 +129,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 			$response = $directRequestManager->execute($urlToFetch, $requestHeaders);
 			$result = $response['content'];
 		} else {
-			$result = t3lib_div::getURL($urlToFetch, 0, $requestHeaders);
+			$result = t3lib_div::getURL($urlToFetch, 1, $requestHeaders);
 		}
 		$result = (bool) trim( $result ); // if fetching failed, it can happen, that the returned result contains some space characters!
 
