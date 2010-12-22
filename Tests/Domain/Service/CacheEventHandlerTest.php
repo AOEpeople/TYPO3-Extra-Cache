@@ -70,7 +70,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', $cacheEvent->getKey());
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( TRUE ) );
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'getEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( $cacheEvent ) );
-		$this->cacheEventHandler->expects ( $this->once () )->method ( 'processCacheEvent' )->with( $cacheEvent->getKey() );
+		$this->cacheEventHandler->expects ( $this->once () )->method ( 'processCacheEvent' )->with( $cacheEvent );
 		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}
 	/**
@@ -106,17 +106,21 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->createCacheEventHandler( FALSE );
 
 		$eventKey = 'knownEventKey';
+		$event = $this->getMock ( 'Tx_Extracache_Domain_Model_Event', array(), array(), '', FALSE);
+		$event->expects ( $this->any () )->method ( 'getKey' )->will ( $this->returnValue ( $eventKey ) );
+		$event->expects ( $this->any () )->method ( 'getWriteLog' )->will ( $this->returnValue ( TRUE ) );
 		$page1WithCacheCleanerStrategy = array('uid' => '11', 'title' => 'testPage', 'tx_extracache_cleanerstrategies' => 'test_strategy' );
 		$pagesWithCacheCleanerStrategy = array();
 		$pagesWithCacheCleanerStrategy[] = $page1WithCacheCleanerStrategy;
 		$mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 
 		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'getPagesWithCacheCleanerStrategyForEvent' )->with( $eventKey )->will ( $this->returnValue ( $pagesWithCacheCleanerStrategy ) );
+		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'writeEventLog' );
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'hasStrategy' )->with( $page1WithCacheCleanerStrategy['tx_extracache_cleanerstrategies'] )->will ( $this->returnValue ( TRUE ) );
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'getStrategy' )->with( $page1WithCacheCleanerStrategy['tx_extracache_cleanerstrategies'] )->will ( $this->returnValue ( $mockedCleanerStrategy ) );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with( $mockedCleanerStrategy, (integer) $page1WithCacheCleanerStrategy['uid'] );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' );
-		$this->cacheEventHandler->processCacheEvent( $eventKey );
+		$this->cacheEventHandler->processCacheEvent( $event );
 
 		$this->assertEquals( count($this->triggeredEvents), 1 );
 		$this->assertEquals( $this->triggeredEvents[0], 'onProcessCacheEventInfo' );
@@ -129,17 +133,21 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$this->createCacheEventHandler( FALSE );
 
 		$eventKey = 'knownEventKey';
+		$event = $this->getMock ( 'Tx_Extracache_Domain_Model_Event', array(), array(), '', FALSE);
+		$event->expects ( $this->any () )->method ( 'getKey' )->will ( $this->returnValue ( $eventKey ) );
+		$event->expects ( $this->any () )->method ( 'getWriteLog' )->will ( $this->returnValue ( TRUE ) );
 		$page1WithCacheCleanerStrategy = array('uid' => '11', 'title' => 'testPage', 'tx_extracache_cleanerstrategies' => 'test_strategy' );
 		$pagesWithCacheCleanerStrategy = array();
 		$pagesWithCacheCleanerStrategy[] = $page1WithCacheCleanerStrategy;
 		$mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 
 		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'getPagesWithCacheCleanerStrategyForEvent' )->with( $eventKey )->will ( $this->returnValue ( $pagesWithCacheCleanerStrategy ) );
+		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'writeEventLog' );
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'hasStrategy' )->with( $page1WithCacheCleanerStrategy['tx_extracache_cleanerstrategies'] )->will ( $this->returnValue ( TRUE ) );
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'getStrategy' )->with( $page1WithCacheCleanerStrategy['tx_extracache_cleanerstrategies'] )->will ( $this->returnValue ( $mockedCleanerStrategy ) );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'addCleanerInstruction' )->with( $mockedCleanerStrategy, (integer) $page1WithCacheCleanerStrategy['uid'] );
 		$this->mockedCacheCleaner->expects ( $this->once () )->method ( 'process' )->will ( $this->throwException( new Exception('') ) );
-		$this->cacheEventHandler->processCacheEvent( $eventKey );
+		$this->cacheEventHandler->processCacheEvent( $event );
 
 		$this->assertEquals( count($this->triggeredEvents), 2 );
 		$this->assertEquals( $this->triggeredEvents[0], 'onProcessCacheEventInfo' );

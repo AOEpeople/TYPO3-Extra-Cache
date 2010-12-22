@@ -30,6 +30,10 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 	 */
 	private $eventQueue;
 	/**
+	 * @var Tx_Extracache_Domain_Repository_EventRepository
+	 */
+	private $eventRepository;
+	/**
 	 * @var Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles
 	 */
 	private $task;
@@ -48,11 +52,15 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 		$this->eventDispatcher = $this->getMock ( 'Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->eventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 		$this->eventQueue = $this->getMock ( 'Tx_Extracache_System_EventQueue', array(), array(), '', FALSE);
+		$this->eventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
 
-		$this->task = $this->getMock ( 'Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue', array('getCacheEventHandler', 'getEventDispatcher', 'getEventQueue'));
+		$this->task = $this->getMock ( 'Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue', array('getCacheEventHandler', 'getEventDispatcher', 'getEventQueue','getEventRepository'));
 		$this->task->expects($this->any())->method('getCacheEventHandler')->will ( $this->returnValue ( $this->cacheEventHandler ) );
 		$this->task->expects($this->any())->method('getEventDispatcher')->will ( $this->returnValue ( $this->eventDispatcher ) );
 		$this->task->expects($this->any())->method('getEventQueue')->will ( $this->returnValue ( $this->eventQueue ) );
+		$this->task->expects($this->any())->method('getEventRepository')->will ( $this->returnValue ( $this->eventRepository ) );
+		
+		
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -70,9 +78,12 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 	 * @test
 	 */
 	public function execute_withException() {
+		$event = $this->getMock ( 'Tx_Extracache_Domain_Model_Event', array(), array(), '', FALSE);
 		$eventCacheKey = 'testEventKey';
 		$this->eventQueue->expects ( $this->once () )->method ( 'getNextEventKeyForProcessing' )->will ( $this->returnValue ( $eventCacheKey ) );
-		$this->cacheEventHandler->expects ( $this->once () )->method ( 'processCacheEvent' )->with( $eventCacheKey )->will ( $this->throwException(new Exception('') ) );
+		$this->eventRepository->expects ( $this->once () )->method ( 'hasEvent' )->with( $eventCacheKey )->will ( $this->returnValue ( TRUE ) );
+		$this->eventRepository->expects ( $this->once () )->method ( 'getEvent' )->with( $eventCacheKey )->will ( $this->returnValue ( $event ) );
+		$this->cacheEventHandler->expects ( $this->once () )->method ( 'processCacheEvent' )->with( $event )->will ( $this->throwException(new Exception('') ) );
 		$this->assertFalse( $this->task->execute() );
 		$this->assertEquals( count($this->triggeredEvents), 1 );
 		$this->assertEquals( $this->triggeredEvents[0], 'onProcessEventQueueError' );
@@ -82,11 +93,14 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 	 * @test
 	 */
 	public function execute_withoutException() {
+		$event = $this->getMock ( 'Tx_Extracache_Domain_Model_Event', array(), array(), '', FALSE);
 		$eventCacheKey = 'testEventKey';
 		$this->eventQueue->expects ( $this->at (0) )->method ( 'getNextEventKeyForProcessing' )->will ( $this->returnValue ( $eventCacheKey ) );
-		$this->cacheEventHandler->expects($this->once())->method('processCacheEvent')->with( $eventCacheKey );
 		$this->eventQueue->expects ( $this->at (1) )->method ( 'deleteEventKey' )->with( $eventCacheKey );
 		$this->eventQueue->expects ( $this->at (2) )->method ( 'getNextEventKeyForProcessing' )->will ( $this->returnValue ( NULL ) );
+		$this->eventRepository->expects ( $this->once () )->method ( 'hasEvent' )->with( $eventCacheKey )->will ( $this->returnValue ( TRUE ) );
+		$this->eventRepository->expects ( $this->once () )->method ( 'getEvent' )->with( $eventCacheKey )->will ( $this->returnValue ( $event ) );
+		$this->cacheEventHandler->expects($this->once())->method('processCacheEvent')->with( $event );
 		$this->assertTrue( $this->task->execute() );
 		$this->assertEquals( count($this->triggeredEvents), 0 );
 	}

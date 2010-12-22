@@ -12,35 +12,34 @@
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
- * test case for Tx_Extracache_Domain_Model_Event
+ * test case for Tx_Extracache_Domain_Model_Info
  * @package extracache_tests
  * @subpackage Domain_Model
  */
-class Tx_Extracache_Domain_Model_EventTest extends Tx_Extracache_Tests_AbstractTestcase {
+class Tx_Extracache_Domain_Model_InfoTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
 	 * 
-	 * @var Tx_Extracache_Domain_Model_Event
+	 * @var Tx_Extracache_Domain_Model_Info
 	 */
-	private $event;
+	private $info;
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->event = new Tx_Extracache_Domain_Model_Event('eventKey', 'eventName', 3600, FALSE);
+		$this->info = new Tx_Extracache_Domain_Model_Info('test-title', Tx_Extracache_Domain_Model_Info::TYPE_notice);
 	}
 	/**
 	 * Cleans up the environment after running a test.
 	 */
 	protected function tearDown() {
-		unset ( $this->event );
+		unset ( $this->info );
 	}
 	/**
 	 * @test
 	 */
 	public function getFunctions() {
-		$this->assertTrue( $this->event->getInterval() === 3600 );
-		$this->assertTrue( $this->event->getKey() === 'eventKey' );
-		$this->assertTrue( $this->event->getName() === 'eventName' );
-		$this->assertTrue( $this->event->getWriteLog() === FALSE );
+		$this->assertTrue( $this->info->getTimestamp() > 0 );
+		$this->assertTrue( $this->info->getTitle() === 'test-title' );
+		$this->assertTrue( $this->info->getType() === Tx_Extracache_Domain_Model_Info::TYPE_notice );
 	}
 }

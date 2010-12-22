@@ -42,23 +42,31 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 		if($cacheEvent->getInterval() > 0) {
 			$this->getEventQueue()->addEvent( $cacheEvent );
 		} else {
-			$this->processCacheEvent( $cacheEvent->getKey() );
+			$this->processCacheEvent( $cacheEvent );
 		}
 	}
 	/**
-	 * @param	string $eventKey
+	 * @param Tx_Extracache_Domain_Model_Event $event
 	 */
-	public function processCacheEvent($eventKey) {
-		$message = 'start event "onProcessCacheEvent" with cacheEvent "'.$eventKey.'"';
+	public function processCacheEvent(Tx_Extracache_Domain_Model_Event $event) {
+		$eventLog = $this->createEventLog( $event );
+		$message = 'start event "onProcessCacheEvent" with cacheEvent "'.$event->getKey().'"';
 		$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventInfo', $this, array ('message' => $message ) );
 
-		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent($eventKey) as $page) {
+		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent( $event->getKey() ) as $page) {
 			try {
-				$this->processPageWithCacheEvent( $page, $eventKey );
+				$eventLog->addInfo( $this->createInfo('process cleanerInstructions on page \''.$page['title'].'\' [id: '.$page['uid'].']', Tx_Extracache_Domain_Model_Info::TYPE_notice) );
+				$this->processPageWithCacheEvent( $page );
 			} catch (Exception $e) {
-				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$eventKey.'": ' . $e->getMessage().' / '.$e->getTraceAsString();
+				$eventLog->addInfo( $this->createInfo('exception occurred: '.$e->getMessage(), Tx_Extracache_Domain_Model_Info::TYPE_exception) );
+				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$event->getKey().'": ' . $e->getMessage().' / '.$e->getTraceAsString();
 				$this->getEventDispatcher()->triggerEvent ( 'onProcessCacheEventError', $this, array ('message' => $message ) );
 			}
+		}
+
+		$eventLog->setStopTime();
+		if($event->getWriteLog()) {
+			$this->getTypo3DbBackend()->writeEventLog( $eventLog );
 		}
 	}
 
@@ -115,6 +123,22 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	}
 
 	/**
+	 * @param	Tx_Extracache_Domain_Model_Event $event
+	 * @return	Tx_Extracache_Domain_Model_EventLog
+	 */
+	private function createEventLog(Tx_Extracache_Domain_Model_Event $event) {
+		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_EventLog', $event);
+	}
+	/**
+	 * @param	string $title
+	 * @param	string $type
+	 * @return	Tx_Extracache_Domain_Model_Info
+	 */
+	private function createInfo($title, $type) {
+		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Info', $title, $type);
+	}
+
+	/**
 	 * @param	Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent $event
 	 * @return	Tx_Extracache_Domain_Model_Event
 	 * @throws	RuntimeException
@@ -128,9 +152,8 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	}
 	/**
 	 * @param array $page
-	 * @param string $eventKey
 	 */
-	private function processPageWithCacheEvent(array $page, $eventKey) {
+	private function processPageWithCacheEvent(array $page) {
 		$cacheCleaner = $this->createCacheCleaner();
 
 		$strategies = explode(',', $page['tx_extracache_cleanerstrategies']);

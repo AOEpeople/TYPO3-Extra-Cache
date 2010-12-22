@@ -29,6 +29,10 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 * @var Tx_Extracache_System_EventQueue
 	 */
 	private $eventQueue;
+	/**
+	 * @var Tx_Extracache_Domain_Repository_EventRepository
+	 */
+	private $eventRepository;
 
 	/**
 	 * execute the task
@@ -51,8 +55,13 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 */
 	protected function processEventQueue() {
 		while(NULL !== $eventKey = $this->getEventQueue()->getNextEventKeyForProcessing()) {
-			$this->getCacheEventHandler()->processCacheEvent( $eventKey );
-			$this->getEventQueue()->deleteEventKey( $eventKey );
+			if($this->getEventRepository()->hasEvent($eventKey)) {
+				$event = $this->getEventRepository()->getEvent( $eventKey );
+				$this->getCacheEventHandler()->processCacheEvent( $event );
+				$this->getEventQueue()->deleteEventKey( $eventKey );
+			} else {
+				// @todo: delete event_key, if event does not exist
+			}
 		}
 	}
 	/**
@@ -81,5 +90,14 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 			$this->eventQueue = t3lib_div::makeInstance('Tx_Extracache_System_EventQueue');
 		}
 		return $this->eventQueue;
+	}
+	/**
+	 * @return Tx_Extracache_Domain_Repository_EventRepository
+	 */
+	protected function getEventRepository() {
+		if($this->eventRepository === NULL) {
+			$this->eventRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
+		}
+		return $this->eventRepository;
 	}
 }

@@ -30,10 +30,11 @@
 
 <!-- show database-overview -->
 <?php
-$countDatbaseEntrysForTableStaticCache = $countDatbaseEntrysForTablePages = $countDatbaseEntrysForTableEventqueue = '';
+$countDatbaseEntrysForTableStaticCache = $countDatbaseEntrysForTablePages = $countDatbaseEntrysForTableEventlog = $countDatbaseEntrysForTableEventqueue = '';
 if($GLOBALS['view_data']['showDatabaseDetails'] === TRUE) {
 	$countDatbaseEntrysForTableStaticCache = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTableStaticCache'];
 	$countDatbaseEntrysForTablePages = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTablePages'];
+	$countDatbaseEntrysForTableEventlog = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTableEventlog'];
 	$countDatbaseEntrysForTableEventqueue = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTableEventqueue'];
 }
 ?>
@@ -41,6 +42,7 @@ if($GLOBALS['view_data']['showDatabaseDetails'] === TRUE) {
 <ul>
 	<li><a href="?action=allDatabaseEntrysForTableStaticCache"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableStaticCache'].'\''.$countDatbaseEntrysForTableStaticCache.')'; ?></a></li>
 	<li><a href="?action=allDatabaseEntrysForTablePages"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tablePages'].'\''.$countDatbaseEntrysForTablePages.')'; ?></a></li>
+	<li><a href="?action=allDatabaseEntrysForTableEventlog"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventLog'].'\''.$countDatbaseEntrysForTableEventlog.')'; ?></a></li>
 	<li><a href="?action=allDatabaseEntrysForTableEventqueue"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventQueue'].'\''.$countDatbaseEntrysForTableEventqueue.')'; ?></a></li>
 </ul>
 

@@ -25,6 +25,10 @@
 			<label index="showFilesDetails">show details of cache files</label>
 			<label index="startFilesSearch">start search for files</label>
 			<label index="startFolderSearch">start search for folders</label>
+			<label index="startFilterByDate">start filter by date</label>
+			<label index="startFilterByDateInfo">info: in the input-fields you can all use, which the PHP-function 'strtotime' allows as parameter</label>
+			<label index="startFilterFromDate">from</label>
+			<label index="startFilterTillDate">till</label>
 			<label index="table">table</label>
 			<label index="eventqueue_status_waitforprocessing">wait for processing</label>
 			<label index="eventqueue_status_inprocess">in process</label>
@@ -48,6 +52,10 @@
 			<label index="showFilesDetails">Zeige Details von Cache Dateien</label>
 			<label index="startFilesSearch">Starte Suche nach Dateien</label>
 			<label index="startFolderSearch">Starte Suche nach Ordnern</label>
+			<label index="startFilterByDate">Starte Filterung nach Datum</label>
+			<label index="startFilterByDateInfo">Info: In den Eingabefeldern können Sie alles verwenden, was die PHP-Funktion 'strtotime' als Parameter erlaubt</label>
+			<label index="startFilterFromDate">Von</label>
+			<label index="startFilterTillDate">Bis</label>
 			<label index="table">Tabelle</label>
 			<label index="eventqueue_status_waitforprocessing">Wartet auf Vearbeitung</label>
 			<label index="eventqueue_status_inprocess">Wird verarbeitet</label>

@@ -32,6 +32,18 @@ CREATE TABLE tx_extracache_fileremovequeue (
 ) ENGINE=InnoDB;
 
 #
+# Table structure for table 'tx_extracache_eventlog'
+#
+CREATE TABLE tx_extracache_eventlog (
+	id int(11) NOT NULL auto_increment,
+	event_key varchar(255) NOT NULL default '',
+	start_time int(11) DEFAULT '0' NOT NULL,
+	stop_time int(11) DEFAULT '0' NOT NULL,
+	infos text NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+#
 # Table structure for table 'tx_extracache_eventqueue'
 #
 CREATE TABLE tx_extracache_eventqueue (

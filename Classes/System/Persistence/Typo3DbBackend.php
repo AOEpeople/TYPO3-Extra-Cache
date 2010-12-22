@@ -80,6 +80,17 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	public function fullQuoteStr($str, $table) {
 		return $this->getTypo3Db()->fullQuoteStr($str, $table);
 	}
+	/**
+	 * @param Tx_Extracache_Domain_Model_EventLog $eventLog
+	 */
+	public function writeEventLog(Tx_Extracache_Domain_Model_EventLog $eventLog) {
+		$values = array();
+		$values['event_key'] = $eventLog->getEvent()->getKey();
+		$values['start_time'] = $eventLog->getStartTime();
+		$values['stop_time'] = $eventLog->getStopTime();
+		$values['infos'] = serialize( $eventLog->getInfos() );
+		$this->insertQuery('tx_extracache_eventlog', $values);
+	}
 
 	/**
 	 * @return	t3lib_DB

@@ -30,16 +30,23 @@ class Tx_Extracache_Domain_Model_Event {
 	 * @var integer
 	 */
 	private $interval;
-	
+	/**
+	 * define, if a log should be written, after the event was processed
+	 * 
+	 * @var boolean
+	 */
+	private $writeLog;
+
 	/**
 	 * @param string	$key
 	 * @param string	$name
 	 * @param integer	$interval
 	 */
-	public function __construct($key, $name, $interval) {
+	public function __construct($key, $name, $interval, $writeLog) {
 		$this->key = $key;
 		$this->name = $name;
 		$this->interval = $interval;
+		$this->writeLog = $writeLog;
 	}
 
 	/**
@@ -59,5 +66,11 @@ class Tx_Extracache_Domain_Model_Event {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+	/**
+	 * @return boolean
+	 */
+	public function getWriteLog() {
+		return $this->writeLog;
 	}
 }

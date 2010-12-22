@@ -62,10 +62,11 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @param	string	$key
 	 * @param	string	$name		optional, default is ''
 	 * @param	integer	$interval	optional, default is 0
+	 * @param	boolean	$writeLog	optional, default is FALSE
 	 * @throws	RuntimeException
 	 */
-	public function addEvent($key, $name='', $interval=0) {
-		$event = $this->createEvent($key, $name, $interval);
+	public function addEvent($key, $name='', $interval=0, $writeLog=FALSE) {
+		$event = $this->createEvent($key, $name, $interval, $writeLog);
 		$validator = $this->getEventValidator();
 		if($validator->isValid($event)) {
 			$this->getEventRepository()->addEvent($event);
@@ -138,12 +139,13 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @param	string	$key
 	 * @param	string	$name
 	 * @param	integer	$interval
+	 * @param	boolean	$writeLog
 	 * @return	Tx_Extracache_Domain_Model_Event
 	 */
-	private function createEvent($key, $name, $interval) {
+	private function createEvent($key, $name, $interval, $writeLog) {
 		if($name === '') {
 			$name = $key;
 		}
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', $key, $name, $interval);
+		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', $key, $name, $interval, $writeLog);
 	}
 }
