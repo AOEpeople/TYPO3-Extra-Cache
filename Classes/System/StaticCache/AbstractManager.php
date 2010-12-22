@@ -146,14 +146,16 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * Loads the content of the cached representation.
 	 *
 	 * @return	mixed		The content of the cached representation (string)
-	 *						or false (boolean) if something went wrong
+	 *						or FALSE (boolean) if cached representation doesn't exist OR if cached representation was just deleted after we checked if cached representation exists
 	 */
 	public function loadCachedRepresentation() {
-		$result = false;
+		$result = FALSE;
 		if ($this->isCachedRepresentationAvailable ()) {
 			$cacheRepresentation = $this->getCachedRepresentation ();
-			$result = file_get_contents ( $cacheRepresentation );
-			$this->getDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('message' => 'Cache representation "' . $cacheRepresentation . '" loaded and contains ' . strlen ( $result ) . ' bytes' ) );
+			$result = @file_get_contents ( $cacheRepresentation );
+			if($result !== FALSE) {
+				$this->getDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('message' => 'Cache representation "' . $cacheRepresentation . '" loaded and contains ' . strlen ( $result ) . ' bytes' ) );
+			}
 		}
 		return $result;
 	}
