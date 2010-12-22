@@ -26,6 +26,8 @@
 			<label index="startFilesSearch">start search for files</label>
 			<label index="startFolderSearch">start search for folders</label>
 			<label index="table">table</label>
+			<label index="eventqueue_status_waitforprocessing">wait for processing</label>
+			<label index="eventqueue_status_inprocess">in process</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="count">Anzahl</label>
@@ -47,6 +49,8 @@
 			<label index="startFilesSearch">Starte Suche nach Dateien</label>
 			<label index="startFolderSearch">Starte Suche nach Ordnern</label>
 			<label index="table">Tabelle</label>
+			<label index="eventqueue_status_waitforprocessing">Wartet auf Vearbeitung</label>
+			<label index="eventqueue_status_inprocess">Wird verarbeitet</label>
 		</languageKey>
 	</data>
 </T3locallang>

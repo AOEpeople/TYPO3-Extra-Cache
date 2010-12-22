@@ -30,10 +30,21 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableEventqueue']) > 0) {
 
 	<?php 
 	foreach($GLOBALS['view_data']['allDatabaseEntrysForTableEventqueue'] as $databaseEntry){
+		switch( $databaseEntry->getStatus() ) {
+			case Tx_Extracache_System_EventQueue::STATUS_WaitForProcessing:
+				$statusName = $GLOBALS['LANG']->getLL('eventqueue_status_waitforprocessing');
+				break;
+			case Tx_Extracache_System_EventQueue::STATUS_InProcess:
+				$statusName = $GLOBALS['LANG']->getLL('eventqueue_status_inprocess');
+				break;
+			default:
+				$statusName = '';
+				break;
+		} // END switch
 		?>
 		<tr class="bgColor4">
 			<td class="nowrap"><?php echo date('d.m.Y H:i:s',$databaseEntry->getFirst_called_time()); ?></td>
-			<td class="nowrap"><?php echo $databaseEntry->getStatus(); ?></td>
+			<td class="nowrap"><?php echo $statusName; ?></td>
 			<td class="nowrap"><?php echo $databaseEntry->getEvent_key(); ?></td>
 			<td class="nowrap"><?php echo $databaseEntry->getEvent_interval(); ?></td>
 			<?php
