@@ -38,6 +38,10 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 */
 	private $mockedCleanerStrategyValidator;
 	/**
+	 * @var Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository
+	 */
+	private $mockedContentProcessorDefinitionRepository;
+	/**
 	 * @var Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	private $mockedEventRepository;
@@ -52,24 +56,27 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	protected function setUp() {
 		$this->loadClass('Tx_Extracache_Domain_Repository_ArgumentRepository');
 		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
+		$this->loadClass('Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository');
 		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
 		$this->loadClass('Tx_Extracache_Validation_Validator_Argument');
 		$this->loadClass('Tx_Extracache_Validation_Validator_CleanerStrategy');
 		$this->loadClass('Tx_Extracache_Validation_Validator_Event');
 		$this->loadClass('Tx_Extracache_Configuration_ConfigurationManager');
-		
+
 		$this->mockedArgumentRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_ArgumentRepository', array (), array (), '', FALSE );
 		$this->mockedArgumentValidator = $this->getMock ( 'Tx_Extracache_Validation_Validator_Argument', array (), array (), '', FALSE );
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array (), array (), '', FALSE );
 		$this->mockedCleanerStrategyValidator = $this->getMock ( 'Tx_Extracache_Validation_Validator_CleanerStrategy', array (), array (), '', FALSE );
+		$this->mockedContentProcessorDefinitionRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository', array (), array (), '', FALSE );
 		$this->mockedEventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array (), array (), '', FALSE );
 		$this->mockedEventValidator = $this->getMock ( 'Tx_Extracache_Validation_Validator_Event', array (), array (), '', FALSE );
-		
-		$this->manager = $this->getMock ( 'Tx_Extracache_Configuration_ConfigurationManager', array ('getArgumentRepository','getArgumentValidator','getCleanerStrategyRepository','getCleanerStrategyValidator','getEventRepository','getEventValidator'));
+
+		$this->manager = $this->getMock ( 'Tx_Extracache_Configuration_ConfigurationManager', array ('getArgumentRepository','getArgumentValidator','getCleanerStrategyRepository','getCleanerStrategyValidator','getContentProcessorDefinitionRepository','getEventRepository','getEventValidator'));
 		$this->manager->expects ( $this->any () )->method ( 'getArgumentRepository' )->will ( $this->returnValue ( $this->mockedArgumentRepository ) );
 		$this->manager->expects ( $this->any () )->method ( 'getArgumentValidator' )->will ( $this->returnValue ( $this->mockedArgumentValidator ) );
 		$this->manager->expects ( $this->any () )->method ( 'getCleanerStrategyRepository' )->will ( $this->returnValue ( $this->mockedCleanerStrategyRepository ) );
 		$this->manager->expects ( $this->any () )->method ( 'getCleanerStrategyValidator' )->will ( $this->returnValue ( $this->mockedCleanerStrategyValidator ) );
+		$this->manager->expects ( $this->any () )->method ( 'getContentProcessorDefinitionRepository' )->will ( $this->returnValue ( $this->mockedContentProcessorDefinitionRepository ) );
 		$this->manager->expects ( $this->any () )->method ( 'getEventRepository' )->will ( $this->returnValue ( $this->mockedEventRepository ) );
 		$this->manager->expects ( $this->any () )->method ( 'getEventValidator' )->will ( $this->returnValue ( $this->mockedEventValidator ) );
 	}
@@ -114,6 +121,14 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
 		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
 		$this->manager->addCleanerStrategy(0, '', '', '', '');
+	}
+	/**
+	 * Test method addContentProcessorDefinition
+	 * @test
+	 */
+	public function canAddContentProcessorDefinition() {
+		$this->mockedContentProcessorDefinitionRepository->expects ( $this->once () )->method ( 'addContentProcessorDefinition' );
+		$this->manager->addContentProcessorDefinition('dummyClass');
 	}
 	/**
 	 * Test method addEvent

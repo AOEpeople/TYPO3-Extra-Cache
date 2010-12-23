@@ -6,6 +6,7 @@ Overview of system related internals used or defined by the extension 'extracach
 	* Cache TYPO3-pages with nc_staticfilecache for different FE-user-groups (if option 'supportFeUsergroups' is enabled)
 	* Cache TYPO3-pages with nc_staticfilecache even if the URL contain GET-params (this extension can cache and/or ignore GET-params)
 	* Delete or update statically cached content if a certain event occur
+	* Support of contentProcessors to modify content, before the content will be send to the client
 	* BE-modul for admins to show infos and delete statically cached content
 	* Scheduler-Task to clean-up removed files (files will not be deleted immediately (if editor delete them inside the TYPO3-BE), because
 	  statically cached content maybe have references to that files). Execute this scheduler-task not till then all statically cached content
@@ -45,6 +46,12 @@ Overview of system related internals used or defined by the extension 'extracach
 	* You can trigger cache-events:
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', [cacheEvent]);
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
+
+	* You can define contentProcessors (which modify the content before the content will be send to the client):
+		1. You must enable contentProcessors in the Extension-Manager of this extension
+		2. You must implement one or more contentProcessors in your own extension (your contentProcessor must implement the interface Tx_Extracache_System_ContentProcessor_Interface)
+		3. You must add your contentProcessor to this extension:
+			t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addContentProcessorDefinition([classNameOfYourContentProcessor], [pathToYourContentProcessorIncludeThePhpFile])
 
 
 4) How can i define this:

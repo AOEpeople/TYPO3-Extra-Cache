@@ -89,12 +89,15 @@ final class Bootstrap {
 		// Sends HTTP headers for debuging caching situations (if developmentContext is set)
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/SendCacheDebugHeader.php:&tx_Extracache_Typo3_Hooks_SendCacheDebugHeader->sendCacheDebugHeader';
 
+		// execute contentProcessors
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][self::ExtensionKey.'_contentProcessors'] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/ExecuteContentProcessor.php:&tx_Extracache_Typo3_Hooks_ExecuteContentProcessor->executeContentProcessor';
+
 		// Register hook that ignores an existing TYPO3 cache (used to force regeneration):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'][self::ExtensionKey] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/IgnoreTypo3Cache.php:tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache->ignoreExistingCache';
 
 		// Register hook to write gr_list to cache_pages:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/InsertPageIncache.php:&tx_Extracache_Typo3_Hooks_InsertPageIncache';
-	}
+	}	
 	/**
 	 * Initializes scheduler-tasks.
 	 *

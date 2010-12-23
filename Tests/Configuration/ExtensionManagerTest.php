@@ -36,6 +36,7 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$modifiedExtConfig['path_StaticFileCache'] = '/test_dir/dir2/';
 		$modifiedExtConfig['developmentContext']  = 0;
 		$modifiedExtConfig['supportFeUsergroups'] = 1;
+		$modifiedExtConfig['enableContentProcessors'] = 1;
 		$modifiedExtConfig['enableStaticCacheManager'] = 'StaticFileCacheManager';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = serialize($modifiedExtConfig);
 
@@ -49,7 +50,14 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = $this->originalExtConfig;
 		unset ( $this->extensionManager );
 	}
-	
+
+	/**
+	 * Test method areContentProcessorsEnabled
+	 * @test
+	 */
+	public function areContentProcessorsEnabled() {
+		$this->assertEquals($this->extensionManager->areContentProcessorsEnabled(), TRUE);
+	}
 	/**
 	 * Test method get
 	 * @test

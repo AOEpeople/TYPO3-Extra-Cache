@@ -27,6 +27,12 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function areContentProcessorsEnabled() {
+		return ( bool ) $this->get ( 'enableContentProcessors' );
+	}
+	/**
 	 * returns configurationvalue for the given key
 	 *
 	 * @param string $key
