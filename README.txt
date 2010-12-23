@@ -62,10 +62,10 @@ Overview of system related internals used or defined by the extension 'extracach
 
 			3. define cache-cleanerStrategies:
 			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
-			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, '0', 'Clear: Frontend-Cache (page with subpages)');
-			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent, '1', 'Clear: subpages (with variants)');
-			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, '2', 'Clear: page (only variants)');
-			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, '3', 'Update: page (without variants)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, 'clear_frontendcache_all', 'Clear: Frontend-Cache (page with subpages)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent, 'clear_subpages_with_elements', 'Clear: subpages (with variants)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'clear_page_only_elements', 'Clear: page (only variants)');
+			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, 'update_page_without_elements', 'Update: page (without variants)');
 
 			4. define cache-event:
 			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
