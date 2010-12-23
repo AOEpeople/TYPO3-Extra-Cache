@@ -37,10 +37,11 @@ class Tx_Extracache_System_ContentProcessor_ChainFactory {
 		return t3lib_div::makeInstance('Tx_Extracache_System_ContentProcessor_Chain');
 	}
 	/**
-	 * @return Tx_Extracache_System_ContentProcessor_Interface
+	 * @param	$className
+	 * @return	Tx_Extracache_System_ContentProcessor_Interface
 	 */
-	protected function createContentProcessor($contentProcessorClassName) {
-		return t3lib_div::makeInstance($contentProcessorClassName);
+	protected function createContentProcessor($className) {
+		return t3lib_div::makeInstance($className);
 	}
 	/**
 	 * @return array
