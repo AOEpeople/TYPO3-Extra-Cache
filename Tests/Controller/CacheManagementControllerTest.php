@@ -24,6 +24,10 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	/**
 	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
 	 */
+	private $cacheDatabaseEntryRepositoryForTableEventlog;
+	/**
+	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
+	 */
 	private $cacheDatabaseEntryRepositoryForTableEventqueue;
 	/**
 	 * @var Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
@@ -55,13 +59,14 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
 		$this->loadClass('Tx_Extracache_View_View');
 
+		$this->cacheDatabaseEntryRepositoryForTableEventlog = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheDatabaseEntryRepositoryForTableEventqueue = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheDatabaseEntryRepositoryForTablePages = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheDatabaseEntryRepositoryForTableStaticCache = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheFileRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheFileRepository', array (), array (), '', FALSE );
 		$this->extensionManager = $this->getMock ( 'Tx_Extracache_Configuration_ExtensionManager', array (), array (), '', FALSE );
 		$this->view = $this->getMock ( 'Tx_Extracache_View_View', array (), array (), '', FALSE );
-		$this->cacheManagementController = $this->getMock('Tx_Extracache_Controller_CacheManagementController', array('getModuleData'), array($this->cacheDatabaseEntryRepositoryForTableEventqueue, $this->cacheDatabaseEntryRepositoryForTablePages, $this->cacheDatabaseEntryRepositoryForTableStaticCache, $this->cacheFileRepository, $this->extensionManager, $this->view));
+		$this->cacheManagementController = $this->getMock('Tx_Extracache_Controller_CacheManagementController', array('getModuleData'), array($this->cacheDatabaseEntryRepositoryForTableEventlog, $this->cacheDatabaseEntryRepositoryForTableEventqueue, $this->cacheDatabaseEntryRepositoryForTablePages, $this->cacheDatabaseEntryRepositoryForTableStaticCache, $this->cacheFileRepository, $this->extensionManager, $this->view));
 		$this->cacheManagementController->expects($this->any())->method('getModuleData')->will($this->returnCallback(array($this, 'getModuleData')));
 	}
 	/**
@@ -69,6 +74,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 */
 	protected function tearDown() {
 		unset($this->cacheManagementController);
+		unset($this->cacheDatabaseEntryRepositoryForTableEventlog);
 		unset($this->cacheDatabaseEntryRepositoryForTableEventqueue);
 		unset($this->cacheDatabaseEntryRepositoryForTablePages);
 		unset($this->cacheDatabaseEntryRepositoryForTableStaticCache);
@@ -108,6 +114,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 */
 	public function indexAction() {		
 		$this->view->expects($this->once())->method('render');
+		$this->cacheDatabaseEntryRepositoryForTableEventlog->expects($this->once())->method('countAll');
 		$this->cacheDatabaseEntryRepositoryForTableEventqueue->expects($this->once())->method('countAll');
 		$this->cacheDatabaseEntryRepositoryForTablePages->expects($this->once())->method('count');
 		$this->cacheDatabaseEntryRepositoryForTableStaticCache->expects($this->once())->method('countAll');
@@ -132,6 +139,15 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->view->expects($this->once())->method('render');
 		$this->cacheFileRepository->expects($this->once())->method('removeFile');
 		$this->cacheManagementController->deleteFileAction ();
+	}
+	/**
+	 * Tests Tx_Extracache_Controller_CacheManagementController->allDatabaseEntrysForTableEventlogAction()
+	 * @test
+	 */
+	public function allDatabaseEntrysForTableEventlogAction() {
+		$this->view->expects($this->once())->method('render');
+		$this->cacheDatabaseEntryRepositoryForTableEventlog->expects($this->once())->method('query');
+		$this->cacheManagementController->allDatabaseEntrysForTableEventlogAction ();
 	}
 	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->allDatabaseEntrysForTableEventqueueAction()
