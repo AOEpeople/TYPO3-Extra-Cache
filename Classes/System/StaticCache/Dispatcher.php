@@ -36,7 +36,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	public function dispatch() {		
 		try {
-			// 1. trigger event so that other extensions have the chance to do some stuff before we try to load the requested page from staticCache
+			// 1. trigger event so that other extensions have the chance to do some stuff before we try to load the requested page from staticCache (even if staticCache is NOT enabled)
 			if($this->triggerEventOnStaticCachePreprocess()->isCanceled() === TRUE) {
 				return;
 			}
