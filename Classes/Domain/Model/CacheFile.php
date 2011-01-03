@@ -9,7 +9,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Database cache entry
+ * File cache entry
  * @package extracache
  */
 class Tx_Extracache_Domain_Model_CacheFile {

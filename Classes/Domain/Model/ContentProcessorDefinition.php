@@ -10,17 +10,22 @@
 ***************************************************************/
 
 /**
- * value-object, which defines a contentProcessor
+ * value-object, which defines a contentProcessor-definition
  * 
  * @package extracache
  */
 class Tx_Extracache_Domain_Model_ContentProcessorDefinition {
 	/**
+	 * defines the className
+	 * e.g. 'myOwnContentProcessor'
+	 * 
 	 * @var string
 	 */
 	private $className;
 	/**
-	 * defines the path to the className (must only be defined, if className and path don't use the synthax of extbase)
+	 * defines the path (including the PHP-filename; must only be defined, if className and path don't use the synthax of extbase)
+	 * e.g. '/srv/www/htdocs/typo3conf/ext/myExtension/system/contentProcessor/class.myOwnContentProcessor.php'
+	 * 
 	 * @var string
 	 */
 	private $path;

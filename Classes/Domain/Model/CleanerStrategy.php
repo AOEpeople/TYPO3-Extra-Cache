@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * entity-object, which defines a cache-cleanerStrategy.
+ * value-object, which defines a cache-cleanerStrategy.
  * A cache-cleanerStrategy defines the actions (e.g. delete or update statically cached content), which should be processed, if a
  * certain cache-event occur. A cache-cleanerStrategy is a property of the TYPO3-record 'pages'.
  * 

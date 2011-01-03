@@ -10,7 +10,7 @@
 ***************************************************************/
 
 /**
- * entity-object, which defines an argument.
+ * value-object, which defines an argument.
  * 
  * @package extracache
  */
