@@ -63,11 +63,9 @@ final class Bootstrap {
 	 */
 	static protected function initializeHooks() {
 		// Register hooks for nc_staticfilecache-extension
-		$staticFileCacheHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php'];
-		$hookDirectory = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/';
-		$staticFileCacheHooks['createFile_initializeVariables'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->initialize';
-		$staticFileCacheHooks['createFile_processContent'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->process';
-		$staticFileCacheHooks['processDirtyPages'][self::ExtensionKey] = $hookDirectory . 'CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook->process';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['createFile_initializeVariables'][self::ExtensionKey] = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->initialize';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['createFile_processContent'][self::ExtensionKey] = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/CreateFileHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook->process';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['nc_staticfilecache/class.tx_ncstaticfilecache.php']['processDirtyPages'][self::ExtensionKey] = 'EXT:' . self::ExtensionKey . '/Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php:tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook->process';
 
 		// Register Hook that determine, block and re-queue modifications concerning file references (This is required in combination with statically cached files):
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification.php:&tx_Extracache_Typo3_Hooks_FileReferenceModification';
