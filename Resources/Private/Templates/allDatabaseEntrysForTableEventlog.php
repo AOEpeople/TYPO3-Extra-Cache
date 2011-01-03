@@ -16,6 +16,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableEventlog']) > 0) {
 
 
 <!-- show from for files-search -->
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_filter');?>:</h2>
 <form name="setConfigSearchPhraseForFiles" action="index.php" method="GET">
 	<input type="hidden" name="action" value="setConfigDateFilterForDbRecords" />
 	<input type="hidden" name="routeToAction" value="allDatabaseEntrysForTableEventlogAction" />
@@ -24,7 +25,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableEventlog']) > 0) {
 	<input onClick="javascript:this.form.submit();" type="button" value="<?php echo $GLOBALS['LANG']->getLL('startFilterByDate');?>" />
 </form>
 <br /><?php echo $GLOBALS['LANG']->getLL('startFilterByDateInfo');?>
-<br /><br />
+<br /><br /><br />
 
 
 <h2><?php echo $GLOBALS['LANG']->getLL('headline_allDatabaseentries').' ('.count($GLOBALS['view_data']['allDatabaseEntrysForTableEventlog']). ' '.$GLOBALS['LANG']->getLL('entries').'):';?></h2>

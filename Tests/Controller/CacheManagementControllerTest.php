@@ -173,7 +173,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 */
 	public function allDatabaseEntrysForTableStaticCacheAction() {
 		$this->view->expects($this->once())->method('render');
-		$this->cacheDatabaseEntryRepositoryForTableStaticCache->expects($this->once())->method('getAll');
+		$this->cacheDatabaseEntryRepositoryForTableStaticCache->expects($this->once())->method('query');
 		$this->cacheManagementController->allDatabaseEntrysForTableStaticCacheAction ();
 	}
 	/**

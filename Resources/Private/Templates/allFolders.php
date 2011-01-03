@@ -7,6 +7,7 @@
 
 
 <!-- show from to define if empty folder should also be displayed -->
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_filter');?>:</h2>
 <form name="setConfigGetFoldersWhichDoesNotContainFiles" action="index.php" method="GET">
 	<?php
 	$checked = '';
@@ -18,9 +19,7 @@
 	<input onClick="javascript:this.form.submit();" type="checkbox" value="1" name="getFoldersWhichDoesNotContainFiles" <?php echo $checked;?> />
 	<?php echo $GLOBALS['LANG']->getLL('showEmptyDirectories');?>
 </form>
-<br /><br />
-
-
+<br />
 <!-- show from for folder-search -->
 <form name="setConfigSearchPhraseForFolders" action="index.php" method="GET">
 	<input type="hidden" name="action" value="setConfigSearchPhraseForFolders" />

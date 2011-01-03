@@ -15,6 +15,17 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']) > 0) {
 </style>
 
 
+<!-- show from for db-record-search -->
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_filter');?>:</h2>
+<form name="setConfigSearchPhraseForTableStaticCache" action="index.php" method="GET">
+	<input type="hidden" name="action" value="setConfigSearchPhraseForTableStaticCache" />
+	<input type="text" name="searchPhraseForTableStaticCache" value="<?php echo $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_searchPhraseForTableStaticCache'); ?>" />
+	<input onClick="javascript:this.form.submit();" type="button" value="<?php echo $GLOBALS['LANG']->getLL('startDbRecordSearch');?>" />
+</form>
+<br /><?php echo $GLOBALS['LANG']->getLL('startFilterBySearchPhraseForDbRecordsInfo');?>
+<br /><br /><br />
+
+
 <h2><?php echo $GLOBALS['LANG']->getLL('headline_allDatabaseentries').' ('.count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']). ' '.$GLOBALS['LANG']->getLL('entries').'):';?></h2>
 <table border="0" cellspacing="1" class="lrPadding" width="100%">
 	<tr class="bgColor5 tableheader">

@@ -7,12 +7,13 @@
 
 
 <!-- show from for files-search -->
+<h2><?php echo $GLOBALS['LANG']->getLL('headline_filter');?>:</h2>
 <form name="setConfigSearchPhraseForFiles" action="index.php" method="GET">
 	<input type="hidden" name="action" value="setConfigSearchPhraseForFiles" />
 	<input type="text" name="searchPhraseForFiles" value="<?php echo $GLOBALS['BE_USER']->getModuleData('tx_extracache_manager_searchPhraseForFiles'); ?>" />
 	<input onClick="javascript:this.form.submit();" type="button" value="<?php echo $GLOBALS['LANG']->getLL('startFilesSearch');?>" />
 </form>
-<br /><br />
+<br /><br /><br />
 
 
 <!-- show files -->

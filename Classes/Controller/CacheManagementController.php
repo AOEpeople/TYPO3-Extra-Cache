@@ -134,7 +134,9 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function allDatabaseEntrysForTablePagesAction() {
 		try {
-			$this->getView()->assign ( 'allDatabaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->query ( 'tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\'' ) );
+			$searchPhrase = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForTablePages');
+			$sqlWhere = $this->createSqlWhereClauseForDbRecords($searchPhrase, array('tstamp','crdate','starttime','endtime'));
+			$this->getView()->assign ( 'allDatabaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->query ( '(tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\') AND '.$sqlWhere ) );
 			return $this->getView()->render ( 'allDatabaseEntrysForTablePages' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -147,12 +149,14 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function allDatabaseEntrysForTableStaticCacheAction() {
 		try {
-			$this->getView()->assign ( 'allDatabaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->getAll () );
+			$searchPhrase = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForTableStaticCache');
+			$sqlWhere = $this->createSqlWhereClauseForDbRecords($searchPhrase, array('tstamp','crdate'));
+			$this->getView()->assign ( 'allDatabaseEntrysForTableStaticCache', $this->getCacheDatabaseEntryRepositoryForTableStaticCache()->query ($sqlWhere) );
 			return $this->getView()->render ( 'allDatabaseEntrysForTableStaticCache' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
 		}
-	}
+	}	
 	/**
 	 * @return string
 	 */
@@ -264,6 +268,28 @@ class Tx_Extracache_Controller_CacheManagementController {
 	/**
 	 * @return string
 	 */
+	public function setConfigSearchPhraseForTablePagesAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTablePages', (string) t3lib_div::_GP('searchPhraseForTablePages'));
+			return $this->allDatabaseEntrysForTablePagesAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
+	public function setConfigSearchPhraseForTableStaticCacheAction() {
+		try {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTableStaticCache', (string) t3lib_div::_GP('searchPhraseForTableStaticCache'));
+			return $this->allDatabaseEntrysForTableStaticCacheAction();
+		} catch (Exception $e) {
+			return $this->showErrorMessage($e);
+		}
+	}
+	/**
+	 * @return string
+	 */
 	public function setConfigSearchPhraseForFilesAction() {
 		try {
 			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFiles', (string) t3lib_div::_GP('searchPhraseForFiles'));
@@ -314,6 +340,28 @@ class Tx_Extracache_Controller_CacheManagementController {
 		return $GLOBALS['BE_USER']->getModuleData($key);
 	}
 
+	/**
+	 * create SQL-where-clause for db-records
+	 * 
+	 * @param	string $searchPhrase
+	 * @param	array $dbFieldsWhichContainTimeData
+	 * @return	string
+	 */
+	private function createSqlWhereClauseForDbRecords($searchPhrase, array $dbFieldsWhichContainTimeData=array()) {
+		$sqlWhere = '1=1';
+		if($searchPhrase !== '') {
+			list($field, $value) = explode(':', $searchPhrase);
+			if(in_array($field, $dbFieldsWhichContainTimeData)) {
+				$value = strtotime($value);
+				if(is_integer($value) === TRUE) {
+					$sqlWhere .= ' AND '.$field.' >='.$value;
+				}
+			} else {
+				$sqlWhere .= ' AND '.$field.' like \'%'.$value.'%\'';
+			}
+		}
+		return $sqlWhere;
+	}
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository
 	 */
