@@ -69,6 +69,6 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 * @return Tx_Extracache_Domain_Model_Event
 	 */
 	private function createEvent($interval) {
-		return new Tx_Extracache_Domain_Model_Event('testkey', 'testname', $interval);
+		return new Tx_Extracache_Domain_Model_Event('testkey', 'testname', $interval, FALSE);
 	}
 }
