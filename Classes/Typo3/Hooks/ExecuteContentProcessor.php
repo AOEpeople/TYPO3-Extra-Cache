@@ -31,13 +31,7 @@ class tx_Extracache_Typo3_Hooks_ExecuteContentProcessor {
 	 */
 	public function executeContentProcessor(array $parameters, tslib_fe $parent) {
 		if($this->getExtensionManager()->areContentProcessorsEnabled()) {
-			try {
-				$parent->content = $this->getContentProcessorChain()->process( $parent->content );
-			} catch (Exception $e) {
-				if($this->getExtensionManager()->isDevelopmentContextSet()) {
-					throw $e;
-				}
-			}
+			$parent->content = $this->getContentProcessorChain()->process( $parent->content );
 		}
 	}
 

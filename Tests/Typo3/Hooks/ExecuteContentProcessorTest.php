@@ -65,15 +65,7 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 	public function executeContentProcessor_contentProcessorsAreEnabled_dontThrowException() {
 		// dont throw exception, because there is no exception
 		$this->extensionManager->expects($this->once())->method('areContentProcessorsEnabled')->will($this->returnValue( TRUE ));
-		$this->extensionManager->expects($this->any())->method('isDevelopmentContextSet')->will($this->returnValue( TRUE ));
 		$this->chain->expects($this->once())->method('process');
-		$this->hook->executeContentProcessor(array(), $this->tsfeMock);
-
-		// dont throw exception, because developmentContext is set to FALSE
-		$this->setUp();
-		$this->extensionManager->expects($this->once())->method('areContentProcessorsEnabled')->will($this->returnValue( TRUE ));
-		$this->extensionManager->expects($this->any())->method('isDevelopmentContextSet')->will($this->returnValue( FALSE ));
-		$this->chain->expects($this->once())->method('process')->will ( $this->throwException(new Exception('') ) );
 		$this->hook->executeContentProcessor(array(), $this->tsfeMock);
 	}
 	/**
@@ -82,7 +74,6 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 	 */
 	public function executeContentProcessor_contentProcessorsAreEnabled_throwException() {
 		$this->extensionManager->expects($this->once())->method('areContentProcessorsEnabled')->will($this->returnValue( TRUE ));
-		$this->extensionManager->expects($this->any())->method('isDevelopmentContextSet')->will($this->returnValue( TRUE ));
 		$this->chain->expects($this->once())->method('process')->will ( $this->throwException(new Exception('') ) );
 		$this->hook->executeContentProcessor(array(), $this->tsfeMock);
 	}
