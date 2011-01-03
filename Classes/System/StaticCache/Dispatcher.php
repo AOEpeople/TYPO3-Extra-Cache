@@ -143,7 +143,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	protected function initializeFrontEnd($content) {
 		$pageInformation = $this->getCacheManager()->getPageInformationFromCachedRepresentation($content);
 
-		// Re-publish $_GET information if found in cached representation:
+		// Re-publish $_GET information if found in cached representation (GET-params/arguments of type 'TYPE_whitelist' will be re-published if they exist when the staticCache was written):
 		if (isset($pageInformation['GET'])) {
 			$_GET = array_merge($_GET, $pageInformation['GET']);
 		}

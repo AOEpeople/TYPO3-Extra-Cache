@@ -29,6 +29,7 @@ class Tx_Extracache_Domain_Model_Argument {
 	/**
 	 * define arguments, which should be saved if staticCache will be written and restored if request will be processed/responsed by staticCache in:
 	 *  - Classes/Typo3/Hooks/StaticFileCache/CreateFileHook.php
+	 *  - Classes/System/StaticCache/Dispatcher.php
 	 */
 	const TYPE_whitelist = 'whitelist';
 	/**
