@@ -42,7 +42,7 @@ class Tx_Extracache_Domain_Model_Event {
 	 * @param string	$name
 	 * @param integer	$interval
 	 */
-	public function __construct($key, $name, $interval, $writeLog) {
+	public function __construct($key, $name, $interval=0, $writeLog=FALSE) {
 		$this->key = $key;
 		$this->name = $name;
 		$this->interval = $interval;
