@@ -50,7 +50,7 @@ class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
 	}
 
 	/**
-	 * Register a Handler that Lazy Loads - only singletons are supported!
+	 * Register a Handler that Lazy Loads
 	 *
 	 * @param	string		$eventName Event Name
 	 * @param	string		$handlerObjectName Object thats registered as handler for this event
@@ -108,12 +108,5 @@ class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
 		}
 
 		return $event;
-	}
-
-	/**
-	 * reset array with handlers
-	 */
-	public function resetHandlers() {
-		$this->handlers = array();
 	}
 }
