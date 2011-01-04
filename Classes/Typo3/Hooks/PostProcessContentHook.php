@@ -34,7 +34,7 @@ class tx_Extracache_Typo3_Hooks_PostProcessContentHook {
 	 */
 	public function disableCachingOnFaultyPages(array $parameters, tslib_fe $parent) {
 		if ($this->hasTemplaVoilaError($parent)) {
-			$parent->no_cache = TRUE;
+			$parent->no_cache = 1;
 		}
 	}
 
