@@ -10,7 +10,7 @@
 
 /**
  * Hook class for TYPO3 - is called before putting data into caches.
- * This hook avoids putting faulty pages (e.g. if templaVoila could not render page) into the cache.
+ * This hook adds the TypoScript template page id to the cached config array of TSFE.
  * 
  * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
  * 
