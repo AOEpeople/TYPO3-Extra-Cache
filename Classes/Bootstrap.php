@@ -80,7 +80,8 @@ final class Bootstrap {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'][] = 'EXT:'.self::ExtensionKey.'/Classes/System/StaticCache/Dispatcher.php:&tx_Extracache_System_StaticCache_Dispatcher->dispatch';
 
 		// register hook to disable caching for faulty pages (e.g. if templaVoila could not render page):
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/PostProcessContentHook.php:&tx_Extracache_Typo3_Hooks_PostProcessContentHook->disableCachingOnFaultyPages';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/AvoidFaultyPages.php:&tx_Extracache_Typo3_Hooks_AvoidFaultyPages->disableCachingOnFaultyPages';
+
 		// Register hook to store the template page id in TSFE used for TypoScript caching:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/PostProcessContentHook.php:&tx_Extracache_Typo3_Hooks_PostProcessContentHook->addTemplatePageId';
 
@@ -95,7 +96,7 @@ final class Bootstrap {
 
 		// Register hook to write gr_list to cache_pages:
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][] = 'EXT:'.self::ExtensionKey.'/Classes/Typo3/Hooks/InsertPageIncache.php:&tx_Extracache_Typo3_Hooks_InsertPageIncache';
-	}	
+	}
 	/**
 	 * Initializes scheduler-tasks.
 	 *
@@ -148,6 +149,7 @@ final class Bootstrap {
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
 	 */
 	static protected function addEventHandlerForStaticCache(Tx_Extracache_System_Event_Dispatcher $dispatcher) {
+		$dispatcher->addLazyLoadingHandler('onFaultyPages', 'tx_Extracache_Typo3_Hooks_AvoidFaultyPages', 'handleFaultyEvent');
 		$dispatcher->addLazyLoadingHandler('onProcessCacheEvent', 'Tx_Extracache_Domain_Service_CacheEventHandler', 'handleEventOnProcessCacheEvent');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheRequest', 'Tx_Extracache_System_StaticCache_EventHandler', 'handleEventOnStaticCacheRequest');
 	}

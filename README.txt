@@ -7,6 +7,7 @@ Overview of system related internals used or defined by the extension 'extracach
 	* Cache TYPO3-pages with nc_staticfilecache even if the URL contain GET-params (this extension can cache and/or ignore GET-params)
 	* Delete or update statically cached content if a certain event occur
 	* Support of contentProcessors to modify content, before the content will be send to the client
+	* Support of events
 	* BE-modul for admins to show infos and delete statically cached content
 	* Scheduler-Task to clean-up removed files (files will not be deleted immediately (if editor delete them inside the TYPO3-BE), because
 	  statically cached content maybe have references to that files). Execute this scheduler-task not till then all statically cached content
@@ -42,6 +43,12 @@ Overview of system related internals used or defined by the extension 'extracach
 	* You can use several events to modfiy/add logic (the most important events are defined in Classes/System/Event/Events/) if you add your own eventHandler to Tx_Extracache_System_Event_Dispatcher: 
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );
 		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addLazyLoadingHandler( [eventName], [handlerObjectName], [handlerObjectMethod] );
+
+	* You can trigger the event 'onFaultyPages' to define, that the called page should not be cached statically (because e.g. an error/exception occured, so the generated page maybe contains a warning, which you don't want to cache statically):
+		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( 'onFaultyPages' );
+		OR
+		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnFaultyPages');
+		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
 
 	* You can trigger cache-events:
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', [cacheEvent]);

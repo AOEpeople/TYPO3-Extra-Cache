@@ -18,35 +18,10 @@
  * @subpackage Typo3_Hooks
  */
 class tx_Extracache_Typo3_Hooks_PostProcessContentHook {
-	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
-
 	/**
 	 * @var tx_Extracache_Typo3_TypoScriptCache
 	 */
 	protected $typoScriptCache;
-
-	/**
-	 * Disables the caching on faulty pages
-	 *
-	 * @param	array		$parameters Additional parameters delivered by the calling parent
-	 * @param	tslib_fe	$parent The calling parent object (TSFE)
-	 * @return	void
-	 */
-	public function disableCachingOnFaultyPages(array $parameters, tslib_fe $parent) {
-		if ($this->hasTemplaVoilaError($parent)) {
-			$parent->no_cache = 1;
-		}
-	}
-
-	/**
-	 * Determines whether a TemplaVoila error was found in the content.
-	 *
-	 * @param tslib_fe $tsfe
-	 * @return boolean
-	 */
-	private function hasTemplaVoilaError(tslib_fe $tsfe) {
-		return (stripos($tsfe->content, self::ERROR_TemplaVoila) !== FALSE);
-	}
 
 	/**
 	 * Adds the TypoScript template page id to the cached config array of TSFE.

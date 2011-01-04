@@ -53,20 +53,6 @@ class Tx_Extracache_Typo3_Hooks_PostProcessContentHookTest extends Tx_Extracache
 	}
 
 	/**
-	 * Tests whether the no_cache variable is set.
-	 *
-	 * @test
-	 */
-	public function isNoCacheVariableSetOnTemplaVoilaError() {
-		$this->tsfeMock->no_cache = 0;
-
-		$this->tsfeMock->content = 'BEGIN ' . tx_Extracache_Typo3_Hooks_PostProcessContentHook::ERROR_TemplaVoila . ' END';
-		$this->hook->disableCachingOnFaultyPages(array(), $this->tsfeMock);
-
-		$this->assertTrue((bool) $this->tsfeMock->no_cache);
-	}
-
-	/**
 	 * Tests whether the TypoScript template page id is set in TSFE.
 	 *
 	 * @return void
