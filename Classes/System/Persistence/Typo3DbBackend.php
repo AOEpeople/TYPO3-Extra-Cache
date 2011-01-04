@@ -22,9 +22,10 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 		$sqlSelect = 'uid,title,tx_extracache_cleanerstrategies';
 		$sqlFrom   = 'pages';
 		$sqlWhere  = "tx_extracache_cleanerstrategies !='' AND (tx_extracache_events = '".$eventKey."' OR tx_extracache_events like '".$eventKey.",%' OR tx_extracache_events like '%,".$eventKey."' OR tx_extracache_events like '%,".$eventKey.",%') AND deleted=0 AND hidden=0 AND doktype < 199";
+		$sqlOrderBy = 'pid ASC, title ASC';
 
 		$pages = array();
-		if(FALSE != $data = $this->selectQuery($sqlSelect, $sqlFrom, $sqlWhere)) {
+		if(FALSE != $data = $this->selectQuery($sqlSelect, $sqlFrom, $sqlWhere, $sqlOrderBy)) {
 			$pages = $data;
 		}
 		return $pages;
