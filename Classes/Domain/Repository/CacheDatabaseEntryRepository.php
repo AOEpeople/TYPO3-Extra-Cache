@@ -62,8 +62,10 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository {
 		$db = $GLOBALS['TYPO3_DB'];
 		$rows = $db->exec_SELECTgetRows('*', $this->getFileTable(), $where, '', $this->getOrderBy());
 		$entries = array();
-		foreach($rows as $row){
-			$entries[] = $this->createCacheDatabaseEntry( $row );
+		if(is_array($rows)) {
+			foreach($rows as $row){
+				$entries[] = $this->createCacheDatabaseEntry( $row );
+			}
 		}
 		return $entries;
 	}
