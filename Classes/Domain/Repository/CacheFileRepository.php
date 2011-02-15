@@ -45,14 +45,17 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 			$name = '';
 			if ($getFoldersWhichDoesNotContainFiles === TRUE && $file->isDir ()) {
 				$name = $this->replacePath ( $file->getPathname() );
+				$path = $file->getPathname();
 			} elseif ($getFoldersWhichDoesNotContainFiles === FALSE && $file->isFile ()) {
 				$name = $this->replacePath ( $file->getPath() );
+				$path = $file->getPath();
 			}
 
 			// check name
 			if ($name !== '' && ($searchPhrase === '' || strstr($name, $searchPhrase) !== FALSE) && isset ( $folders [$name] ) === FALSE) {
 				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
 				$cacheFile->setName ( $name );
+				$cacheFile->setLastModificationTime( $this->getLastModificationTime( $path ));
 				$folders [$name] = $cacheFile;
 			}
 		}
@@ -122,6 +125,16 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	}
 
 	/**
+	 * get time of last modification
+	 * 
+	 * @param string $fileName
+	 * @return integer
+	 */
+	private function getLastModificationTime($fileName) {
+		$stat = stat($fileName);
+		return $stat[9];
+	}
+	/**
 	 * @param Iterator	$regexIterator
 	 * @param string	$searchPhrase
 	 * @return array
@@ -131,13 +144,14 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 		foreach ( $regexIterator as $fileName => $file ) {
 			if($searchPhrase === '' || strstr($fileName, $searchPhrase) !== FALSE) {
 				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
+				$cacheFile->setLastModificationTime( $this->getLastModificationTime( $fileName ));
 				$cacheFile->setName ( $this->replacePath ( $fileName ) );
 				$files [] = $cacheFile;
 			}
 		}
 		sort( $files );
 		return $files;
-	}
+	}	
 	/**
 	 * @param RegexIterator $regexIterator
 	 * @return integer

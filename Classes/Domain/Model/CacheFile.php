@@ -14,10 +14,14 @@
  */
 class Tx_Extracache_Domain_Model_CacheFile {
 	/**
+	 * @var integer
+	 */
+	private $lastModificationTime;
+	/**
 	 * @var string
 	 */
 	private $name;
-	
+
 	/**
 	 * @return string
 	 */
@@ -25,10 +29,23 @@ class Tx_Extracache_Domain_Model_CacheFile {
 		return base64_encode ( $this->name );
 	}
 	/**
+	 * @return integer
+	 */
+	public function getLastModificationTime() {
+		return $this->lastModificationTime;
+	}
+	/**
 	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @param integer $lastModificationTime
+	 */
+	public function setLastModificationTime($lastModificationTime) {
+		$this->lastModificationTime = $lastModificationTime;
 	}
 	/**
 	 * @param string $name
