@@ -54,3 +54,11 @@ CREATE TABLE tx_extracache_eventqueue (
 	status int(1) DEFAULT '0' NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+
+#
+# Table structure for table 'sys_log'
+# enlarge db-field (because error-messages of this extension can be bigger than 255 chars)
+#
+CREATE TABLE sys_log (
+    details text NOT NULL,
+) ENGINE=InnoDB;
