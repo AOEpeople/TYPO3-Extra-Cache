@@ -76,12 +76,14 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->createFileHook = $this->getMock(
 			'tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
-			array('getArgumentRepository', 'getExtensionManager', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'getGetArguments', 'isCrawlerExtensionRunning')
+			array('getArgumentRepository', 'getExtensionManager', 'getFrontendUserGroupList', 'getEventDispatcher', 'getTypoScriptCache', 'isAnonymous', 'isUnprocessibleRequestAction', 'getGetArguments', 'isCrawlerExtensionRunning')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
 		$this->createFileHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
 		$this->createFileHook->expects($this->any())->method('getExtensionManager')->will($this->returnValue($this->extensionManager));
 		$this->createFileHook->expects($this->any())->method('getTypoScriptCache')->will($this->returnValue($this->typoScriptCache));
+		$this->createFileHook->expects($this->any())->method('isUnprocessibleRequestAction')->will($this->returnValue(FALSE));
+		
 	}
 
 	/**

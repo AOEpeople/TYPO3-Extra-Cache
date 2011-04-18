@@ -34,42 +34,48 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * @return	void
 	 */
 	public function initialize(array $parameters, tx_ncstaticfilecache $parent) {
-		$frontend = $this->getFrontend($parameters);
+		if($this->isUnprocessibleRequestAction()) {
+			// change parameters, so nc_staticfilecache will NOT cache this request
+			$parameters['isHttp'] = FALSE;
+			$parameters['staticCacheable'] = FALSE;
+		} else {
+			$frontend = $this->getFrontend($parameters);
 
-		// modify some data if we support FE-usergroups
-		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
-			$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
+			// modify some data if we support FE-usergroups
+			if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
+				$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
 
-			// Adds the frontend user groups to the cache directory path:
-			$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
+				// Adds the frontend user groups to the cache directory path:
+				$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
 
-			// Adds the frontend user groups to the static cache table:
-			$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
+				// Adds the frontend user groups to the static cache table:
+				$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
 
-			// Defines the additionalHash value for database lookups:
-			$parameters['additionalHash'] = md5($frontendUserGroupList);
+				// Defines the additionalHash value for database lookups:
+				$parameters['additionalHash'] = md5($frontendUserGroupList);
+			}
+
+			// Fixes a non speaking URI request (e.g. /index.php?id=13):
+			list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);
+
+			// Modifies the URI to be cached to not contain any unwanted arguments:
+			$parameters['uri'] = Tx_Extracache_System_Tools_Uri::filterUriArguments(
+				$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
+			);
+			$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
+
+			// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
+			// @todo BUFFALO_3-0: Reactivate anonymous page delivery
+			/*
+				if ($frontendUserGroupList !== '0,-1' && $this->isAnonymous($frontend)) {
+					$parameters['staticCacheable'] = FALSE;
+					// Override staticCacheable status and recreate with ignoring active frontend users:
+				} elseif ($parameters['staticCacheable'] === FALSE) {
+			*/
+
+			$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
+			$this->getEventDispatcher()->triggerEvent($event);
 		}
-
-		// Fixes a non speaking URI request (e.g. /index.php?id=13):
-		list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);
-
-		// Modifies the URI to be cached to not contain any unwanted arguments:
-		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::filterUriArguments(
-			$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
-		);
-		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
-
-		// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
-		// @todo BUFFALO_3-0: Reactivate anonymous page delivery
-		/*
-			if ($frontendUserGroupList !== '0,-1' && $this->isAnonymous($frontend)) {
-				$parameters['staticCacheable'] = FALSE;
-				// Override staticCacheable status and recreate with ignoring active frontend users:
-			} elseif ($parameters['staticCacheable'] === FALSE) {
-		*/
-
-		$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
-		$this->getEventDispatcher()->triggerEvent($event);
 	}
 
 	/**
@@ -213,6 +219,18 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 		}
 
 		return $this->hasOnlyAnonymousContent($frontend->page['uid']);
+	}
+	/**
+	 * Determines whether the current request cannot be cached staticaly in general.
+	 * The behaviour can be configured via creating Tx_Extracache_Domain_Model_Argument-objects with Type Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible
+	 *
+	 * @return	boolean
+	 */
+	protected function isUnprocessibleRequestAction() {
+		return Tx_Extracache_System_Tools_Request::isUnprocessibleRequest(
+			$this->getGetArguments(),
+			$this->getArgumentRepository()->getArgumentsByType( Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible )
+		);
 	}
 
 	/**

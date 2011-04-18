@@ -22,7 +22,8 @@ class Tx_Extracache_Domain_Model_Argument {
 	 */
 	const TYPE_ignoreOnCreatingCache = 'ignoreOnCreatingCache';
 	/**
-	 * define arguments, which makes sure that requests can't be processed/responsed by staticCache in: 
+	 * define arguments, which makes sure that requests can't be processed/responsed by staticCache in:
+	 *  - Classes/Typo3/Hooks/StaticFileCache/CreateFileHook.php
 	 *  - Classes/System/StaticCache/EventHandler.php
 	 */
 	const TYPE_unprocessible = 'unprocessible';
