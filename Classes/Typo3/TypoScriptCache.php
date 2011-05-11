@@ -124,8 +124,8 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	}
 
 	/**
-	 * Generates the TypoScript of the the most specific page containing TypoScript templates and
-	 * extracts the settings for 'lib.', 'tt_content' and 'tt_content.'.
+	 * Generates the TypoScript of the most specific page containing TypoScript templates and
+	 * extracts the settings for 'lib.', 'plugin.', 'tt_content' and 'tt_content.'
 	 *
 	 * @return	array		Extracted TypoScript configurations
 	 */
@@ -136,7 +136,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 		$template = clone $frontend->tmpl;
 		$template->start ( $frontend->sys_page->getRootLine($this->getTemplatePageId($frontend)));
 
-		$keysToBeCached = array('lib.', 'tt_content', 'tt_content.');
+		$keysToBeCached = array('lib.', 'plugin.', 'tt_content', 'tt_content.');
 		/** @var $event Tx_Extracache_System_Event_Events_Event */
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', self::EVENT_Generate, $this, $keysToBeCached);
 		$this->getEventDispatcher()->triggerEvent($event);
