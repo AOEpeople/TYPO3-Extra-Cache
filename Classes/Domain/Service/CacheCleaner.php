@@ -76,6 +76,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	protected function getTceMain() {
 		if($this->tceMain === NULL) {
 			$this->tceMain = t3lib_div::makeInstance('t3lib_TCEmain');
+			$this->tceMain->start(array(), array());
 		}
 		return $this->tceMain;
 	}
