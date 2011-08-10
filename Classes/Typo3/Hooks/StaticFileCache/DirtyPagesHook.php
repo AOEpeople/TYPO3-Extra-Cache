@@ -127,9 +127,11 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 			/* @var $directRequestManager tx_directrequest_manager */
 			$directRequestManager = t3lib_div::makeInstance('tx_directrequest_manager');
 			$response = $directRequestManager->execute($urlToFetch, $requestHeaders);
+			$statusReport = array();
 			$result = $response['content'];
 		} else {
-			$result = t3lib_div::getURL($urlToFetch, 1, $requestHeaders);
+			$statusReport = array();
+			$result = t3lib_div::getURL($urlToFetch, 1, $requestHeaders, $statusReport);
 		}
 		$result = (bool) trim( $result ); // if fetching failed, it can happen, that the returned result contains some space characters!
 
@@ -138,7 +140,21 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 		}
 
 		if($result === FALSE) {
+			// create error-message
+			$statusReportInfos = '';
+			foreach($statusReport as $key => $value) {
+				if($value !== '') {
+					if($statusReportInfos !== '') {
+						$statusReportInfos .= ',';
+					}
+					$statusReportInfos .= $key.':'.$value;
+				}
+			}
 			$message = 'Re-caching ' . $urlToFetch . ' failed';
+			if($statusReportInfos !== '') {
+				$message .= ' ('.$statusReportInfos.')';
+			}
+
 			$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheWarning', $this, array ('message' => $message ) );
 		}
 
