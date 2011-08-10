@@ -128,6 +128,9 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 			$directRequestManager = t3lib_div::makeInstance('tx_directrequest_manager');
 			$response = $directRequestManager->execute($urlToFetch, $requestHeaders);
 			$statusReport = array();
+			if(array_key_exists('error', $response)) {
+				$statusReport['error'] = $response['error'];
+			}
 			$result = $response['content'];
 		} else {
 			$statusReport = array();
