@@ -20,12 +20,11 @@ class Tx_Extracache_System_Tools_Request {
 	 */
 	public static function isUnprocessibleRequest($arguments, array $unprocessibleRequestArguments) {
 		$result = false;
-
 		/* @var $unprocessibleRequestArgument Tx_Extracache_Domain_Model_Argument */
 		foreach ( $unprocessibleRequestArguments as $unprocessibleRequestArgument ) {
 			$key = $unprocessibleRequestArgument->getName();
 			$actions = $unprocessibleRequestArgument->getValue();
-
+			
 			if ($key === '*' && is_array ( $actions )) {
 				foreach ( $arguments as $argumentValues ) {
 					if (is_array ( $argumentValues )) {
@@ -37,16 +36,16 @@ class Tx_Extracache_System_Tools_Request {
 			} elseif (is_bool ( $actions ) && $actions) {
 				$result = isset ( $arguments [$key] );
 			} elseif (isset ( $arguments [$key] ) && is_array ( $arguments [$key] )=== TRUE && is_array ( $actions ) === TRUE) {
+				
 				$result = Tx_Extracache_System_Tools_Request::getMatchedArguments ( $arguments [$key], $actions );
+				
 			} elseif(isset ( $arguments [$key] ) && is_array ( $arguments [$key] ) === FALSE && is_array ( $actions ) === FALSE && $arguments [$key] === $actions) {
 				$result = true;
 			}
-
 			if ($result) {
 				break;
 			}
 		}
-
 		return $result;
 		
 	}
@@ -60,11 +59,10 @@ class Tx_Extracache_System_Tools_Request {
 	 */
 	public static function getMatchedArguments(array $arguments, array $actions) {
 		$result = false;
-
 		$matches = array_intersect_key ( $arguments, $actions );
 		if ($matches) {
 			foreach ( $matches as $argumentSubKey => $argumentSubValue ) {
-				if (is_array ( $actions [$argumentSubKey] ) && in_array ( $argumentSubValue, $actions [$argumentSubKey] ) || $actions [$argumentSubKey] === '*') {
+				if (is_array ( $actions [$argumentSubKey] ) && in_array ( $argumentSubValue, $actions [$argumentSubKey] ) || $actions [$argumentSubKey] === '*' || $actions [$argumentSubKey] === $arguments[$argumentSubKey]) {
 					$result = true;
 					break;
 				}
