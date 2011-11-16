@@ -27,7 +27,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
-	'version' => '0.1.7',
+	'version' => '0.1.8',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
@@ -43,5 +43,4 @@ $EM_CONF[$_EXTKEY] = array(
 	),
 	'_md5_values_when_last_written' => '',
 );
-
 ?>

@@ -40,6 +40,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	public function getAllFolders($getFoldersWhichDoesNotContainFiles, $searchPhrase) {
 		$files = $this->getFolders ();
 		$folders = array ();
+		$tmpFolderNames = array();
 		foreach ( $files as $file ) {
 			// get name
 			$name = '';
@@ -52,14 +53,15 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 			}
 
 			// check name
-			if ($name !== '' && ($searchPhrase === '' || strstr($name, $searchPhrase) !== FALSE) && isset ( $folders [$name] ) === FALSE) {
+			if ($name !== '' && ($searchPhrase === '' || strstr($name, $searchPhrase) !== FALSE) && isset ( $tmpFolderNames [$name] ) === FALSE) {
 				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
 				$cacheFile->setName ( $name );
 				$cacheFile->setLastModificationTime( $this->getLastModificationTime( $path ));
-				$folders [$name] = $cacheFile;
+				$folders [] = $cacheFile;
+				$tmpFolderNames[$name] = $name;
 			}
 		}
-		sort( $folders );
+		array_multisort($tmpFolderNames,SORT_ASC,$folders);
 		return $folders;
 	}
 	/**
@@ -141,15 +143,17 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	 */
 	private function reconstitute(Iterator $regexIterator, $searchPhrase) {
 		$files = array ();
+		$tmpFileNames = array();
 		foreach ( $regexIterator as $fileName => $file ) {
 			if($searchPhrase === '' || strstr($fileName, $searchPhrase) !== FALSE) {
 				$cacheFile = new Tx_Extracache_Domain_Model_CacheFile ();
 				$cacheFile->setLastModificationTime( $this->getLastModificationTime( $fileName ));
 				$cacheFile->setName ( $this->replacePath ( $fileName ) );
 				$files [] = $cacheFile;
+				$tmpFileNames [] = $cacheFile->getName();
 			}
 		}
-		sort( $files );
+		array_multisort($tmpFileNames,SORT_ASC,$files);
 		return $files;
 	}	
 	/**
