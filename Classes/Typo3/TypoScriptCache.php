@@ -89,18 +89,22 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 		// Only restore cached TypoScript if the content is cached:
 		$frontend = $this->getFrontend();
 		if ($frontend->cacheContentFlag && ! $this->isRestored) {
-		//if ($frontend->cacheContentFlag && ! $this->isRestored || TRUE) {
-			$cacheFilePath = $this->getCacheFilePath();
 			// Fetch the cached information and restore it:
+			$cacheFilePath = $this->getCacheFilePath();
 			if (@is_file ( $cacheFilePath )) {
 				$cache = unserialize(t3lib_div::getURL($cacheFilePath));
 			} else {
 				// Generate the cache information:
 				$cache = $this->generate ();
 			}
+
 			// Merge current TypoScript with cached:
 			if (count ( $cache )) {
 				$frontend->tmpl->setup = array_merge ( ( array ) $frontend->tmpl->setup, $cache );
+				$libraries = $frontend->tmpl->setup['includeLibs.'];
+				if(is_array($libraries)) {
+					$frontend->includeLibraries( $libraries );
+				}
 			}
 
 			$this->isRestored = true;
@@ -136,7 +140,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 		$template = clone $frontend->tmpl;
 		$template->start ( $frontend->sys_page->getRootLine($this->getTemplatePageId($frontend)));
 
-		$keysToBeCached = array('lib.', 'plugin.', 'tt_content', 'tt_content.');
+		$keysToBeCached = array('includeLibs.', 'lib.', 'plugin.', 'tt_content', 'tt_content.');
 		/** @var $event Tx_Extracache_System_Event_Events_Event */
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', self::EVENT_Generate, $this, $keysToBeCached);
 		$this->getEventDispatcher()->triggerEvent($event);
