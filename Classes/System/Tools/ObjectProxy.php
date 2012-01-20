@@ -1,12 +1,12 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
-*  All rights reserved
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 AOE media GmbH <dev@aoemedia.de>
+ * All rights reserved
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Implements an object proxy that instanciates the real object when it's required.
@@ -39,7 +39,7 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @var string
 	 */
 	protected $parentCallback;
-
+	
 	/**
 	 * Constructs this object.
 	 *
@@ -47,7 +47,7 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @param	string		$className Name of the wrapped class
 	 * @param	string		$classFile Path to the class file of the wrapped class
 	 * @param	string		$parentCallback (optional) Name of a callback function of the parent object
-	 *						that will be executed when the real object gets created
+	 * that will be executed when the real object gets created
 	 */
 	public function __construct($parent, $className, $classFile, $parentCallback = '') {
 		$this->parent = $parent;
@@ -55,7 +55,7 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 		$this->classFile = $classFile;
 		$this->parentCallback = $parentCallback;
 	}
-
+	
 	/**
 	 * Magic method that routes calls to the wrapped object.
 	 *
@@ -64,15 +64,14 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @return	mixed		The the result of the called method of the wrapped instance
 	 */
 	public function __call($name, array $arguments) {
-		if (!$this->hasInstance()) {
-			$this->initializeInstance();
+		if (! $this->hasInstance ()) {
+			$this->initializeInstance ();
 		}
-
-		$result = call_user_func_array(
-			array($this->instance, $name),
-			$arguments
-		);
-
+		$refs = array ();
+		foreach ( array_keys($arguments) as $key  ){
+			$refs [$key] = &$arguments [$key];
+		}
+		$result = call_user_func_array ( array ($this->instance, $name ), $refs );
 		return $result;
 	}
 	/**
@@ -82,12 +81,12 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @return	mixed		The value of the class member
 	 */
 	public function __get($name) {
-		if (!$this->hasInstance()) {
-			$this->initializeInstance();
+		if (! $this->hasInstance ()) {
+			$this->initializeInstance ();
 		}
-
+		
 		$result = $this->instance->$name;
-
+		
 		return $result;
 	}
 	/**
@@ -98,20 +97,20 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @return	void
 	 */
 	public function __set($name, $value) {
-		if (!$this->hasInstance()) {
-			$this->initializeInstance();
+		if (! $this->hasInstance ()) {
+			$this->initializeInstance ();
 		}
-
+		
 		$this->instance->$name = $value;
 	}
-
+	
 	/**
 	 * Determines whether the instance of the real object was already created.
 	 *
 	 * @return	boolean		Whether the instance of the real object exists
 	 */
 	protected function hasInstance() {
-		return (isset($this->instance));
+		return (isset ( $this->instance ));
 	}
 	/**
 	 * Initializes the real object of this proxy.
@@ -119,17 +118,14 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 * @return	void
 	 */
 	protected function initializeInstance() {
-			// Load and create the object if provided:
+		// Load and create the object if provided:
 		if ($this->classFile && $this->className) {
 			require_once $this->classFile;
-			$this->instance = t3lib_div::makeInstance($this->className);
+			$this->instance = t3lib_div::makeInstance ( $this->className );
 		}
-			// Perform a callback (that might also load required files etc.):
+		// Perform a callback (that might also load required files etc.):
 		if ($this->parentCallback) {
-			call_user_func_array(
-				array($this->parent, $this->parentCallback),
-				array(&$this->instance)
-			);
+			call_user_func_array ( array ($this->parent, $this->parentCallback ), array (&$this->instance ) );
 		}
 	}
 }
