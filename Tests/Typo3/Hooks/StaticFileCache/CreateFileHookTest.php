@@ -204,9 +204,11 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->createFileHook->initialize($parameters, $this->staticFileCache);
 
 		$this->assertEquals(1, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
 		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Initialize, $this->triggeredEvents[0]->getName());
 	}
+	
+	
 
 	/**
 	 * @return void
@@ -278,7 +280,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->typoScriptCache->expects($this->any())->method('getTemplatePageId');
 
 		$this->assertEquals(1, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
 		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Process, $this->triggeredEvents[0]->getName());
 	}
 }

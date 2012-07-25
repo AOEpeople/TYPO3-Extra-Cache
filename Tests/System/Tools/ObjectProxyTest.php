@@ -48,7 +48,7 @@ class Tx_Extracache_System_Tools_ObjectProxyTest extends Tx_Extracache_Tests_Abs
 	 */
 	public function callObjectProxy() {
 		$this->assertEquals( $this->objectProxy->calculate(1,2,4), 7 );
-		$this->assertType( 'Tx_Extracache_System_Tools_Fixtures_DummyObject', $this->dummyObject );
+		$this->assertInstanceOf( 'Tx_Extracache_System_Tools_Fixtures_DummyObject', $this->dummyObject );
 
 		$this->objectProxy->setName('testName1');
 		$this->assertEquals( $this->objectProxy->getName(), 'testName1' );

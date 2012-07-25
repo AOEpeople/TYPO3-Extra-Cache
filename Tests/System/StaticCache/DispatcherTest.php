@@ -93,8 +93,8 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(2, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
-		$this->assertType('string', $this->triggeredEvents[1]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertInternalType('string', $this->triggeredEvents[1]);
 		$this->assertEquals('onStaticCacheWarning', $this->triggeredEvents[1]);
 	}
 	/**
@@ -114,7 +114,7 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(1, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
 	}
 	/**
 	 * Tests whether the instance is dispatched.
@@ -134,10 +134,10 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(3, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
 		$this->assertTrue($this->triggeredEvents[1]->getStaticCacheContext());
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[2]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[2]);
 		$this->assertFalse($this->triggeredEvents[2]->getStaticCacheContext());
 	}
 	/**
@@ -180,9 +180,9 @@ class Tx_Extracache_System_StaticCache_DispatcherTest extends Tx_Extracache_Test
 		$this->dispatcher->dispatch();
 
 		$this->assertEquals(5, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext', $this->triggeredEvents[1]);
 		$this->assertTrue($this->triggeredEvents[1]->getStaticCacheContext());
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[3]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess', $this->triggeredEvents[3]);
 	}
 }
