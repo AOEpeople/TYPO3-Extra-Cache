@@ -109,8 +109,8 @@ class Tx_Extracache_System_StaticCache_AbstractManagerTest extends Tx_Extracache
 		$this->manager->expects($this->once())->method('getCachedRepresentation')->will($this->returnValue(''));
 		$this->assertFalse( $this->manager->isRequestProcessible() );
 		$this->assertTrue( count($this->triggeredEvents) === 2 );
-		$this->assertType( 'Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest', $this->triggeredEvents[0] );
-		$this->assertType( 'string', $this->triggeredEvents[1] );
+		$this->assertInstanceOf( 'Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest', $this->triggeredEvents[0] );
+		$this->assertInternalType( 'string', $this->triggeredEvents[1] );
 		$this->assertTrue( $this->triggeredEvents[1] === 'onStaticCacheInfo' );
 	}
 	/**
@@ -121,7 +121,7 @@ class Tx_Extracache_System_StaticCache_AbstractManagerTest extends Tx_Extracache
 		$this->manager->expects($this->once())->method('getCachedRepresentation')->will($this->returnValue( dirname ( __FILE__ ) . '/Fixtures/staticCache.html' ));
 		$this->assertTrue( $this->manager->isRequestProcessible() );
 		$this->assertTrue( count($this->triggeredEvents) === 1 );
-		$this->assertType( 'Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest', $this->triggeredEvents[0] );
+		$this->assertInstanceOf( 'Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest', $this->triggeredEvents[0] );
 	}
 	/**
 	 * Test Method loadCachedRepresentation

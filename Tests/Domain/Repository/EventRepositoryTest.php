@@ -59,7 +59,7 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 			$this->repository->getEvent( $event1->getKey() );
 			$this->assertTrue ( FALSE, 'method should throw Exception!' );
 		} catch(Exception $e) {
-			$this->assertType ( 'RuntimeException', $e );
+			$this->assertInstanceOf ( 'RuntimeException', $e );
 		}
 		$this->repository->addEvent( $event1 );
 		$this->assertEquals( $this->repository->getEvent( $event1->getKey() ), $event1 );

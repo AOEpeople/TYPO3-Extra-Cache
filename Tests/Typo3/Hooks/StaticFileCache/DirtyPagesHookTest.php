@@ -156,7 +156,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		$this->dirtyPagesHook->process($parameters, $this->staticFileCache);
 
 		$this->assertEquals(1, count($this->triggeredEvents));
-		$this->assertType('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
 		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::EVENT_Process, $this->triggeredEvents[0]->getName());
 	}
 }

@@ -70,11 +70,11 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 	}
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException RuntimeException
 	 */
 	public function executeContentProcessor_contentProcessorsAreEnabled_throwException() {
 		$this->extensionManager->expects($this->once())->method('areContentProcessorsEnabled')->will($this->returnValue( TRUE ));
-		$this->chain->expects($this->once())->method('process')->will ( $this->throwException(new Exception('') ) );
+		$this->chain->expects($this->once())->method('process')->will ( $this->throwException(new RuntimeException('') ) );
 		$this->hook->executeContentProcessor(array(), $this->tsfeMock);
 	}
 	/**
