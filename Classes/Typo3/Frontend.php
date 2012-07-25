@@ -238,15 +238,17 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 			'Tx_Extracache_System_Tools_ObjectProxy',
 			$this, 't3lib_cs', PATH_t3lib . 'class.t3lib_cs.php'
 		);
-
 		$this->sys_page = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
 			$this, 't3lib_pageSelect', PATH_t3lib . 'class.t3lib_page.php', 'initializePageSelectCallback'
 		);
-
 		$this->tmpl = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
 			$this, 't3lib_TStemplate', PATH_t3lib . 'class.t3lib_tstemplate.php'	, 'initializeTemplateCallback'
+		);
+		$this->cObj = t3lib_div::makeInstance(
+			'Tx_Extracache_System_Tools_ObjectProxy',
+			$this, 'tslib_cObj', PATH_tslib . 'class.tslib_content.php'
 		);
 	}
 	/**
