@@ -79,9 +79,6 @@ class Tx_Extracache_Controller_CacheManagementController {
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFieldForCountOperation( 'uid' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setOrderBy( 'host,uri' );
 		$this->getCacheFileRepository()->setCacheDir ( PATH_site . $this->getExtensionManager()->get('path_StaticFileCache') );
-
-		// load translations
-		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 	}
 
 	/**
