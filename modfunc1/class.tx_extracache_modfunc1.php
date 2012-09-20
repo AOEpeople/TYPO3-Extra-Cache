@@ -67,6 +67,7 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 		$cacheFileRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheFileRepository' );
 		$extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		$view = t3lib_div::makeInstance ( 'Tx_Extracache_View_View' );
+		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 		$this->cacheManagementController = t3lib_div::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventlog, $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
 		
 		$action = t3lib_div::_GP ( 'action' );
