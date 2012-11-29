@@ -161,13 +161,19 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
-	 * Merges additional configuration with the current configuration.
+	 * Merges additional configuration with the current configuration and set config 'absRefPrefix'
 	 *
 	 * @param array $configuration
 	 * @return void
 	 */
 	public function mergeConfiguration(array $configuration) {
+		// Merges additional configuration with the current configuration
 		$this->config = t3lib_div::array_merge_recursive_overrule($this->config, $configuration);
+
+		// Set config 'absRefPrefix' (this is needed to build correct links, if this config is set)
+		if(array_key_exists('config', $this->config) && is_array($this->config['config']) && array_key_exists('absRefPrefix', $this->config['config'])) {
+			$this->absRefPrefix = $this->config['config']['absRefPrefix'];
+		}
 	}
 
 	/**
