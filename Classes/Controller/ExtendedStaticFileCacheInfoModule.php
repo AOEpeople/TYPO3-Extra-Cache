@@ -30,11 +30,9 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$this->uxUpdateCache(key($action['uxUpdateCache']));
 		} elseif (isset($action['uxMarkDirty']) && t3lib_div::testInt(key($action['uxMarkDirty']))) {
 			$this->uxMarkDirty(key($action['uxMarkDirty']));
-		}
-		elseif (isset($action['processDirtyPages'])) {
+		} elseif (isset($action['processDirtyPages'])) {
 			$this->uxUpdateAllCaches();
-		}
-		else {
+		} else {
 			parent::handleActions();
 		}
 	}
@@ -55,7 +53,10 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$elements[] = '<td align="center">' . $this->wrapWithLinkToCacheElement($this->getLinkIcon(), $cacheElement) . '</td>';
 			// Render action links:
 			$elements[] = '<td nowrap="nowrap">' . $this->uxGetActions($cacheElement) . '</td>';
+			// Render URI:
+			$elements[] = '<td nowrap="nowrap">' . $cacheElement['uri'] . '</td>';
 		} else {
+			$elements[] = '<td> </td>';
 			$elements[] = '<td> </td>';
 			$elements[] = '<td> </td>';
 			$elements[] = '<td> </td>';
@@ -75,7 +76,7 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		$elements[] = '<td>Groups:</td>';
 		$elements[] = '<td>URL:</td>';
 		$elements[] = '<td>Page Actions:</td>';
-
+		$elements[] = '<td>URI:</td>';
 		return parent::renderTableHeaderRow($elements, $attributes);
 	}
 
