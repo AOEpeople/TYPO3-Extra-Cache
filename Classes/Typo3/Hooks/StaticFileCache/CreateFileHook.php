@@ -99,13 +99,19 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			'isAnonymous' => $this->isAnonymous($frontend),
 			'templatePageId' => $this->getTypoScriptCache()->getTemplatePageId($frontend),
 			'firstRootlineId' => (isset($frontend->rootLine[0]['uid']) ? $frontend->rootLine[0]['uid'] : NULL),
+			'content' => $parameters['content']
 		);
 
+		// trigger event
 		$event = $this->getNewEvent(self::EVENT_Process, $pageInformation, $parent, $frontend);
-		$this->getEventDispatcher()->triggerEvent($event);
+		$pageInformation = $this->getEventDispatcher()->triggerEvent($event)->getInfos();
+
+		// get content from page-infos and unset it in the page-infos-array 
+		$content = $pageInformation['content'];
+		unset($pageInformation['content']);
 
 		$content = Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationPrefix . serialize($pageInformation) .
-				Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix . "\n" . $parameters['content'];
+				Tx_Extracache_System_StaticCache_AbstractManager::DATA_PageInformationSuffix . "\n" . $content;
 
 		return $content;
 	}
