@@ -206,6 +206,14 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 * @return string
 	 */
 	public function indexAction() {
+		// set default filter (we use this to optimize the first call/rendering of the available 'sub-actions')
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_startDateFilterForDbRecords', date('d.m.Y',strtotime("-10 day")));
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_stopDateFilterForDbRecords', NULL);
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFiles', '---- SET FILTER! ----');
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFolders', '---- SET FILTER! ----');
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTablePages', '---- SET FILTER! ----');
+		$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTableStaticCache', '---- SET FILTER! ----');
+
 		try {
 			$showDatabaseDetails = $this->getModuleData('tx_extracache_manager_showDatabaseDetails') === TRUE ? TRUE : FALSE;
 			$showFilesDetails = $this->getModuleData('tx_extracache_manager_showFilesDetails') === TRUE ? TRUE : FALSE;
