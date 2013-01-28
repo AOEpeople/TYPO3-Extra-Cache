@@ -23,9 +23,12 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 	 */
 	protected function handleActions() {
 		$action = t3lib_div::_GP('ACTION');
+		$pageId = (integer) t3lib_div::_GP('id');
 
 		if (isset($action['uxMarkAllDirty'])) {
 			$this->uxMarkDirty();
+		} elseif(isset($action['uxRecachePageOnBaseOfCacheStrategies']) && $this->hasPageWithCacheCleanerStrategy($pageId)) {
+			$this->getCacheCleanerBuilder()->buildCacheCleanerForPage( $this->getPageWithCacheCleanerStrategy( $pageId ) )->process();
 		} elseif (isset($action['uxUpdateCache']) && t3lib_div::testInt(key($action['uxUpdateCache']))) {
 			$this->uxUpdateCache(key($action['uxUpdateCache']));
 		} elseif (isset($action['uxMarkDirty']) && t3lib_div::testInt(key($action['uxMarkDirty']))) {
@@ -36,7 +39,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			parent::handleActions();
 		}
 	}
-
 	/**
 	 * Renders a table row.
 	 *
@@ -64,7 +66,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 
 		return parent::renderTableRow($elements, $attributes, $cacheElement);
 	}
-
 	/**
 	 * Renders a table header row.
 	 *
@@ -79,7 +80,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		$elements[] = '<td>URI:</td>';
 		return parent::renderTableHeaderRow($elements, $attributes);
 	}
-
 	/**
 	 * Gets the header actions buttons to be rendered in the header section.
 	 *
@@ -91,7 +91,9 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		if ($this->isMarkDirtyInsteadOfDeletionDefined()) {
 			$actionButtons[] = $this->renderActionButton('uxMarkAllDirty', 'Mark all pages dirty', 'Are you sure?');
 		}
-
+		if($this->hasPageWithCacheCleanerStrategy( $this->pageId )) {
+			$actionButtons[] = $this->renderActionButton('uxRecachePageOnBaseOfCacheStrategies', 'Recache page (on base of defined cache strategies)', 'Are you sure?');
+		}
 		return $actionButtons;
 	}
 
@@ -109,7 +111,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$this->renderActionButton('uxUpdateCache][' . $elementId, 'update cache') .
 			($this->isMarkDirtyInsteadOfDeletionDefined() && !$cacheElement['isdirty'] ? $this->renderActionButton('uxMarkDirty][' . $elementId, 'mark dirty', 'Are you sure?') : '');
 	}
-
 	/**
 	 * Marks an element dirty.
 	 *
@@ -123,7 +124,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			array('isdirty' => 1)
 		);
 	}
-
 	/**
 	 * Updates the cache a specific element.
 	 *
@@ -140,7 +140,6 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$this->getStaticFileCacheInstance()->processDirtyPagesElement($dirtyElement);
 		}
 	}
-	
 	/**
 	 * Updates the cache of a page (50 per run)
 	 * @return	void
@@ -161,7 +160,12 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		}
 	}
 	
-
+	/**
+	 * @return Tx_Extracache_Domain_Service_CacheCleanerBuilder
+	 */
+	private function getCacheCleanerBuilder() {
+		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
+	}
 	/**
 	 * Gets the icon image tag used to visualize a link.
 	 *
@@ -173,7 +177,29 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		}
 		return $this->linkIcon;
 	}
-
+	/**
+	 * @param integer $pageId
+	 * @return array
+	 */
+	private function getPageWithCacheCleanerStrategy($pageId) {
+		return $this->getTypo3DbBackend()->getPageWithCacheCleanerStrategyForPageId( $pageId );
+	}
+	/**
+	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend
+	 */
+	private function getTypo3DbBackend() {
+		return t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+	}
+	/**
+	 * @param integer $pageId
+	 * @return boolean
+	 */
+	private function hasPageWithCacheCleanerStrategy($pageId) {
+		if(empty($pageId)) {
+			return FALSE;
+		}
+		return ($this->getPageWithCacheCleanerStrategy($pageId) !== NULL);
+	}
 	/**
 	 * Wraps content with the original link of the cache element.
 	 *

@@ -14,10 +14,6 @@
  */
 class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton {
 	/**
-	 * @var Tx_Extracache_Domain_Repository_CleanerStrategyRepository
-	 */
-	private $cleanerStrategyRepository;
-	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
 	private $eventDispatcher;
@@ -56,7 +52,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 		foreach ($this->getTypo3DbBackend()->getPagesWithCacheCleanerStrategyForEvent( $event->getKey() ) as $page) {
 			try {
 				$eventLog->addInfo( $this->createInfo('process cleanerInstructions on page \''.$page['title'].'\' [id: '.$page['uid'].']', Tx_Extracache_Domain_Model_Info::TYPE_notice) );
-				$this->processPageWithCacheEvent( $page );
+				$this->getCacheCleanerBuilder()->buildCacheCleanerForPage( $page )->process();
 			} catch (Exception $e) {
 				$eventLog->addInfo( $this->createInfo('exception occurred: '.$e->getMessage(), Tx_Extracache_Domain_Model_Info::TYPE_exception) );
 				$message = 'Exception occurred at event "onProcessCacheEvent" while processing page "'.$page['title'].'" [id:'.$page['uid'].'] with cacheEvent "'.$event->getKey().'": ' . $e->getMessage().' / '.$e->getTraceAsString();
@@ -71,19 +67,10 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	}
 
 	/**
-	 * @return Tx_Extracache_Domain_Service_CacheCleaner
+	 * @return Tx_Extracache_Domain_Service_CacheCleanerBuilder
 	 */
-	protected function createCacheCleaner() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleaner');
-	}
-	/**
-	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository
-	 */
-	protected function getCleanerStrategyRepository() {
-		if($this->cleanerStrategyRepository === NULL) {
-			$this->cleanerStrategyRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
-		}
-		return $this->cleanerStrategyRepository;
+	protected function getCacheCleanerBuilder() {
+		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
 	}
 	/**
 	 * @return Tx_Extracache_System_Event_Dispatcher
@@ -149,19 +136,5 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 			throw new RuntimeException('event '.$eventKey.' is unknown!');
 		}
 		return $this->getEventRepository()->getEvent( $eventKey );
-	}
-	/**
-	 * @param array $page
-	 */
-	private function processPageWithCacheEvent(array $page) {
-		$cacheCleaner = $this->createCacheCleaner();
-
-		$strategies = explode(',', $page['tx_extracache_cleanerstrategies']);
-		foreach ($strategies as $strategy) {
-			if($this->getCleanerStrategyRepository()->hasStrategy($strategy)) {
-				$cacheCleaner->addCleanerInstruction($this->getCleanerStrategyRepository()->getStrategy($strategy), (integer) $page['uid']);
-			}
-		}
-		$cacheCleaner->process();
 	}
 }
