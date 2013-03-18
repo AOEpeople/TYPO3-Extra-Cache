@@ -35,6 +35,8 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$this->uxMarkDirty(key($action['uxMarkDirty']));
 		} elseif (isset($action['processDirtyPages'])) {
 			$this->uxUpdateAllCaches();
+		} elseif (isset($action['uxDeletePageCache'])) {
+			$this->uxDeletePageCache($pageId);
 		} else {
 			parent::handleActions();
 		}
@@ -87,16 +89,49 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 	 */
 	protected function getHeaderActionButtons() {
 		$actionButtons = parent::getHeaderActionButtons();
-
 		if ($this->isMarkDirtyInsteadOfDeletionDefined()) {
 			$actionButtons[] = $this->renderActionButton('uxMarkAllDirty', 'Mark all pages dirty', 'Are you sure?');
 		}
+		$actionButtons[] = $this->renderActionButton('uxDeletePageCache', 'Delete Page-Cache', 'Are you sure?');
 		if($this->hasPageWithCacheCleanerStrategy( $this->pageId )) {
 			$actionButtons[] = $this->renderActionButton('uxRecachePageOnBaseOfCacheStrategies', 'Recache page (on base of defined cache strategies)', 'Are you sure?');
 		}
 		return $actionButtons;
 	}
 
+	/**
+	 * Delete cache of given page
+	 * 
+	 * @param	integer $pageId
+	 * @return	void
+	 */
+	private function uxDeletePageCache($pageId) {
+		if(empty($pageId)) {
+			return;
+		}
+
+		$strategies = array();
+
+		// delete TYPO3-cache for given page
+		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear;
+		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
+		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
+		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+
+		// delete all parent static-cache-elements for given page
+		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear;
+		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
+		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly;
+		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+
+		// update static-cache-element for given page
+		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate;
+		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
+		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
+		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+
+		$this->getCacheCleanerBuilder()->buildCacheCleanerForPageByStrategies( $strategies, $pageId )->process();
+	}
 	/**
 	 * Gets specific actions for an element in the cache.
 	 *

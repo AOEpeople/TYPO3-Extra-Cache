@@ -77,7 +77,7 @@ class Tx_Extracache_Domain_Model_CleanerStrategy {
 	 * @param string $key
 	 * @param string $name
 	 */
-	public function __construct($actions, $childrenMode, $elementsMode, $key, $name) {
+	public function __construct($actions, $childrenMode, $elementsMode, $key = '', $name = '') {
 		$this->actions = $actions;
 		$this->childrenMode = $childrenMode;
 		$this->elementsMode = $elementsMode;

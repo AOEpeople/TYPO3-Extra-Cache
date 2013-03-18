@@ -23,13 +23,25 @@ class Tx_Extracache_Domain_Service_CacheCleanerBuilder {
 	 * @return Tx_Extracache_Domain_Service_CacheCleaner
 	 */
 	public function buildCacheCleanerForPage(array $page) {
-		$cacheCleaner = $this->createCacheCleaner();
-
-		$strategies = explode(',', $page['tx_extracache_cleanerstrategies']);
-		foreach ($strategies as $strategy) {
+		$usedStrategies = array();
+		$pageStrategies = explode(',', $page['tx_extracache_cleanerstrategies']);
+		foreach ($pageStrategies as $strategy) {
 			if($this->getCleanerStrategyRepository()->hasStrategy($strategy)) {
-				$cacheCleaner->addCleanerInstruction( $this->getCleanerStrategyRepository()->getStrategy($strategy), (integer) $page['uid'] );
+				$usedStrategies[] = $this->getCleanerStrategyRepository()->getStrategy( $strategy );
 			}
+		}
+		return $this->buildCacheCleanerForPageByStrategies($usedStrategies, (integer) $page['uid']);
+	}
+	/**
+	 * @param array $strategies array with objects of type Tx_Extracache_Domain_Model_CleanerStrategy
+	 * @param integer $pageId
+	 * @return Tx_Extracache_Domain_Service_CacheCleaner
+	 */
+	public function buildCacheCleanerForPageByStrategies(array $strategies, $pageId) {
+		$cacheCleaner = $this->createCacheCleaner();
+		foreach ($strategies as $strategy) {
+			/* @var $strategy Tx_Extracache_Domain_Model_CleanerStrategy */			
+			$cacheCleaner->addCleanerInstruction( $strategy, $pageId );
 		}
 		return $cacheCleaner;
 	}
