@@ -233,12 +233,14 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * @return	boolean
 	 */
 	protected function isUnprocessibleRequestAction() {
+		if($this->isBackendUserActive()) {
+			return TRUE;
+		}
 		return Tx_Extracache_System_Tools_Request::isUnprocessibleRequest(
 			$this->getGetArguments(),
 			$this->getArgumentRepository()->getArgumentsByType( Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible )
 		);
 	}
-
 	/**
 	 * Determines whether all content on a page is anonymous.
 	 *
@@ -296,5 +298,15 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			$this->typoScriptCache = t3lib_div::makeInstance('tx_Extracache_Typo3_TypoScriptCache');
 		}
 		return $this->typoScriptCache;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	private function isBackendUserActive() {
+		if(is_object($GLOBALS['BE_USER']))  {
+			return TRUE;
+		}
+		return FALSE;
 	}
 }
