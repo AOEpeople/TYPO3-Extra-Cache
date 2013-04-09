@@ -18,6 +18,7 @@
  *
  */
 class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
+	const EVENT_PreInitialize = 'onStaticFileCacheCreateFilePreInitialize';
 	const EVENT_Initialize = 'onStaticFileCacheCreateFileInitialize';
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
 
@@ -34,6 +35,9 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * @return	void
 	 */
 	public function initialize(array $parameters, tx_ncstaticfilecache $parent) {
+		$event = $this->getNewEvent(self::EVENT_PreInitialize, $parameters, $parent);
+		$this->getEventDispatcher()->triggerEvent($event);
+
 		if($this->isUnprocessibleRequestAction()) {
 			// change parameters, so nc_staticfilecache will NOT cache this request
 			$parameters['isHttp'] = FALSE;
