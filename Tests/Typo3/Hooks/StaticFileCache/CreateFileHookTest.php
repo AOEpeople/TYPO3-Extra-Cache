@@ -203,12 +203,13 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$parameters = array('TSFE' => $this->frontend);
 		$this->createFileHook->initialize($parameters, $this->staticFileCache);
 
-		$this->assertEquals(1, count($this->triggeredEvents));
+		$this->assertEquals(2, count($this->triggeredEvents));
 		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[0]);
-		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Initialize, $this->triggeredEvents[0]->getName());
+		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_PreInitialize, $this->triggeredEvents[0]->getName());
+		
+		$this->assertInstanceOf('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', $this->triggeredEvents[1]);
+		$this->assertEquals(tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook::EVENT_Initialize, $this->triggeredEvents[1]->getName());
 	}
-	
-	
 
 	/**
 	 * @return void
