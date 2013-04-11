@@ -21,7 +21,7 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	public function getPagesWithCacheCleanerStrategyForEvent($eventKey) {
 		$sqlSelect = 'uid,title,tx_extracache_cleanerstrategies';
 		$sqlFrom   = 'pages';
-		$sqlWhere  = "tx_extracache_cleanerstrategies !='' AND (tx_extracache_events = '".$eventKey."' OR tx_extracache_events like '".$eventKey.",%' OR tx_extracache_events like '%,".$eventKey."' OR tx_extracache_events like '%,".$eventKey.",%') AND deleted=0 AND hidden=0 AND doktype < 199";
+		$sqlWhere  = "tx_extracache_cleanerstrategies !='' AND (tx_extracache_events = '".$eventKey."' OR tx_extracache_events like '".$eventKey.",%' OR tx_extracache_events like '%,".$eventKey."' OR tx_extracache_events like '%,".$eventKey.",%')" . self::getSqlWherePartForPagesWithCacheCleanerStrategy();
 		$sqlOrderBy = 'pid ASC, title ASC';
 
 		if(FALSE != $data = $this->selectQuery($sqlSelect, $sqlFrom, $sqlWhere, $sqlOrderBy)) {
@@ -36,11 +36,17 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	public function getPageWithCacheCleanerStrategyForPageId($pageId) {
 		$sqlSelect = 'uid,title,tx_extracache_cleanerstrategies';
 		$sqlFrom   = 'pages';
-		$sqlWhere  = "tx_extracache_cleanerstrategies !='' AND uid=".$pageId." AND deleted=0 AND hidden=0 AND doktype < 199";
+		$sqlWhere  = "tx_extracache_cleanerstrategies !='' AND uid=" . $pageId . self::getSqlWherePartForPagesWithCacheCleanerStrategy();
 
 		if(FALSE != $data = $this->selectQuery($sqlSelect, $sqlFrom, $sqlWhere)) {
 			return $data[0];
 		}
+	}
+	/**
+	 * @return string
+	 */
+	public static function getSqlWherePartForPagesWithCacheCleanerStrategy() {
+		return ' AND deleted=0 AND hidden=0 AND doktype < 199 AND pid > 0';
 	}
 	/**
 	 * @param	string $list

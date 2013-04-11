@@ -74,7 +74,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 		$this->getCacheDatabaseEntryRepositoryForTableEventqueue()->setOrderBy( 'first_called_time,status' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFileTable ( 'pages' );
 		$this->getCacheDatabaseEntryRepositoryForTablePages()->setFieldForCountOperation( 'uid' );
-		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'pid ASC, title ASC' );
+		$this->getCacheDatabaseEntryRepositoryForTablePages()->setOrderBy ( 'title ASC, pid ASC' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFileTable ( $this->getExtensionManager()->get('fileTable') );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setFieldForCountOperation( 'uid' );
 		$this->getCacheDatabaseEntryRepositoryForTableStaticCache()->setOrderBy( 'host,uri' );
@@ -132,7 +132,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	public function allDatabaseEntrysForTablePagesAction() {
 		try {
 			$searchPhrase = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForTablePages');
-			$sqlWhere = $this->createSqlWhereClauseForDbRecords($searchPhrase, array('tstamp','crdate','starttime','endtime'));
+			$sqlWhere = $this->createSqlWhereClauseForDbRecords($searchPhrase, array('tstamp','crdate','starttime','endtime')) . Tx_Extracache_System_Persistence_Typo3DbBackend::getSqlWherePartForPagesWithCacheCleanerStrategy();
 			$this->getView()->assign ( 'allDatabaseEntrysForTablePages', $this->getCacheDatabaseEntryRepositoryForTablePages()->query ( '(tx_extracache_cleanerstrategies!=\'\' OR tx_extracache_events!=\'\') AND '.$sqlWhere ) );
 			return $this->getView()->render ( 'allDatabaseEntrysForTablePages' );
 		} catch (Exception $e) {
