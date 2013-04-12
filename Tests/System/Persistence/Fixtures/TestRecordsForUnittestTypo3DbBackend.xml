@@ -4,25 +4,30 @@
 		<title>page1</title>
 		<tx_extracache_cleanerstrategies>strategy_1</tx_extracache_cleanerstrategies>
 		<tx_extracache_events>event_1</tx_extracache_events>
+		<pid>1</pid>
 	</pages>
 	<pages>
 		<title>page2</title>
 		<tx_extracache_cleanerstrategies>strategy_2</tx_extracache_cleanerstrategies>
 		<tx_extracache_events>event_1</tx_extracache_events>
+		<pid>1</pid>
 	</pages>
 	<pages>
 		<title>page3</title>
 		<tx_extracache_cleanerstrategies>strategy_1,strategy_2</tx_extracache_cleanerstrategies>
 		<tx_extracache_events>event_2</tx_extracache_events>
+		<pid>1</pid>
 	</pages>
 	<pages>
 		<title>page4</title>
 		<tx_extracache_cleanerstrategies>strategy_1,strategy_2</tx_extracache_cleanerstrategies>
 		<tx_extracache_events></tx_extracache_events>
+		<pid>1</pid>
 	</pages>
 	<pages>
 		<title>page5</title>
 		<tx_extracache_cleanerstrategies></tx_extracache_cleanerstrategies>
 		<tx_extracache_events></tx_extracache_events>
+		<pid>1</pid>
 	</pages>
 </dataset>
