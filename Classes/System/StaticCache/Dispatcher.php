@@ -48,12 +48,11 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 			// 3. try to load the requested page from staticCache
 			$this->triggerEventOnStaticCacheContext( TRUE );
-
+ 
 			// 4. check if request is processible
 			if($this->getCacheManager()->isRequestProcessible ()) {
 				$this->flush ();
 			}
-
 			// 5. don't any longer try to load the requested page from staticCache
 			$this->triggerEventOnStaticCacheContext( FALSE );
 		} catch ( Exception $e ) {
@@ -71,7 +70,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @return	void
 	 */
 	protected function flush() {
-		$this->getCacheManager()->logForeignArguments ();			
+		$this->getCacheManager()->logForeignArguments ();
 		$content = $this->getCacheManager()->loadCachedRepresentation ();
 
 		if ($content !== false) {
