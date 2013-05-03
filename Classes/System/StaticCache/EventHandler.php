@@ -178,7 +178,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 *
 	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
 	 * @return	boolean
-	 * @deprecated Not used anymore
 	 */
 	protected function isFrontendUserLoggingIn(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$loginData = $event->getFrontendUser ()->getLoginFormData ();
@@ -189,7 +188,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 *
 	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
 	 * @return	boolean
-	 * @deprecated Not used anymore
 	 */
 	protected function isFrontendUserLoggingOut(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$loginData = $event->getFrontendUser ()->getLoginFormData ();
