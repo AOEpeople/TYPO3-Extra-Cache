@@ -159,10 +159,6 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 		if (isset($pageInformation['config'])) {
 			$GLOBALS['TSFE']->mergeConfiguration($pageInformation['config']);
 		}
-			// Sets the page id used to fetch the TypoScript template:
-		if (isset($pageInformation['templatePageId'])) {
-			$GLOBALS['TSFE']->setTemplatePageId($pageInformation['templatePageId']);
-		}
 			// Sets the first rootline page id:
 		if (isset($pageInformation['firstRootlineId'])) {
 			$GLOBALS['TSFE']->setFirstRootlineId($pageInformation['firstRootlineId']);

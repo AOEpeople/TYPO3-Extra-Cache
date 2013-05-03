@@ -23,11 +23,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
 
 	/**
-	 * @var tx_Extracache_Typo3_TypoScriptCache
-	 */
-	protected $typoScriptCache;
-
-	/**
 	 * Initializes the variables before starting the processing.
 	 *
 	 * @param	array					$parameters The parameters used in this hook
@@ -101,7 +96,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			),
 			'GET' => $this->getWhiteListedArguments(),
 			'isAnonymous' => $this->isAnonymous($frontend),
-			'templatePageId' => $this->getTypoScriptCache()->getTemplatePageId($frontend),
 			'firstRootlineId' => (isset($frontend->rootLine[0]['uid']) ? $frontend->rootLine[0]['uid'] : NULL),
 			'content' => $parameters['content']
 		);
@@ -290,18 +284,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 		}
 
 		return $frontendUserGroupList;
-	}
-
-	/**
-	 * Gets an instance of the TypoScript cache.
-	 *
-	 * @return tx_Extracache_Typo3_TypoScriptCache
-	 */
-	protected function getTypoScriptCache() {
-		if($this->typoScriptCache === NULL) {
-			$this->typoScriptCache = t3lib_div::makeInstance('tx_Extracache_Typo3_TypoScriptCache');
-		}
-		return $this->typoScriptCache;
 	}
 
 	/**

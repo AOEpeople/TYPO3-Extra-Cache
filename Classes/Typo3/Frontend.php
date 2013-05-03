@@ -48,10 +48,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @var integer
 	 */
 	protected $firstRootlineId;
-	/**
-	 * @var integer
-	 */
-	protected $templatePageId;
 
 	/**
 	 * Constructs this object as a light-weight TSFE.
@@ -118,19 +114,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
-	 * @return integer
-	 */
-	public function getFirstRootlineId() {
-		return $this->firstRootlineId;
-	}
-	/**
-	 * @return integer
-	 */
-	public function getTemplatePageId() {
-		return $this->templatePageId;
-	}
-
-	/**
 	 * Initializes the page select object.
 	 * This method gets called as callback when the real object is created in the proxy object.
 	 *
@@ -182,13 +165,6 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 */
 	public function setFirstRootlineId($firstRootlineId) {
 		$this->firstRootlineId = $firstRootlineId;
-	}
-	/**
-	 * @param integer $templatePageId
-	 * @return void
-	 */
-	public function setTemplatePageId($templatePageId) {
-		$this->templatePageId = $templatePageId;
 	}
 
 	/**
