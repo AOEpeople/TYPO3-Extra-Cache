@@ -48,6 +48,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	/**
 	 * Gets the pageId of the current page.
 	 *
+	 * @param tslib_fe $frontend
 	 * @return integer
 	 */
 	public function getTemplatePageId(tslib_fe $frontend) {
