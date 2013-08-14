@@ -81,7 +81,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 			}
 
 			// Merge current TypoScript with cached:
-			if (count ( $cache )) {
+			if (is_array($cache) && count($cache) > 0) {
 				$frontend->tmpl->setup = array_merge ( ( array ) $frontend->tmpl->setup, $cache );
 				$libraries = $frontend->tmpl->setup['includeLibs.'];
 				if(is_array($libraries)) {
