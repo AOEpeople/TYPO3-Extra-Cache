@@ -24,7 +24,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	public function countAll() {
 		return $this->count ( $this->getFiles () );
 	}
-	
+
 	/**
 	 * @param	string $searchPhrase
 	 * @return	array
@@ -103,7 +103,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 		if (FALSE === rename ( $path, $temp_path )) {
 			throw new Exception ( 'could not rename folder: ' . $path );
 		}
-		$dir = new RecursiveIteratorIterator ( new RecursiveDirectoryIterator ( $temp_path ), RecursiveIteratorIterator::CHILD_FIRST );
+		$dir = $this->createRecursiveIteratorIteratorForDirectory( $temp_path, RecursiveIteratorIterator::CHILD_FIRST );
 		for($dir->rewind (); $dir->valid (); $dir->next ()) {
 			if ($dir->isDir ()) {
 				if (FALSE === rmdir ( $dir->getPathname () )) {
@@ -128,7 +128,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 
 	/**
 	 * get time of last modification
-	 * 
+	 *
 	 * @param string $fileName
 	 * @return integer
 	 */
@@ -155,7 +155,21 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 		}
 		array_multisort($tmpFileNames,SORT_ASC,$files);
 		return $files;
-	}	
+	}
+	/**
+	 * @param string $folder
+	 * @param integer $mode optional, default is NULL
+	 * @return RecursiveIteratorIterator
+	 */
+	private function createRecursiveIteratorIteratorForDirectory($folder, $mode = NULL) {
+		$directory = new RecursiveDirectoryIterator ( $folder, FilesystemIterator::SKIP_DOTS );
+		if($mode !== NULL) {
+			$iterator = new RecursiveIteratorIterator ( $directory, $mode );
+		} else {
+			$iterator = new RecursiveIteratorIterator ( $directory );
+		}
+		return $iterator;
+	}
 	/**
 	 * @param RegexIterator $regexIterator
 	 * @return integer
@@ -171,9 +185,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	 * @return RegexIterator
 	 */
 	private function getFiles() {
-		$folder = $this->cacheDir;
-		$directory = new RecursiveDirectoryIterator ( $folder );
-		$iterator = new RecursiveIteratorIterator ( $directory );
+		$iterator = $this->createRecursiveIteratorIteratorForDirectory( $this->cacheDir );
 		$regex = new RegexIterator ( $iterator, '/^.+\.html$/i', RecursiveRegexIterator::GET_MATCH );
 		return $regex;
 	}
@@ -181,9 +193,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	 * @return RecursiveIteratorIterator
 	 */
 	private function getFolders() {
-		$folder = $this->cacheDir;
-		$objects = new RecursiveIteratorIterator ( new RecursiveDirectoryIterator ( $folder ), RecursiveIteratorIterator::SELF_FIRST );
-		return $objects;
+		return $this->createRecursiveIteratorIteratorForDirectory( $this->cacheDir, RecursiveIteratorIterator::SELF_FIRST );
 	}
 	/**
 	 * @param string $path
