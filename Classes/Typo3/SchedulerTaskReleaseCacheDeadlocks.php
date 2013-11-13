@@ -28,14 +28,6 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_schedule
 	private $typo3DbBackend;
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->execution = t3lib_div::makeInstance('tx_scheduler_Execution');
-	}
-
-	/**
 	 * magic method, called when instance is unserialized
 	 */
 	public function __wakeup() {
