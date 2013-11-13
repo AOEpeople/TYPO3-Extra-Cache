@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<type>database</type>
-		<description>Language labels for the congstarizer extension in the FRONTEND</description>
+		<description>Language labels for for the 'extracache' extension</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -36,6 +36,15 @@
 			<label index="table">table</label>
 			<label index="eventqueue_status_waitforprocessing">wait for processing</label>
 			<label index="eventqueue_status_inprocess">in process</label>
+            <label index="label_schedulerFieldDeleteEntriesOlderThanSeconds">Check only cache entries older than [seconds]</label>
+            <label index="label_schedulerFieldDetailLogInfo">Log detailed</label>
+            <label index="label_schedulerFieldLogNoticeAsError">Log Notices as errors</label>
+            <label index="valerr_schedulerFieldDeleteEntriesOlderThanSeconds">Please choose a value between 0 and 999999 seconds!</label>
+            <label index="valerr_schedulerFieldDetailLogInfo">Please check or uncheck!</label>
+            <label index="errmsg_releaseCacheDeadlocks_generalFailure">An exception occured in scheduler-task "releaseCacheDeadlocks" (exceptionClass: %s, exceptionMessage: %s</label>
+            <label index="errmsg_releaseCacheDeadlocks_dbFailure">An database Error occurred. Error number: %s, Error Text: '%s'</label>
+            <label index="logmsg_releaseCacheDeadlocks_detail">%s cache deadlocks should be removed. The Page IDs are [Maximum %s IDs will be listed]: (%s)</label>
+            <label index="logmsg_releaseCacheDeadlocks">%s cache deadlocks has been removed.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="count">Anzahl</label>
@@ -67,6 +76,15 @@
 			<label index="table">Tabelle</label>
 			<label index="eventqueue_status_waitforprocessing">Wartet auf Vearbeitung</label>
 			<label index="eventqueue_status_inprocess">Wird verarbeitet</label>
+            <label index="label_schedulerFieldDeleteEntriesOlderThanSeconds">Nur Cacheeinträge überprüfen die älter als sind als [Sekunden]</label>
+            <label index="label_schedulerFieldDetailLogInfo">Detailliert loggen</label>
+            <label index="label_schedulerFieldLogNoticeAsError">Speichere alle Logeinträge markiert als Fehler</label>
+            <label index="valerr_schedulerFieldDeleteEntriesOlderThanSeconds">Bitte geben Sie einen Wert in Sekunden zwischen 0 999999 an!</label>
+            <label index="valerr_schedulerFieldDetailLogInfo">Bitte wählen Sie aus der Checkbox aus!</label>
+            <label index="errmsg_releaseCacheDeadlocks_generalFailure">Es trat eine Exception im Scheduler-Task "releaseCacheDeadlocks" auf! (Exception: %s, Exception-Nachricht: %s</label>
+            <label index="errmsg_releaseCacheDeadlocks_dbFailure">Ein Datenbankfehler ist aufgetreten. Fehlernummer: %s, Text: '%s'</label>
+            <label index="logmsg_releaseCacheDeadlocks_detail">In %s Cacheeinträgen müssen Verklemmungen gelöst werden. Die SeitenIDs sind [Maximal %s IDs werden aufgelistet]: (%s)</label>
+            <label index="logmsg_releaseCacheDeadlocks">%s Cacheverklemmungen wurden entfernt.</label>
 		</languageKey>
 	</data>
 </T3locallang>
