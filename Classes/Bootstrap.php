@@ -116,6 +116,16 @@ final class Bootstrap {
 				'title'            => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_processEventQueue.name',
 				'description'      => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_processEventQueue.description',
 			);
+
+			// register scheduler-task to release cache deadlocks:
+			require_once PATH_tx_extracache . 'Classes/Typo3/SchedulerTaskReleaseCacheDeadlocks.php';
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks'] = array (
+				'extension'        => self::ExtensionKey,
+				'title'            => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_releaseCacheDeadlocks.name',
+				'description'      => 'LLL:EXT:' . self::ExtensionKey . '/Resources/Private/Language/locallang_db.xml:scheduler_task_releaseCacheDeadlocks.description',
+				'additionalFields' => 'Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocksAdditionalFields',
+
+			);
 		}
 	}
 	/**
@@ -141,6 +151,8 @@ final class Bootstrap {
 		$dispatcher->addLazyLoadingHandler('onStaticCacheLoaded', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheFatalError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');
+		$dispatcher->addLazyLoadingHandler('onReleaseCacheDeadlocksError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');
+		$dispatcher->addLazyLoadingHandler('onReleaseCacheDeadlocksNotice', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 	}
 	/**
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher
