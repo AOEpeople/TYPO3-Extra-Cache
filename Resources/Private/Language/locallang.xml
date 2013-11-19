@@ -1,90 +1,72 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for for the 'extracache' extension</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="count">count</label>
-			<label index="entityActionDelete">delete</label>
-			<label index="entries">entries</label>
-			<label index="headline_allFiles">all files</label>
-			<label index="headline_allDirectories">all directories</label>
-			<label index="headline_allDatabaseentries">all database entries</label>
-			<label index="headline_cachefiles">cache files</label>
-			<label index="headline_databaseentries">database entries</label>
-			<label index="headline_entityAction">action</label>
-			<label index="headline_entityName">name</label>
-			<label index="headline_entityModificationTime">time</label>
-			<label index="headline_filter">filter</label>
-			<label index="showAllFiles">show all files</label>
-			<label index="showAllDirectories">show all directories</label>
-			<label index="showAll">show all</label>
-			<label index="showAll">show all</label>
-			<label index="showEmptyDirectories">show empty directories</label>
-			<label index="showDatabaseDetails">show details of database entries</label>
-			<label index="showFilesDetails">show details of cache files</label>
-			<label index="startFilesSearch">start search for files</label>
-			<label index="startFolderSearch">start search for folders</label>
-			<label index="startDbRecordSearch">start search for database entries</label>
-			<label index="startFilterByDate">start filter by date</label>
-			<label index="startFilterByDateInfo">info: in the input-fields you can all use, which the PHP-function 'strtotime' allows as parameter</label>
-			<label index="startFilterBySearchPhraseForDbRecordsInfo">info: you must define a search-query like this: [db-field]:[searchstring]</label>
-			<label index="startFilterFromDate">from</label>
-			<label index="startFilterTillDate">till</label>
-			<label index="table">table</label>
-			<label index="eventqueue_status_waitforprocessing">wait for processing</label>
-			<label index="eventqueue_status_inprocess">in process</label>
-            <label index="label_schedulerFieldDeleteEntriesOlderThanSeconds">Check only cache entries older than [seconds]</label>
-            <label index="label_schedulerFieldDetailLogInfo">Log detailed</label>
-            <label index="label_schedulerFieldLogNoticeAsError">Log Notices as errors</label>
-            <label index="valerr_schedulerFieldDeleteEntriesOlderThanSeconds">Please choose a value between 0 and 999999 seconds!</label>
-            <label index="valerr_schedulerFieldDetailLogInfo">Please check or uncheck!</label>
-            <label index="errmsg_releaseCacheDeadlocks_generalFailure">An exception occured in scheduler-task "releaseCacheDeadlocks" (exceptionClass: %s, exceptionMessage: %s</label>
-            <label index="errmsg_releaseCacheDeadlocks_dbFailure">An database Error occurred. Error number: %s, Error Text: '%s'</label>
-            <label index="logmsg_releaseCacheDeadlocks_detail">%s cache deadlocks should be removed. The Page IDs are [Maximum %s IDs will be listed]: (%s)</label>
-            <label index="logmsg_releaseCacheDeadlocks">%s cache deadlocks has been removed.</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="count">Anzahl</label>
-			<label index="entityActionDelete">Löschen</label>
-			<label index="entries">Einträge</label>
-			<label index="headline_allFiles">Alle Dateien</label>
-			<label index="headline_allDirectories">Alle Ordner</label>
-			<label index="headline_allDatabaseentries">Alle Datenbankeinträge</label>
-			<label index="headline_cachefiles">Cache Dateien</label>
-			<label index="headline_databaseentries">Datenbank Einträge</label>
-			<label index="headline_entityAction">Aktion</label>
-			<label index="headline_entityName">Name</label>
-			<label index="headline_entityModificationTime">Datum</label>
-			<label index="headline_filter">Filter</label>
-			<label index="showAll">alle anzeigen</label>
-			<label index="showAllFiles">alle Dateien anzeigen</label>
-			<label index="showAllDirectories">alle Ordner anzeigen</label>
-			<label index="showEmptyDirectories">Ordner, welche keine Dateien enthalten, anzeigen </label>
-			<label index="showDatabaseDetails">Zeige Details von Datenbank Einträgen</label>
-			<label index="showFilesDetails">Zeige Details von Cache Dateien</label>
-			<label index="startFilesSearch">Starte Suche nach Dateien</label>
-			<label index="startFolderSearch">Starte Suche nach Ordnern</label>
-			<label index="startDbRecordSearch">Starte Suche nach Datenbank Einträgen</label>
-			<label index="startFilterByDate">Starte Filterung nach Datum</label>
-			<label index="startFilterByDateInfo">Info: In den Eingabefeldern können Sie alles verwenden, was die PHP-Funktion 'strtotime' als Parameter erlaubt</label>
-			<label index="startFilterBySearchPhraseForDbRecordsInfo">Info: Eine Suchanfrage müssen Sie wie folgt definieren: [db-field]:[searchstring]</label>
-			<label index="startFilterFromDate">Von</label>
-			<label index="startFilterTillDate">Bis</label>
-			<label index="table">Tabelle</label>
-			<label index="eventqueue_status_waitforprocessing">Wartet auf Vearbeitung</label>
-			<label index="eventqueue_status_inprocess">Wird verarbeitet</label>
-            <label index="label_schedulerFieldDeleteEntriesOlderThanSeconds">Nur Cacheeinträge überprüfen die älter als sind als [Sekunden]</label>
-            <label index="label_schedulerFieldDetailLogInfo">Detailliert loggen</label>
-            <label index="label_schedulerFieldLogNoticeAsError">Speichere alle Logeinträge markiert als Fehler</label>
-            <label index="valerr_schedulerFieldDeleteEntriesOlderThanSeconds">Bitte geben Sie einen Wert in Sekunden zwischen 0 999999 an!</label>
-            <label index="valerr_schedulerFieldDetailLogInfo">Bitte wählen Sie aus der Checkbox aus!</label>
-            <label index="errmsg_releaseCacheDeadlocks_generalFailure">Es trat eine Exception im Scheduler-Task "releaseCacheDeadlocks" auf! (Exception: %s, Exception-Nachricht: %s</label>
-            <label index="errmsg_releaseCacheDeadlocks_dbFailure">Ein Datenbankfehler ist aufgetreten. Fehlernummer: %s, Text: '%s'</label>
-            <label index="logmsg_releaseCacheDeadlocks_detail">In %s Cacheeinträgen müssen Verklemmungen gelöst werden. Die SeitenIDs sind [Maximal %s IDs werden aufgelistet]: (%s)</label>
-            <label index="logmsg_releaseCacheDeadlocks">%s Cacheverklemmungen wurden entfernt.</label>
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for the congstarizer extension in the FRONTEND</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="count">count</label>
+            <label index="entityActionDelete">delete</label>
+            <label index="entries">entries</label>
+            <label index="headline_allFiles">all files</label>
+            <label index="headline_allDirectories">all directories</label>
+            <label index="headline_allDatabaseentries">all database entries</label>
+            <label index="headline_cachefiles">cache files</label>
+            <label index="headline_databaseentries">database entries</label>
+            <label index="headline_entityAction">action</label>
+            <label index="headline_entityName">name</label>
+            <label index="headline_entityModificationTime">time</label>
+            <label index="headline_filter">filter</label>
+            <label index="showAllFiles">show all files</label>
+            <label index="showAllDirectories">show all directories</label>
+            <label index="showAll">show all</label>
+            <label index="showAll">show all</label>
+            <label index="showEmptyDirectories">show empty directories</label>
+            <label index="showDatabaseDetails">show details of database entries</label>
+            <label index="showFilesDetails">show details of cache files</label>
+            <label index="startFilesSearch">start search for files</label>
+            <label index="startFolderSearch">start search for folders</label>
+            <label index="startDbRecordSearch">start search for database entries</label>
+            <label index="startFilterByDate">start filter by date</label>
+            <label index="startFilterByDateInfo">info: in the input-fields you can all use, which the PHP-function 'strtotime' allows as parameter</label>
+            <label index="startFilterBySearchPhraseForDbRecordsInfo">info: you must define a search-query like this: [db-field]:[searchstring]</label>
+            <label index="startFilterFromDate">from</label>
+            <label index="startFilterTillDate">till</label>
+            <label index="table">table</label>
+            <label index="eventqueue_status_waitforprocessing">wait for processing</label>
+            <label index="eventqueue_status_inprocess">in process</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="count">Anzahl</label>
+            <label index="entityActionDelete">Löschen</label>
+            <label index="entries">Einträge</label>
+            <label index="headline_allFiles">Alle Dateien</label>
+            <label index="headline_allDirectories">Alle Ordner</label>
+            <label index="headline_allDatabaseentries">Alle Datenbankeinträge</label>
+            <label index="headline_cachefiles">Cache Dateien</label>
+            <label index="headline_databaseentries">Datenbank Einträge</label>
+            <label index="headline_entityAction">Aktion</label>
+            <label index="headline_entityName">Name</label>
+            <label index="headline_entityModificationTime">Datum</label>
+            <label index="headline_filter">Filter</label>
+            <label index="showAll">alle anzeigen</label>
+            <label index="showAllFiles">alle Dateien anzeigen</label>
+            <label index="showAllDirectories">alle Ordner anzeigen</label>
+            <label index="showEmptyDirectories">Ordner, welche keine Dateien enthalten, anzeigen </label>
+            <label index="showDatabaseDetails">Zeige Details von Datenbank Einträgen</label>
+            <label index="showFilesDetails">Zeige Details von Cache Dateien</label>
+            <label index="startFilesSearch">Starte Suche nach Dateien</label>
+            <label index="startFolderSearch">Starte Suche nach Ordnern</label>
+            <label index="startDbRecordSearch">Starte Suche nach Datenbank Einträgen</label>
+            <label index="startFilterByDate">Starte Filterung nach Datum</label>
+            <label index="startFilterByDateInfo">Info: In den Eingabefeldern können Sie alles verwenden, was die PHP-Funktion 'strtotime' als Parameter erlaubt</label>
+            <label index="startFilterBySearchPhraseForDbRecordsInfo">Info: Eine Suchanfrage müssen Sie wie folgt definieren: [db-field]:[searchstring]</label>
+            <label index="startFilterFromDate">Von</label>
+            <label index="startFilterTillDate">Bis</label>
+            <label index="table">Tabelle</label>
+            <label index="eventqueue_status_waitforprocessing">Wartet auf Vearbeitung</label>
+            <label index="eventqueue_status_inprocess">Wird verarbeitet</label>
+        </languageKey>
+    </data>
 </T3locallang>

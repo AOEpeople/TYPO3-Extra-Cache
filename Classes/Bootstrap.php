@@ -27,7 +27,7 @@ final class Bootstrap {
 		self::initializeSchedulerTasks();
 		self::initializeXClasses();
 	}
-	
+
 	/**
 	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
 	 *
@@ -152,7 +152,6 @@ final class Bootstrap {
 		$dispatcher->addLazyLoadingHandler('onStaticCacheWarning', 'Tx_Extracache_System_LoggingEventHandler', 'logWarning');
 		$dispatcher->addLazyLoadingHandler('onStaticCacheFatalError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');
 		$dispatcher->addLazyLoadingHandler('onReleaseCacheDeadlocksError', 'Tx_Extracache_System_LoggingEventHandler', 'logFatalError');
-		$dispatcher->addLazyLoadingHandler('onReleaseCacheDeadlocksNotice', 'Tx_Extracache_System_LoggingEventHandler', 'logNotice');
 	}
 	/**
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher

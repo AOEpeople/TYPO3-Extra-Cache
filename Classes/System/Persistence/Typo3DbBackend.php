@@ -89,31 +89,6 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	public function selectQuery($sqlSelect, $sqlFrom, $sqlWhere='', $sqlOrderBy='', $sqlLimit='') {
 		return $this->getTypo3Db()->exec_SELECTgetRows ( $sqlSelect, $sqlFrom, $sqlWhere, '', $sqlOrderBy, $sqlLimit );
 	}
-
-	/**
-	 * returns the error number from the last MySQL function, or 0 (zero) if no error occurred.
-	 * @return int
-	 */
-	public function getSqlErrorNumber() {
-		return $this->getTypo3Db()->sql_errno();
-	}
-
-	/**
-	 * Returns the error text from the last MySQL function, or '' (empty string) if no error occurred.
-	 * @return string
-	 */
-	public function getSqlErrorText() {
-		return $this->getTypo3Db()->sql_error();
-	}
-
-	/**
-	* Get number of affected rows in previous MySQL operation
-	* @return int the number of affected rows on success, and -1 if the last query failed.
-	*/
-	public function getAffectedRows() {
-		return $this->getTypo3Db()->sql_affected_rows();
-	}
-
 	/**
 	 * Escaping and quoting values for SQL statements.
 	 *
