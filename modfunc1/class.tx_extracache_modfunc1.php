@@ -47,10 +47,10 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 	 */
 	function modMenu() {
 		global $LANG;
-		
+
 		return Array ("tx_extracache_modfunc1_check" => "" );
 	}
-	
+
 	/**
 	 * Main method of the module
 	 *
@@ -69,13 +69,13 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 		$view = t3lib_div::makeInstance ( 'Tx_Extracache_View_View' );
 		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 		$this->cacheManagementController = t3lib_div::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventlog, $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
-		
+
 		$action = t3lib_div::_GP ( 'action' );
 		if(empty($action)){
 			$action = 'index';
 		}
 		$action = $action.'Action';
-		$output  = call_user_method($action,$this->cacheManagementController);
+		$output = call_user_func(array($this->cacheManagementController, $action));
 		$output.= '<p class="c-refresh"><a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a></p>';
 		return $output;
 	}
