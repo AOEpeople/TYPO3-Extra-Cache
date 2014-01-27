@@ -64,7 +64,16 @@ class Tx_Extracache_System_LoggingEventHandler implements t3lib_Singleton {
 	 * @param integer	$severity
 	 */
 	protected function logMessage($message,$severity) {
-		t3lib_div::devlog($message, 'extracache', $severity);
+		$exception = new Exception();
+		$additional = array();
+		if (isset($_SERVER['HTTP_REFERER'])) {
+			$additional ['httpReferer'] = $_SERVER['HTTP_REFERER'];
+		}
+		if (isset($_SERVER['REQUEST_URI'])) {
+			$additional ['requestUrl'] = $_SERVER['REQUEST_URI'];
+		}
+		$additional['debug_backtrace'] = $exception->getTraceAsString();
+		t3lib_div::devlog($message, 'extracache', $severity, $additional);
 	}
 
 	/**
