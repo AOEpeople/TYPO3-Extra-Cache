@@ -45,17 +45,20 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		$checkMethods['isProcessingDirtyPages'] = FALSE;
 
 		/**
+		 * If we don't support caching during login/logout-process, than:
 		 * It's important, that we don't use the staticCache, if FE-user is logging in or out: Some extensions use hooks, which do some
 		 * stuff if FE-user is logging in or out. This hooks maybe need the object $GLOBALS['TSFE']->fe_user, which doesn't exist at the
 		 * moment (where we create/finalize the fe_user), when the hooks are called!
-		 */ 
-		$checkMethods['isFrontendUserLoggingOut'] = FALSE;	
-		$checkMethods['isFrontendUserLoggingIn'] = FALSE;
+		 */
+		if(FALSE === $this->getExtensionManager()->isCachingDuringLoginAndLogoutEnabled()) {
+			$checkMethods['isFrontendUserLoggingIn'] = FALSE;
+			$checkMethods['isFrontendUserLoggingOut'] = FALSE;
+		}
 
 		/**
 		 * if we don't support FE-usergroups, no fe-user is allowed to be logged in
 		 */
-		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === FALSE) {
+		if(FALSE === $this->getExtensionManager()->isSupportForFeUsergroupsSet()) {
 			$checkMethods['isFrontendUserActive'] = FALSE;
 		}
 

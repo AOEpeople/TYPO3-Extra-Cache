@@ -30,7 +30,7 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function areContentProcessorsEnabled() {
-		return ( bool ) $this->get ( 'enableContentProcessors' );
+		return (boolean) $this->get ( 'enableContentProcessors' );
 	}
 	/**
 	 * returns configurationvalue for the given key
@@ -44,6 +44,12 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	/**
 	 * @return boolean
 	 */
+	public function isCachingDuringLoginAndLogoutEnabled() {
+		return (boolean) $this->get ( 'enableCachingDuringLoginAndLogout' );
+	}
+	/**
+	 * @return boolean
+	 */
 	public function isDevelopmentContextSet() {
 		return (boolean) $this->get('developmentContext');
 	}
@@ -51,7 +57,7 @@ class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function isStaticCacheEnabled() {
-		return ( bool ) $this->get ( 'enableStaticCacheManager' );
+		return (boolean) $this->get ( 'enableStaticCacheManager' );
 	}
 	/**
 	 * if support for FE-usergroups is set, than the folder-structure is like this:

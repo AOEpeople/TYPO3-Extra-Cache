@@ -15,3 +15,6 @@ developmentContext = 0
 
 # cat=basic; type=boolean; label=Support FE-usergroups: Defines whether to support FE-usergroups
 supportFeUsergroups = 0
+
+# cat=basic; type=boolean; label=enable Caching during Login/Logout: Defines whether to enable caching during login/logout-process
+enableCachingDuringLoginAndLogout = 0
