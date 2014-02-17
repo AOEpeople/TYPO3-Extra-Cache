@@ -17,10 +17,6 @@ require_once(t3lib_extMgm::extPath('scheduler') . 'class.tx_scheduler_task.php')
  * @subpackage Typo3
  */
 class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_scheduler_Task {
-
-	/** Maximum mumber of pageids to show, even when there are more caches released */
-	const MAX_LOG_PAGEIDS = 50;
-
 	/** @var Tx_Extracache_System_Event_Dispatcher */
 	private $eventDispatcher;
 
@@ -54,28 +50,31 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_schedule
 	 * release cache deadlocks
 	 */
 	protected function releaseCacheDeadlocks() {
-		$whereStmt='page_id not in (SELECT distinct pid FROM tx_ncstaticfilecache_file) AND tstamp < (UNIX_TIMESTAMP()-'.$this->deleteEntriesOlderThanSeconds.')';
+		$sqlForPrimaryKey1 = "CONCAT(page_id, '|', tx_extracache_grouplist)"; // definition of composite-key (pageId + feGroupIds) for table 'cache_pages'
+		$sqlForPrimaryKey2 = "CONCAT(pid, '|', tx_extracache_grouplist)";     // definition of composite-key (pageId + feGroupIds) for table 'tx_ncstaticfilecache_file'
+		$whereStmt = sprintf("%s NOT IN (SELECT %s FROM tx_ncstaticfilecache_file) AND tstamp < (UNIX_TIMESTAMP()-%d)", $sqlForPrimaryKey1, $sqlForPrimaryKey2, $this->deleteEntriesOlderThanSeconds);
 
 		if($this->detailLogInfo) {
-			$rows = $this->getTypo3DbBackend()->selectQuery('page_id', 'cache_pages', $whereStmt);
+			$rows = $this->getTypo3DbBackend()->selectQuery('page_id', 'cache_pages', $whereStmt, 'page_id ASC');
 			$this->checkDBError();
-			if(($rows!== NULL) && (count($rows)>0)) {
-				$pageIds='';
+			if(is_array($rows) && count($rows) > 0) {
+				$pageIds = array();
 				foreach ($rows as $row) {
-					$pageIds.=$row['page_id'].', ';
+					if(FALSE === in_array($row['page_id'], $pageIds)) {
+						$pageIds[] = $row['page_id'];
+					}
 				}
-				$logInfo=sprintf($GLOBALS['LANG']->getLL('logmsg_releaseCacheDeadlocks_detail'), count($rows), self::MAX_LOG_PAGEIDS, substr($pageIds,0,-2));
+				$logInfo = sprintf($GLOBALS['LANG']->getLL('logmsg_releaseCacheDeadlocks_detail'), count($rows), $this->deleteEntriesOlderThanSeconds, implode(', ', $pageIds));
 				$this->writeLogNotice($logInfo);
 			}
 		}
 
 		$this->getTypo3DbBackend()->deleteQuery('cache_pages', $whereStmt);
 		$this->checkDBError();
-		if($this->getTypo3DbBackend()->getAffectedRows()>0) {
-			$logInfo=sprintf($GLOBALS['LANG']->getLL('logmsg_releaseCacheDeadlocks'), $this->getTypo3DbBackend()->getAffectedRows());
+		if($this->getTypo3DbBackend()->getAffectedRows() > 0) {
+			$logInfo = sprintf($GLOBALS['LANG']->getLL('logmsg_releaseCacheDeadlocks'), $this->getTypo3DbBackend()->getAffectedRows(), $this->deleteEntriesOlderThanSeconds);
 			$this->writeLogNotice($logInfo);
 		}
-
 	}
 
 	/**

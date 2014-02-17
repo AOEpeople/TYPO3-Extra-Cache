@@ -43,8 +43,8 @@
             <label index="valerr_schedulerFieldDetailLogInfo">Please check or uncheck!</label>
             <label index="errmsg_releaseCacheDeadlocks_generalFailure">An exception occured in scheduler-task "releaseCacheDeadlocks" (exceptionClass: %s, exceptionMessage: %s</label>
             <label index="errmsg_releaseCacheDeadlocks_dbFailure">An database Error occurred. Error number: %s, Error Text: '%s'</label>
-            <label index="logmsg_releaseCacheDeadlocks_detail">%s cache deadlocks should be removed. The Page IDs are [Maximum %s IDs will be listed]: (%s)</label>
-            <label index="logmsg_releaseCacheDeadlocks">%s cache deadlocks has been removed.</label>
+            <label index="logmsg_releaseCacheDeadlocks_detail">%d cache deadlocks should be removed (which are older than %d seconds). The Page IDs are: %s</label>
+            <label index="logmsg_releaseCacheDeadlocks">%d cache deadlocks has been removed (which are older than %d seconds).</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="count">Anzahl</label>
