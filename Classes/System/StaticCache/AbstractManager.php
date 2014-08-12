@@ -74,13 +74,12 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	public function getCachedRepresentationWithoutPageInformation($content) {
 		$startPosition = strpos ( $content, self::DATA_PageInformationPrefix );
-
 		if ($startPosition === 0) {
 			$endPosition = strpos ( $content, self::DATA_PageInformationSuffix );
 			$stripPosition = $endPosition + strlen ( self::DATA_PageInformationSuffix );
 			$content = substr ( $content, $stripPosition );
+            $content = preg_replace('/^\n/', '', $content); // remove empty line, if exists
 		}
-
 		return $content;
 	}
 	/**
