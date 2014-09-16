@@ -60,10 +60,9 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 		$this->mockedFrontendUser = $this->getMock('ux_tslib_feUserAuth', array(), array(), '', FALSE);
 		$this->mockedRequest = $this->getMock('Tx_Extracache_System_StaticCache_Request', array(), array(), '', FALSE);
 		$this->mockedStorage = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		$this->manager = $this->getMock('ExtendedStaticFileCacheManager', array('getArgumentRepository','getFrontendUser','initializeFrontendUser'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
+		$this->manager = $this->getMock('ExtendedStaticFileCacheManager', array('getArgumentRepository','getFrontendUser'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
 		$this->manager->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->mockedArgumentRepository));
 		$this->manager->expects($this->any())->method('getFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
-		$this->manager->expects($this->any())->method('initializeFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
 	}
 	/**
 	 * Cleans up the environment after running a test.

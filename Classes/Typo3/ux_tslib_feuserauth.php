@@ -21,20 +21,6 @@ if(class_exists('tslib_feUserAuth') === FALSE) {
  */
 class ux_tslib_feUserAuth extends tslib_feUserAuth {
 	/**
-	 * Determines whether the frontend user was initialized (start() method called).
-	 * @var boolean
-	 */
-	protected $isInitialized = FALSE;
-
-	/**
-	 * @return	void
-	 */
-	public function start() {
-		$this->isInitialized = TRUE;
-		parent::start();
-	}
-
-	/**
 	 * Determines whether this is a valid frontend user with
 	 * accordant data and user groups assigned.
 	 *
@@ -42,15 +28,6 @@ class ux_tslib_feUserAuth extends tslib_feUserAuth {
 	 */
 	public function isValidFrontendUser() {
 		return (is_array($this->user) && count($this->groupData['uid']));
-	}
-
-	/**
-	 * Determines whether the frontend user was initialized (start() method called).
-	 *
-	 * @return boolean
-	 */
-	public function isInitialized() {
-		return $this->isInitialized;
 	}
 
 	/**

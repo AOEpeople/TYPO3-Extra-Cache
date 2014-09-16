@@ -42,7 +42,9 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 
 			// modify some data if we support FE-usergroups
 			if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
-				$frontendUserGroupList = $this->getFrontendUserGroupList($frontend->fe_user);
+                /* @var $frontendUser ux_tslib_feUserAuth */
+                $frontendUser = $frontend->fe_user;
+				$frontendUserGroupList = $frontendUser->getGroupList();
 
 				// Adds the frontend user groups to the cache directory path:
 				$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
@@ -266,24 +268,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 */
 	protected function getFrontend(array $parameters) {
 		return $parameters['TSFE'];
-	}
-
-	/**
-	 * Gets the frontend user group list.
-	 * CAVE: The anonymous groups (0,-1) and (0,-2) are already prepended!
-	 *
-	 * @return string
-	 */
-	protected function getFrontendUserGroupList(tslib_feUserAuth $frontendUser) {
-		if (is_array($frontendUser->user) && count($frontendUser->groupData['uid'])) {
-			$frontendUserGroups = array_unique($frontendUser->groupData['uid']);
-			sort($frontendUserGroups);
-			$frontendUserGroupList = '0,-2,' . implode(',', $frontendUserGroups);
-		} else {
-			$frontendUserGroupList = '0,-1';
-		}
-
-		return $frontendUserGroupList;
 	}
 
 	/**

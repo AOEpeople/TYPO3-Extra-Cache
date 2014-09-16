@@ -30,7 +30,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	protected $staticFileCache;
 	/**
-	 * @var tslib_feUserAuth
+	 * @var ux_tslib_feUserAuth
 	 */
 	protected $frontendUser;
 	/**
@@ -58,7 +58,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->staticFileCache = $this->getMock('tx_ncstaticfilecache');
 
-		$this->frontendUser = $this->getMock('tslib_feUserAuth', array());
+		$this->frontendUser = $this->getMock('ux_tslib_feUserAuth', array());
 		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 
@@ -70,7 +70,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->createFileHook = $this->getMock(
 			'tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
-			array('getArgumentRepository', 'getExtensionManager', 'getFrontendUserGroupList', 'getEventDispatcher', 'isAnonymous', 'isUnprocessibleRequestAction', 'getGetArguments', 'isCrawlerExtensionRunning')
+			array('getArgumentRepository', 'getExtensionManager', 'getEventDispatcher', 'isAnonymous', 'isUnprocessibleRequestAction', 'getGetArguments', 'isCrawlerExtensionRunning')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
 		$this->createFileHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));
@@ -130,7 +130,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	public function doesCacheDirectoryContainFrontendUserGroupList() {
 		$frontendUserGroupList = '0,-2,3,4,5';
-		$this->createFileHook->expects($this->once())->method('getFrontendUserGroupList')->will($this->returnValue($frontendUserGroupList));
+        $this->frontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue($frontendUserGroupList));
 
 		$initialCacheDirectory = $cacheDirectory = uniqid('directory');
 
@@ -148,7 +148,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	public function doesAdditionalHashContainFrontendUserGroupList() {
 		$frontendUserGroupList = '0,-2,3,4,5';
-		$this->createFileHook->expects($this->once())->method('getFrontendUserGroupList')->will($this->returnValue($frontendUserGroupList));
+        $this->frontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue($frontendUserGroupList));
 
 		$additionalHash = '';
 
@@ -166,7 +166,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	public function doFieldValuesContainFrontendUserGroupList() {
 		$frontendUserGroupList = '0,-2,3,4,5';
-		$this->createFileHook->expects($this->once())->method('getFrontendUserGroupList')->will($this->returnValue($frontendUserGroupList));
+        $this->frontendUser->expects($this->once())->method('getGroupList')->will($this->returnValue($frontendUserGroupList));
 
 		$fieldValues = array();
 

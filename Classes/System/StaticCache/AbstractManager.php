@@ -20,13 +20,9 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	const DATA_PageInformationSuffix = ']-->';
 
 	/**
-	 * @var	tslib_feUserAuth
+	 * @var	ux_tslib_feUserAuth
 	 */
-	protected $frontendUser;
-	/**
-	 * @var boolean
-	 */
-	protected $isRequestProcessible;
+	protected $frontendUserWithInitializedFeGroups;
 	/**
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
@@ -83,16 +79,27 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		return $content;
 	}
 	/**
-	 * Gets a frontend user handler.
-	 *
-	 * @return	tslib_feUserAuth	Frontend user handler
+	 * @return	ux_tslib_feUserAuth	Frontend user handler
 	 */
 	public function getFrontendUser() {
-		if (! isset ( $this->frontendUser )) {
-			$this->frontendUser = t3lib_div::makeInstance ( 'tslib_feUserAuth' );
-		}
-		return $this->frontendUser;
+        return t3lib_div::makeInstance ( 'tslib_feUserAuth' );
 	}
+    /**
+     * @return	ux_tslib_feUserAuth	Frontend user handler
+     */
+    public function getFrontendUserWithInitializedFeGroups() {
+        if (! isset ( $this->frontendUserWithInitializedFeGroups )) {
+            $frontendVars = & $GLOBALS ['TYPO3_CONF_VARS'] ['FE'];
+            $this->frontendUserWithInitializedFeGroups = $this->getFrontendUser();
+            $this->frontendUserWithInitializedFeGroups->lockIP = $frontendVars ['lockIP'];
+            $this->frontendUserWithInitializedFeGroups->lockHashKeyWords = $frontendVars ['lockHashKeyWords'];
+            $this->frontendUserWithInitializedFeGroups->checkPid = $frontendVars ['checkFeUserPid'];
+            $this->frontendUserWithInitializedFeGroups->lifetime = intval ( $frontendVars ['lifetime'] );
+            $this->frontendUserWithInitializedFeGroups->start ();
+            $this->frontendUserWithInitializedFeGroups->fetchGroupData();
+        }
+        return $this->frontendUserWithInitializedFeGroups;
+    }
 	/**
 	 * Gets page information from the cached representation like e.g. the page UID.
 	 *
@@ -119,26 +126,28 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * @return	boolean		Whether the current request can be processed
 	 */
 	public function isRequestProcessible() {
-		if (! isset ( $this->isRequestProcessible )) {
-			/* @var $event Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest */
-			$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest')->setFrontendUser( $this->getFrontendUser() )->setRequest( $this->getRequest() );
-			$this->getDispatcher()->triggerEvent( $event );
-			/**
-			 * it's important, that we check if cached representation is available AFTER we have checked if we can respond
-			 * the request (otherwise a fatal-error can occur if FE-user is logging in or out; for more informations take a
-			 * look at: Tx_Extracache_System_StaticCache_EventHandler->__construct())!
-			 */
-			if($event->isCanceled() === FALSE && $this->isCachedRepresentationAvailable () === FALSE) {
-				$event->cancel();
-				$event->setReasonForCancelation( 'Check "isCachedRepresentationAvailable" prevents from using static caching' );
-			}
-			$this->isRequestProcessible = ($event->isCanceled() === FALSE);
+        /* @var $event Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest */
+        $event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest');
+        $event->setFrontendUser( $this->getFrontendUser() );
+        $event->setRequest( $this->getRequest() );
+        $this->getDispatcher()->triggerEvent( $event );
+        /**
+         * it's important, that we check if cached representation is available AFTER we have checked if we can respond
+         * the request (otherwise a fatal-error can occur if FE-user is logging in or out; for more informations take a
+         * look at: Tx_Extracache_System_StaticCache_EventHandler->__construct())!
+         */
+        if($event->isCanceled() === FALSE && $this->isCachedRepresentationAvailable () === FALSE) {
+            $event->cancel();
+            $event->setReasonForCancelation( 'Check "isCachedRepresentationAvailable" prevents from using static caching' );
+        }
 
-			if($event->isCanceled() === TRUE && NULL !== $reasonForCancelation = $event->getReasonForCancelation() ) {
-				$this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => $reasonForCancelation ) );
-			}
-		}
-		return $this->isRequestProcessible;
+        if ($event->isCanceled()) {
+            if (NULL !== $reasonForCancelation = $event->getReasonForCancelation()) {
+                $this->getDispatcher()->triggerEvent ( 'onStaticCacheInfo', $this, array ('message' => $reasonForCancelation ) );
+            }
+            return false;
+        }
+        return true;
 	}
 
 	/**
@@ -198,7 +207,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function getCachedRepresentationGroupList() {
 		if (!isset($this->cachedRepresentationGroupList)) {
-			$this->cachedRepresentationGroupList = $this->getFrontendUserGroupList();
+			$this->cachedRepresentationGroupList = $this->getFrontendUserWithInitializedFeGroups ()->getGroupList();
 		}
 		return $this->cachedRepresentationGroupList;
 	}
@@ -227,28 +236,6 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		return $this->storage;
 	}
 
-	/**
-	 * Initializes a frontend user.
-	 *
-	 * @return tslib_feUserAuth
-	 */
-	protected function initializeFrontendUser() {
-		/* @var $frontendUser ux_tslib_feUserAuth */
-		$frontendUser = $this->getFrontendUser ();
-
-		if ($frontendUser->isInitialized() !== TRUE) {
-			$frontendVars = & $GLOBALS ['TYPO3_CONF_VARS'] ['FE'];
-			$frontendUser->lockIP = $frontendVars ['lockIP'];
-			$frontendUser->lockHashKeyWords = $frontendVars ['lockHashKeyWords'];
-			$frontendUser->checkPid = $frontendVars ['checkFeUserPid'];
-			$frontendUser->lifetime = intval ( $frontendVars ['lifetime'] );
-			$frontendUser->checkPid_value = $this->getStorage()->cleanIntList ( $this->getRequest()->getArgument ( 'pid' ) );
-			$frontendUser->start ();
-			$frontendUser->fetchGroupData();
-		}
-
-		return $frontendUser;
-	}
 	/**
 	 * Determines whether a cached representation is accessible.
 	 *
@@ -305,14 +292,5 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function setStorage(Tx_Extracache_System_Persistence_Typo3DbBackend $storage) {
 		$this->storage = $storage;
-	}
-
-	/**
-	 * Gets the frontend user group list.
-	 *
-	 * @return string
-	 */
-	private function getFrontendUserGroupList() {
-		return $this->initializeFrontendUser()->getGroupList();
 	}
 }

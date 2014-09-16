@@ -126,7 +126,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @return	void
 	 */
 	protected function halt() {
-		$this->getCacheManager()->getFrontendUser ()->storeSessionData ();
+		$this->getCacheManager()->getFrontendUserWithInitializedFeGroups ()->storeSessionData ();
 		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('message' => 'Cache: Request served by static cache' ) );
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponseHalt');
 		$this->getEventDispatcher()->triggerEvent( $event );
@@ -164,9 +164,8 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 			$GLOBALS['TSFE']->setFirstRootlineId($pageInformation['firstRootlineId']);
 		}
 
-		$GLOBALS['TSFE']->fe_user = $this->getCacheManager()->getFrontendUser();
-		$GLOBALS['TSFE']->finalizeFrontendUser ();
-		
+		$GLOBALS['TSFE']->finalizeFrontendUser ($this->getCacheManager()->getFrontendUserWithInitializedFeGroups());
+
 		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnInitializeFrontEnd');
 		$event->setFrontendUser($GLOBALS['TSFE']->fe_user);
 		$this->getEventDispatcher()->triggerEvent( $event );
@@ -235,7 +234,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	private function triggerEventOnStaticCacheResponsePostProcess($content) {
 		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response')->setContent( $content );
-		$event    = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess')->setFrontendUser( $this->getCacheManager()->getFrontendUser() )->setResponse( $response );
+		$event    = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess')->setFrontendUser( $this->getCacheManager()->getFrontendUserWithInitializedFeGroups() )->setResponse( $response );
 		return $this->getEventDispatcher()->triggerEvent( $event );
 	}
 }

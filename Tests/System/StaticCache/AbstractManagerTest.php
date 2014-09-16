@@ -60,10 +60,11 @@ class Tx_Extracache_System_StaticCache_AbstractManagerTest extends Tx_Extracache
 		$this->mockedFrontendUser = $this->getMock('ux_tslib_feUserAuth', array(), array(), '', FALSE);
 		$this->mockedRequest = $this->getMock('Tx_Extracache_System_StaticCache_Request', array(), array(), '', FALSE);
 		$this->mockedStorage = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		$this->manager = $this->getMock('ExtendedAbstractManager', array('getArgumentRepository','getCachedRepresentation','getFrontendUser','initializeFrontendUser'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
+		$this->manager = $this->getMock('ExtendedAbstractManager', array('getArgumentRepository','getCachedRepresentation','getFrontendUser','getFrontendUserWithInitializedFeGroups','isFrontendUserLoggingInOrOut'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));
 		$this->manager->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->mockedArgumentRepository));
 		$this->manager->expects($this->any())->method('getFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
-		$this->manager->expects($this->any())->method('initializeFrontendUser')->will($this->returnValue($this->mockedFrontendUser));
+        $this->manager->expects($this->any())->method('getFrontendUserWithInitializedFeGroups')->will($this->returnValue($this->mockedFrontendUser));
+        $this->manager->expects($this->any())->method('isFrontendUserLoggingInOrOut')->will($this->returnValue(false));
 	}
 	/**
 	 * Cleans up the environment after running a test.
