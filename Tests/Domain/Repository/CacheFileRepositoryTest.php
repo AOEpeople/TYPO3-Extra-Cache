@@ -69,6 +69,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFolders() {
+        $this->markTestSkipped();
 		// don't use search
 		$results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
 		$this->assertInternalType ( 'array', $results );
