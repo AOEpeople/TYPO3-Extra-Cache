@@ -37,7 +37,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	public function clearCachePostProc(array $params) {
 		if (in_array($params['cacheCmd'], array('all', 'pages'))) {
 			t3lib_div::rmdir($this->getCacheFolder(), TRUE);
-		} elseif (t3lib_div::testInt( $params['cacheCmd'] )) {
+		} elseif ($this->isValidInteger($params['cacheCmd'])) {
 			$cacheFilePath = $this->getCacheFilePath( (integer) $params['cacheCmd'] );
 			if (file_exists ( $cacheFilePath )) {
 				unlink ( $cacheFilePath );
@@ -154,6 +154,17 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	private function getCacheFolder() {
 		return PATH_site . 'typo3temp/tx_Extracache_Typo3_TypoScriptCache/';
 	}
+    /**
+     * @param integer $integer
+     * @return boolean
+     */
+    private function isValidInteger($integer)
+    {
+        if (version_compare(TYPO3_version, '4.6.0', '>=')) {
+            return t3lib_utility_Math::canBeInterpretedAsInteger($integer);
+        }
+        return t3lib_div::testInt($integer);
+    }
 	/**
 	 * Persists the cache to the file system.
 	 *

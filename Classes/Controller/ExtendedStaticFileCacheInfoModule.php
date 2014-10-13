@@ -29,9 +29,9 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 			$this->uxMarkDirty();
 		} elseif(isset($action['uxRecachePageOnBaseOfCacheStrategies']) && $this->hasPageWithCacheCleanerStrategy($pageId)) {
 			$this->getCacheCleanerBuilder()->buildCacheCleanerForPage( $this->getPageWithCacheCleanerStrategy( $pageId ) )->process();
-		} elseif (isset($action['uxUpdateCache']) && t3lib_div::testInt(key($action['uxUpdateCache']))) {
+		} elseif (isset($action['uxUpdateCache']) && $this->isValidInteger(key($action['uxUpdateCache']))) {
 			$this->uxUpdateCache(key($action['uxUpdateCache']));
-		} elseif (isset($action['uxMarkDirty']) && t3lib_div::testInt(key($action['uxMarkDirty']))) {
+		} elseif (isset($action['uxMarkDirty']) && $this->isValidInteger(key($action['uxMarkDirty']))) {
 			$this->uxMarkDirty(key($action['uxMarkDirty']));
 		} elseif (isset($action['processDirtyPages'])) {
 			$this->uxUpdateAllCaches();
@@ -235,6 +235,17 @@ class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule
 		}
 		return ($this->getPageWithCacheCleanerStrategy($pageId) !== NULL);
 	}
+    /**
+     * @param integer $integer
+     * @return boolean
+     */
+    private function isValidInteger($integer)
+    {
+        if (version_compare(TYPO3_version, '4.6.0', '>=')) {
+            return t3lib_utility_Math::canBeInterpretedAsInteger($integer);
+        }
+        return t3lib_div::testInt($integer);
+    }
 	/**
 	 * Wraps content with the original link of the cache element.
 	 *
