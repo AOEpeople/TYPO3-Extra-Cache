@@ -107,7 +107,12 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocksAdditionalFields imp
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
 		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 
-		$deleteEntriesOlderThanSeconds = t3lib_div::intval_positive((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
+        if( version_compare(TYPO3_version,'4.6.0','>=') ) {
+            $deleteEntriesOlderThanSeconds = t3lib_utility_Math::convertToPositiveInteger ((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
+        } else {
+            $deleteEntriesOlderThanSeconds = t3lib_div::intval_positive((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
+        }
+
 		if (($deleteEntriesOlderThanSeconds >= 0) && ($deleteEntriesOlderThanSeconds<=999999)) {
 			$isValid = TRUE;
 			$submittedData['deleteEntriesOlderThanSeconds'] = $deleteEntriesOlderThanSeconds;
