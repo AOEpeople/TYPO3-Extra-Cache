@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Repository_ArgumentRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
 	private $repository;
@@ -26,8 +26,6 @@ class Tx_Extracache_Domain_Repository_ArgumentRepositoryTest extends Tx_Extracac
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_Argument');
-		$this->loadClass('Tx_Extracache_Domain_Repository_ArgumentRepository');
 		$this->repository = new Tx_Extracache_Domain_Repository_ArgumentRepository();
 	}
 	/**
@@ -54,7 +52,7 @@ class Tx_Extracache_Domain_Repository_ArgumentRepositoryTest extends Tx_Extracac
 	public function getArgumentsByType() {
 		$argument1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg1', Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, true);
 		$argument2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg2', Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, '*');
-		
+
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible)) === 0 );
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_whitelist)) === 0 );
 

@@ -20,34 +20,12 @@ final class Bootstrap {
 	 * start
 	 */
 	static public function start() {
-		self::initializeClassLoader();
-		self::initializeConstants();
 		self::initializeEventHandling();
 		self::initializeHooks();
 		self::initializeSchedulerTasks();
 		self::initializeXClasses();
 	}
-	
-	/**
-	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
-	 *
-	 * @return void
-	 */
-	static protected function initializeClassLoader() {
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
-			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
-		}
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
-		spl_autoload_register(array($classLoader, 'loadClass'));
-	}
-	/**
-	 * load some classes so that we can use constants of that classes anywhere
-	 */
-	static protected function initializeConstants() {
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
-		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_Argument' );
-		$classLoader->loadClass( 'Tx_Extracache_Domain_Model_CleanerStrategy' );
-	}
+
 	/**
 	 * initialize event-handler
 	 */

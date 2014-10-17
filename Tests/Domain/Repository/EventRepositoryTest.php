@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_EventRepository
 	 */
 	private $repository;
@@ -26,7 +26,6 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
 		$this->repository = new Tx_Extracache_Domain_Repository_EventRepository();
 	}
 	/**

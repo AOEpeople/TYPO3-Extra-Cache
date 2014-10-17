@@ -16,10 +16,6 @@
  * @subpackage Tests
  */
 abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase {
-	/**
-	 * @var Tx_Extbase_Utility_ClassLoader
-	 */
-	private $classLoader;
 
 	/**
 	 * @var array
@@ -42,23 +38,6 @@ abstract class Tx_Extracache_Tests_AbstractTestcase extends tx_phpunit_testcase 
 	 */
 	protected function tearDown() {
 		$this->triggeredEvents = array();
-	}
-
-	/**
-	 * @string
-	 */
-	protected function loadClass($className) {
-		$this->getClassLoader()->loadClass( $className );
-	}
-
-	/**
-	 * @return Tx_Extbase_Utility_ClassLoader
-	 */
-	private function getClassLoader() {
-		if($this->classLoader === NULL) {
-			$this->classLoader = new Tx_Extbase_Utility_ClassLoader();
-		}
-		return $this->classLoader;
 	}
 
 	/**

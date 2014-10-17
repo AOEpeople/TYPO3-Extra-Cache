@@ -35,11 +35,9 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	 */
 	protected function setUp() {
 		$this->messages = array();
-		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
-		$this->loadClass('Tx_Extracache_System_LoggingEventHandler');
 		$this->extensionManager = $this->getMock ( 'Tx_Extracache_Configuration_ExtensionManager', array (), array (), '', FALSE );
 		$this->loggingEventHandler = $this->getMock ( 'Tx_Extracache_System_LoggingEventHandler', array ('getExtensionManager','logMessage'));
-		$this->loggingEventHandler->expects ( $this->any () )->method ( 'getExtensionManager' )->will ( $this->returnValue ( $this->extensionManager ) );		
+		$this->loggingEventHandler->expects ( $this->any () )->method ( 'getExtensionManager' )->will ( $this->returnValue ( $this->extensionManager ) );
 		$this->loggingEventHandler->expects($this->any())->method('logMessage')->will($this->returnCallback(array($this, 'loggedMessageCallback')));
 	}
 	/**

@@ -33,14 +33,11 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 	 * @var tslib_fe
 	 */
 	private $tsfeMock;
-	
+
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
-		$this->loadClass('Tx_Extracache_System_ContentProcessor_Chain');
-		$this->loadClass('tx_Extracache_Typo3_Hooks_ExecuteContentProcessor');
 
 		$this->chain = $this->getMock('Tx_Extracache_System_ContentProcessor_Chain', array(), array(), '', FALSE);
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);

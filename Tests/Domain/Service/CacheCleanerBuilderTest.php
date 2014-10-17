@@ -34,10 +34,6 @@ class Tx_Extracache_Domain_Service_CacheCleanerBuilderTest extends Tx_Extracache
 	 * set up the environment
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheCleaner');
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 
 		$this->mockedCacheCleaner = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheCleaner', array(), array(), '', FALSE);
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array(), array(), '', FALSE);
@@ -55,7 +51,7 @@ class Tx_Extracache_Domain_Service_CacheCleanerBuilderTest extends Tx_Extracache
 		unset ( $this->mockedCacheCleaner );
 		unset ( $this->mockedCleanerStrategyRepository );
 	}
-	
+
 	/**
 	 * test method buildCacheCleanerForPage
 	 * @test

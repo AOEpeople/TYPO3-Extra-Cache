@@ -41,13 +41,11 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 * @var array
 	 */
 	private $pageIds;
-	
+
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		$this->mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 		$this->mockedStaticFileCache = $this->getMock ( 'tx_ncstaticfilecache', array('deleteStaticCacheDirectory', 'processDirtyPagesElement'));
 		$this->mockedTypo3DbBackend  = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array('deleteQuery','updateQuery'));
@@ -146,17 +144,17 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
 		$this->processCleanerInstruction($this->pageIds[0], $actions, $childrenMode, $elementsMode);
-		
+
 		$this->dropDatabase();
 	}
-	
+
 	/**
 	 * Tests whether clearing static cache is processed.
 	 * @test
 	 */
 	public function isStaticClearProcessedCorrectly() {
 		$this->createTestDB();
-		
+
 		$this->mockedTceMain->expects($this->never())->method('clear_cacheCmd');
 		$this->mockedStaticFileCache->expects($this->never())->method('processDirtyPagesElement');
 		$this->mockedStaticFileCache->expects($this->once())->method('deleteStaticCacheDirectory')->with('nico/0,1/page')->will ( $this->returnValue ( TRUE ) );
@@ -167,8 +165,8 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
 		$this->processCleanerInstruction($this->pageIds[0], $actions, $childrenMode, $elementsMode);
-		
-		$this->dropDatabase();	
+
+		$this->dropDatabase();
 	}
 	/**
 	 * Tests whether clearing static cache is processed on all children and elements.
@@ -194,13 +192,13 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$this->mockedTypo3DbBackend->expects($this->at ( 4 ))->method('deleteQuery')->with('tx_ncstaticfilecache_file','uid=5');
 		$this->mockedTypo3DbBackend->expects($this->at ( 5 ))->method('deleteQuery')->with('tx_ncstaticfilecache_file','uid=6');
 		$this->mockedTypo3DbBackend->expects($this->never())->method('updateQuery');
-		
+
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear;
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent;
 		$this->processCleanerInstruction($this->pageIds[0], $actions, $childrenMode, $elementsMode);
 
-		$this->dropDatabase();	
+		$this->dropDatabase();
 	}
 	/**
 	 * Tests whether marking static cache dirty is processed.
@@ -214,7 +212,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$this->mockedStaticFileCache->expects($this->never())->method('deleteStaticCacheDirectory');
 		$this->mockedTypo3DbBackend->expects($this->once())->method('updateQuery')->with('tx_ncstaticfilecache_file','uid=1',array('isdirty'=>1));
 		$this->mockedTypo3DbBackend->expects($this->never())->method('deleteQuery');
-		
+
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty;
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
@@ -251,7 +249,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 
 		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
 		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
-		
+
 		$this->importStdDB();
 		$this->importExtensions(array('cms', 'realurl', 'nc_staticfilecache', 'extracache'));
 		$this->initializeCommonExtensions();

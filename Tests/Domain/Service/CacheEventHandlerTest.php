@@ -108,8 +108,8 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 
 		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'getPagesWithCacheCleanerStrategyForEvent' )->with( $eventKey )->will ( $this->returnValue ( array($page) ) );
 		$this->mockedTypo3DbBackend->expects ( $this->once () )->method ( 'writeEventLog' );
-		
-		
+
+
 		$mockedCacheCleaner = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheCleaner', array(), array(), '', FALSE);
 		$mockedCacheCleaner->expects ( $this->once () )->method ( 'process' );
 		$this->mockedCacheCleanerBuilder->expects ( $this->once () )->method ( 'buildCacheCleanerForPage' )->with( $page )->will ( $this->returnValue ( $mockedCacheCleaner ) );
@@ -148,13 +148,6 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	 */
 	private function createCacheEventHandler($mockMethodProcessCacheEvent) {
 		parent::setUp();
-		
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheEventHandler');
-		$this->loadClass('Tx_Extracache_System_Event_Dispatcher');
-		$this->loadClass('Tx_Extracache_System_EventQueue');
-		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
-		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 
 		$this->mockedCacheCleanerBuilder = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheCleanerBuilder', array(), array(), '', FALSE);
 		$this->mockedEventDispatcher = $this->getMock ( 'Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
@@ -187,6 +180,6 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 		$page['uid'] = '11';
 		$page['title'] = 'testPage';
 		$page['tx_extracache_cleanerstrategies'] = 'test_strategy';
-		return $page;		
+		return $page;
 	}
 }

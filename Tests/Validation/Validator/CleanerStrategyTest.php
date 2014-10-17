@@ -18,12 +18,12 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	private $mockedCleanerStrategyRepository;
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Validation_Validator_Event
 	 */
 	private $validator;
@@ -32,9 +32,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
-		$this->loadClass('Tx_Extracache_Validation_Validator_CleanerStrategy');
-		
+
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array (), array (), '', FALSE );
 		$this->validator = $this->getMock ( 'Tx_Extracache_Validation_Validator_CleanerStrategy', array ('getCleanerStrategyRepository'));
 		$this->validator->expects ( $this->any () )->method ( 'getCleanerStrategyRepository' )->will ( $this->returnValue ( $this->mockedCleanerStrategyRepository ) );
@@ -52,15 +50,15 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function actionsAreValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear + Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear + Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticDirty, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
@@ -69,7 +67,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function actionsAreNotValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(0, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(0, NULL, NULL);
 		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
@@ -78,11 +76,11 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function childrenModeIsValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, NULL);		
-		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );		
-		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, NULL);
+		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
+		$cleanerStratey = $this->createCleanerStrategy(NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
@@ -91,8 +89,8 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function childrenModeIsNotValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, 'unknownChildrenMode', NULL);		
-		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, 'unknownChildrenMode', NULL);
+		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
 	 * test method isValid
@@ -100,11 +98,11 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function elementsModeIsValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent);		
-		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );		
-		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction);		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly);		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction);
+		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
+		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
@@ -113,8 +111,8 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function elementsModeIsNotValid() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->any () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, 'unknownElementsMode');		
-		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, 'unknownElementsMode');
+		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
 	 * test method isValid
@@ -122,7 +120,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 	 */
 	public function strategyIsNew() {
 		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'hasStrategy' )->will ( $this->returnValue ( FALSE ) );
-		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, NULL);		
+		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, NULL);
 		$this->assertTrue( $this->validator->isValid( $cleanerStratey ) );
 	}
 	/**
@@ -134,7 +132,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategyTest extends Tx_Extracac
 		$cleanerStratey = $this->createCleanerStrategy(NULL, NULL, NULL);
 		$this->assertFalse( $this->validator->isValid( $cleanerStratey ) );
 	}
-	
+
 	/**
 	 * @return Tx_Extracache_Domain_Model_Event
 	 */

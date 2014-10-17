@@ -30,7 +30,6 @@ class Tx_Extracache_Typo3_Hooks_ClearCachePostProcTest extends Tx_Extracache_Tes
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->loadClass('tx_Extracache_Typo3_Hooks_ClearCachePostProc');
 		$this->typo3DbBackend = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_ClearCachePostProc', array('getTypo3DbBackend'));
 		$this->hook->expects($this->any())->method('getTypo3DbBackend')->will($this->returnValue($this->typo3DbBackend));

@@ -54,14 +54,6 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Repository_ArgumentRepository');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
-		$this->loadClass('Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository');
-		$this->loadClass('Tx_Extracache_Domain_Repository_EventRepository');
-		$this->loadClass('Tx_Extracache_Validation_Validator_Argument');
-		$this->loadClass('Tx_Extracache_Validation_Validator_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_Validation_Validator_Event');
-		$this->loadClass('Tx_Extracache_Configuration_ConfigurationManager');
 
 		$this->mockedArgumentRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_ArgumentRepository', array (), array (), '', FALSE );
 		$this->mockedArgumentValidator = $this->getMock ( 'Tx_Extracache_Validation_Validator_Argument', array (), array (), '', FALSE );
@@ -80,7 +72,7 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 		$this->manager->expects ( $this->any () )->method ( 'getEventRepository' )->will ( $this->returnValue ( $this->mockedEventRepository ) );
 		$this->manager->expects ( $this->any () )->method ( 'getEventValidator' )->will ( $this->returnValue ( $this->mockedEventValidator ) );
 	}
-	
+
 	/**
 	 * Test method addArgument
 	 * @test
@@ -99,7 +91,7 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 		$this->mockedArgumentRepository->expects ( $this->never () )->method ( 'addArgument' );
 		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
 		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
-		
+
 		$this->manager->addArgument('', '', '');
 	}
 	/**

@@ -53,11 +53,6 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Controller_CacheManagementController');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CacheFileRepository');
-		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
-		$this->loadClass('Tx_Extracache_View_View');
 
 		$this->cacheDatabaseEntryRepositoryForTableEventlog = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
 		$this->cacheDatabaseEntryRepositoryForTableEventqueue = $this->getMock ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository', array (), array (), '', FALSE );
@@ -112,7 +107,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 * Tests Tx_Extracache_Controller_CacheManagementController->indexAction()
 	 * @test
 	 */
-	public function indexAction() {		
+	public function indexAction() {
 		$this->view->expects($this->once())->method('render');
 		$this->cacheDatabaseEntryRepositoryForTableEventlog->expects($this->once())->method('countAll');
 		$this->cacheDatabaseEntryRepositoryForTableEventqueue->expects($this->once())->method('countAll');
@@ -121,7 +116,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 		$this->cacheFileRepository->expects($this->once())->method('countAll');
 		$this->cacheManagementController->indexAction ();
 	}
-	
+
 	/**
 	 * Tests Tx_Extracache_Controller_CacheManagementController->allFilesAction()
 	 * @test

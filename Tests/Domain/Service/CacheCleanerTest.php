@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Service_CacheCleanerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Service_CacheCleaner
 	 */
 	private $cacheCleaner;
@@ -43,17 +43,12 @@ class Tx_Extracache_Domain_Service_CacheCleanerTest extends Tx_Extracache_Tests_
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerInstruction');
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheCleaner');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerInstructionRepository');
-		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 
 		$this->mockedCleanerInstructionRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerInstructionRepository', array(), array(), '', FALSE);
 		$this->mockedStaticFileCache = $this->getMock ( 'tx_ncstaticfilecache', array(), array(), '', FALSE);
 		$this->mockedTceMain = $this->getMock ( 't3lib_TCEmain', array(), array(), '', FALSE);
 		$this->mockedTypo3DbBackend = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
-		
+
 		$this->cacheCleaner = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheCleaner', array ('getCleanerInstructionRepository','getStaticFileCache','getTceMain','getTypo3DbBackend'));
 		$this->cacheCleaner->expects ( $this->any () )->method ( 'getCleanerInstructionRepository' )->will ( $this->returnValue ( $this->mockedCleanerInstructionRepository ) );
 	}

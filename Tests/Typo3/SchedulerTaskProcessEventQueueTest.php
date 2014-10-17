@@ -43,10 +43,6 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 	 */
 	protected function setUp() {
 		parent::setUp();
-		$this->loadClass('Tx_Extracache_Domain_Service_CacheEventHandler');
-		$this->loadClass('Tx_Extracache_System_Event_Dispatcher');
-		$this->loadClass('Tx_Extracache_System_EventQueue');
-		$this->loadClass('Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue');
 
 		$this->cacheEventHandler = $this->getMock ( 'Tx_Extracache_Domain_Service_CacheEventHandler', array(), array(), '', FALSE);
 		$this->eventDispatcher = $this->getMock ( 'Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
@@ -59,8 +55,8 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 		$this->task->expects($this->any())->method('getEventDispatcher')->will ( $this->returnValue ( $this->eventDispatcher ) );
 		$this->task->expects($this->any())->method('getEventQueue')->will ( $this->returnValue ( $this->eventQueue ) );
 		$this->task->expects($this->any())->method('getEventRepository')->will ( $this->returnValue ( $this->eventRepository ) );
-		
-		
+
+
 	}
 	/**
 	 * Cleans up the environment after running a test.

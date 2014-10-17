@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository
 	 */
 	private $repository;
@@ -26,8 +26,6 @@ class Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepositoryTest e
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_ContentProcessorDefinition');
-		$this->loadClass('Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository');
 		$this->repository = new Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository();
 	}
 	/**

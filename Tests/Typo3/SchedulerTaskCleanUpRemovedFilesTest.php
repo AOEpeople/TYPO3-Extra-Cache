@@ -34,9 +34,6 @@ class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFilesTest extends Tx_Extrac
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_System_Event_Dispatcher');
-		$this->loadClass('Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles');
-		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
 
 		$this->eventDispatcher = $this->getMock ( 'Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->typo3DbBackend = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);

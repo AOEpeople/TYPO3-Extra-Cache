@@ -15,11 +15,7 @@
  * @package extracache_tests
  */
 abstract class Tx_Extracache_Tests_AbstractDatabaseTestcase extends tx_phpunit_database_testcase {
-	/**
-	 * @var Tx_Extbase_Utility_ClassLoader
-	 */
-	private $classLoader;
-	
+
 	/**
 	 * Initializes common extensions.
 	 *
@@ -29,21 +25,5 @@ abstract class Tx_Extracache_Tests_AbstractDatabaseTestcase extends tx_phpunit_d
 		if (t3lib_extMgm::isLoaded('aoe_dbsequenzer')) {
 			$this->importExtensions(array('aoe_dbsequenzer'));
 		}
-	}
-	/**
-	 * @string
-	 */
-	protected function loadClass($className) {
-		$this->getClassLoader()->loadClass( $className );
-	}
-
-	/**
-	 * @return Tx_Extbase_Utility_ClassLoader
-	 */
-	private function getClassLoader() {
-		if($this->classLoader === NULL) {
-			$this->classLoader = new Tx_Extbase_Utility_ClassLoader();
-		}
-		return $this->classLoader;
 	}
 }

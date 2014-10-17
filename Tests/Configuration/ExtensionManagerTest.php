@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../AbstractTestcase.php';
  */
 class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Configuration_ExtensionManager
 	 */
 	private $extensionManager;
@@ -40,7 +40,6 @@ class Tx_Extracache_Configuration_ExtensionManagerTest extends Tx_Extracache_Tes
 		$modifiedExtConfig['enableStaticCacheManager'] = 'StaticFileCacheManager';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extracache'] = serialize($modifiedExtConfig);
 
-		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
 		$this->extensionManager = new Tx_Extracache_Configuration_ExtensionManager();
 	}
 	/**

@@ -29,13 +29,11 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 	 * @var tslib_fe
 	 */
 	private $tsfeMock;
-	
+
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Configuration_ExtensionManager');
-		$this->loadClass('tx_Extracache_Typo3_Hooks_SendCacheDebugHeader');
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_SendCacheDebugHeader', array('getExtensionManager','sendHttpRequestHeader'));
 		$this->hook->expects($this->any())->method('getExtensionManager')->will($this->returnValue( $this->extensionManager ));

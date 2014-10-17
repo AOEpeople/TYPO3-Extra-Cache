@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Repository_CleanerInstructionRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_CleanerInstructionRepository
 	 */
 	private $repository;
@@ -26,8 +26,6 @@ class Tx_Extracache_Domain_Repository_CleanerInstructionRepositoryTest extends T
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerInstruction');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerInstructionRepository');
 		$this->repository = new Tx_Extracache_Domain_Repository_CleanerInstructionRepository();
 	}
 	/**
@@ -44,7 +42,7 @@ class Tx_Extracache_Domain_Repository_CleanerInstructionRepositoryTest extends T
 	public function addCleanerInstruction() {
 		$cleanerInstruction1 = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerInstruction', array (), array (), '', FALSE );
 		$cleanerInstruction2 = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerInstruction', array (), array (), '', FALSE );
-		
+
 		$this->assertTrue ( count($this->repository->getCleanerInstructions ()) === 0 );
 		$this->repository->addCleanerInstruction($cleanerInstruction1);
 		$this->assertTrue ( count($this->repository->getCleanerInstructions ()) === 1 );

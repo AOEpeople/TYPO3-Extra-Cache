@@ -29,13 +29,11 @@ class Tx_Extracache_Typo3_Hooks_InsertPageIncacheTest extends Tx_Extracache_Test
 	 * @var Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private $typo3DbBackend;
-	
+
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_System_Persistence_Typo3DbBackend');
-		$this->loadClass('tx_Extracache_Typo3_Hooks_InsertPageIncache');
 
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->typo3DbBackend = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);

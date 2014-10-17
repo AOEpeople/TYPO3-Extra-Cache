@@ -18,7 +18,7 @@ require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
  */
 class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_Extracache_Tests_AbstractTestcase {
 	/**
-	 * 
+	 *
 	 * @var Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	private $repository;
@@ -26,8 +26,6 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_E
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->loadClass('Tx_Extracache_Domain_Model_CleanerStrategy');
-		$this->loadClass('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 		$this->repository = new Tx_Extracache_Domain_Repository_CleanerStrategyRepository();
 	}
 	/**
