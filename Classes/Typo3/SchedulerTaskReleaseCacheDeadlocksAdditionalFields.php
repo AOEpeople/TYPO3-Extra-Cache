@@ -2,21 +2,17 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE media GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *  All rights reserved
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once( t3lib_extMgm::extPath ( 'scheduler' ) . 'interfaces/interface.tx_scheduler_additionalfieldprovider.php' );
 
 /**
  * class to define the additional field 'clientIdForProductCatalogue'
  * @package extracache
  * @subpackage typo3
  */
-
-
 class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocksAdditionalFields implements tx_scheduler_AdditionalFieldProvider {
 	/**
 	 * Gets additional fields to render in the form to add/edit a task

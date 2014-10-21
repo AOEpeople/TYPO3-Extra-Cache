@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
@@ -194,21 +194,15 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @return void
 	 */
 	protected function initializeObjects() {
-		$this->csConvObj = t3lib_div::makeInstance(
-			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 't3lib_cs', PATH_t3lib . 'class.t3lib_cs.php'
-		);
+        $this->cObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, 'tslib_cObj');
+		$this->csConvObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, 't3lib_cs');
 		$this->sys_page = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 't3lib_pageSelect', PATH_t3lib . 'class.t3lib_page.php', 'initializePageSelectCallback'
+			$this, 't3lib_pageSelect', 'initializePageSelectCallback'
 		);
 		$this->tmpl = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 't3lib_TStemplate', PATH_t3lib . 'class.t3lib_tstemplate.php'	, 'initializeTemplateCallback'
-		);
-		$this->cObj = t3lib_div::makeInstance(
-			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 'tslib_cObj', PATH_tslib . 'class.tslib_content.php'
+			$this, 't3lib_TStemplate', 'initializeTemplateCallback'
 		);
 	}
 }

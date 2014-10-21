@@ -2,16 +2,11 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2009 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-// under certain circumstances it can happen, that the tslib_feUserAuth-class is unknown, so we must require them
-if(class_exists('tslib_feUserAuth') === FALSE) {
-	require_once  PATH_tslib. 'class.tslib_feuserauth.php';
-}
 
 /**
  * Enhances the functionality of the user authentication.

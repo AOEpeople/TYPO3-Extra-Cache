@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010 AOE media GmbH <dev@aoemedia.de>
+ * (c) 2010 AOE GmbH <dev@aoe.com>
  * All rights reserved
  *
  *
@@ -31,9 +31,8 @@ class Tx_Extracache_System_Tools_ObjectProxyTest extends Tx_Extracache_Tests_Abs
 	 */
 	protected function setUp() {
 		$className = 'Tx_Extracache_System_Tools_Fixtures_DummyObject';
-		$classFile = dirname ( __FILE__ ) . '/Fixtures/DummyObject.php';
 		$parentCallback = 'setDummyObject';
-		$this->objectProxy = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, $className, $classFile, $parentCallback);
+		$this->objectProxy = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, $className, $parentCallback);
 	}
 	/**
 	 * Cleans up the environment after running a test.

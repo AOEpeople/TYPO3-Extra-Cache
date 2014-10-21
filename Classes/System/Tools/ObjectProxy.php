@@ -15,11 +15,6 @@
  */
 class Tx_Extracache_System_Tools_ObjectProxy {
 	/**
-	 * File resource of the class source code
-	 * @var string
-	 */
-	protected $classFile;
-	/**
 	 * Name of the wrapped class
 	 * @var string
 	 */
@@ -45,14 +40,12 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 *
 	 * @param	object		$parent The calling parent object
 	 * @param	string		$className Name of the wrapped class
-	 * @param	string		$classFile Path to the class file of the wrapped class
 	 * @param	string		$parentCallback (optional) Name of a callback function of the parent object
 	 * that will be executed when the real object gets created
 	 */
-	public function __construct($parent, $className, $classFile, $parentCallback = '') {
+	public function __construct($parent, $className, $parentCallback = '') {
 		$this->parent = $parent;
 		$this->className = $className;
-		$this->classFile = $classFile;
 		$this->parentCallback = $parentCallback;
 	}
 	
@@ -119,8 +112,7 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	 */
 	protected function initializeInstance() {
 		// Load and create the object if provided:
-		if ($this->classFile && $this->className) {
-			require_once $this->classFile;
+		if ($this->className) {
 			$this->instance = t3lib_div::makeInstance ( $this->className );
 		}
 		// Perform a callback (that might also load required files etc.):

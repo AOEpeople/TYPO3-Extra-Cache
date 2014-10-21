@@ -27,7 +27,6 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-require_once (PATH_t3lib . 'class.t3lib_extobjbase.php');
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . 'CacheManagementController.php';
 
 /**
