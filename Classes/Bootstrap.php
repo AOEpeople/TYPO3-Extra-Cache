@@ -20,9 +20,14 @@ final class Bootstrap {
 	 * start
 	 */
 	static public function start() {
-		self::initializeEventHandling();
-		self::initializeHooks();
-		self::initializeSchedulerTasks();
+        if (false === array_key_exists('eID', $_GET)) {
+            // only initialize extracache-settings, if NO eID-script is running
+            // if eID-script is running, than we don't must do that, because it
+            // would be needless (but it would cost us a lot of time)
+            self::initializeEventHandling();
+            self::initializeHooks();
+            self::initializeSchedulerTasks();
+        }
 		self::initializeXClasses();
 	}
 
