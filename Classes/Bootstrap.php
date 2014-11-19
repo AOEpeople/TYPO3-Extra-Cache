@@ -22,9 +22,11 @@ final class Bootstrap {
 	static public function start() {
 		self::initializeClassLoader();
 		self::initializeConstants();
-		self::initializeEventHandling();
-		self::initializeHooks();
-		self::initializeSchedulerTasks();
+        if (false === array_key_exists('eID', $_GET)) {
+		    self::initializeEventHandling();
+		    self::initializeHooks();
+		    self::initializeSchedulerTasks();
+        }
 		self::initializeXClasses();
 	}
 	
