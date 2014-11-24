@@ -10,9 +10,9 @@
 
 /**
  * Hook class for TYPO3 - Sends HTTP headers for debuging caching situations (if developmentContext is set)
- * 
+ *
  * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
- * 
+ *
  * @package extracache
  * @subpackage Typo3_Hooks
  */
@@ -40,9 +40,6 @@ class tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 			if ($parent->isINTincScript()) {
 				$cacheDebug[] = 'INT';
 			}
-			if ($parent->isEXTincScript()) {
-				$cacheDebug[] = 'EXT';
-			}
 			if ($parent->no_cache) {
 				$cacheDebug[] = 'no_cache';
 			}
@@ -66,7 +63,7 @@ class tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	}
 	/**
 	 * send HTTP-Request-Header
-	 * 
+	 *
 	 * @param array $cacheDebug
 	 */
 	protected function sendHttpRequestHeader(array $cacheDebug) {
