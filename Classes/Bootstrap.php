@@ -116,8 +116,14 @@ final class Bootstrap {
 	 */
 	static protected function initializeXClasses() {
 		// Define XCLASSes for user authentication:
-		require_once PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']['tslib/class.tslib_feuserauth.php'] = PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
+		if (false === t3lib_div::compat_version('6.0')) {
+    		require_once PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
+    		$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']['tslib/class.tslib_feuserauth.php'] = PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
+    	} else {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'] = array(
+                'className' => PATH_tx_extracache . 'Classes/Xclass/FrontendUserAuthentication.php',
+            );
+        }
 
 		// Define XCLASS for nc_staticfilecache info module:
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
