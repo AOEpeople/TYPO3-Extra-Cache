@@ -121,7 +121,7 @@ final class Bootstrap {
     		$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']['tslib/class.tslib_feuserauth.php'] = PATH_tx_extracache . 'Classes/Typo3/ux_tslib_feuserauth.php';
     	} else {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'] = array(
-                'className' => PATH_tx_extracache . 'Classes/Xclass/FrontendUserAuthentication.php',
+                'className' => 'Tx_Extracache_Xclass_FrontendUserAuthentication',
             );
         }
 
