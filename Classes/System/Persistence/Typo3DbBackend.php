@@ -144,7 +144,7 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 		global $TYPO3_DB;
 
 		// create link if link doesn't exist
-		if($TYPO3_DB->isConncted() === FALSE) {
+		if($TYPO3_DB->isConnected() === FALSE) {
 			if (!(
 					TYPO3_db_host && TYPO3_db_username && TYPO3_db_password && TYPO3_db &&
 					$TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password) &&
