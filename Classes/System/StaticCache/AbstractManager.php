@@ -82,7 +82,11 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 * @return	ux_tslib_feUserAuth	Frontend user handler
 	 */
 	public function getFrontendUser() {
-        return t3lib_div::makeInstance ( 'tslib_feUserAuth' );
+        if (false === t3lib_div::compat_version('6.0')) {
+            return t3lib_div::makeInstance ( 'tslib_feUserAuth' );
+        } else {
+            return  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        }
 	}
     /**
      * @return	ux_tslib_feUserAuth	Frontend user handler
@@ -207,7 +211,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function getCachedRepresentationGroupList() {
 		if (!isset($this->cachedRepresentationGroupList)) {
-			$this->cachedRepresentationGroupList = $this->getFrontendUserWithInitializedFeGroups ()->getGroupList();
+			$this->cachedRepresentationGroupList = $this->getFrontendUserWithInitializedFeGroups()->getGroupList();
 		}
 		return $this->cachedRepresentationGroupList;
 	}
