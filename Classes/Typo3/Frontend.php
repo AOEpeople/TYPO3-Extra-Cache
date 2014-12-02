@@ -17,7 +17,7 @@
  * @package extracache
  * @subpackage Typo3
  */
-class Tx_Extracache_Typo3_Frontend extends tslib_fe {
+class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController {
 	/**
 	 * Member of original TSFE object.
 	 * @var boolean Indicates that cached content is delivered
@@ -109,32 +109,33 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	}
 
 	/**
-	 * Initializes the page select object.
+	 * Initializes the pageRepository object.
 	 * This method gets called as callback when the real object is created in the proxy object.
 	 *
-	 * @param t3lib_pageSelect $pageSelect The page select object
+	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $pageRepository
 	 * @return void
 	 */
-	public function initializePageSelectCallback(t3lib_pageSelect $pageSelect) {
-		$pageSelect->init(false);
+	public function initializePageRepositoryCallback(\TYPO3\CMS\Frontend\Page\PageRepository $pageRepository) {
+        $pageRepository->init(false);
 		$this->setSysPageWhereClause();
 		$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		$this->page = $this->sys_page->getPage($this->id);
-			// Load TCA stuff since enableFields() relies on TCA:
-		$this->getCompressedTCarray();
+
+		// Load TCA stuff since enableFields() relies on TCA:
+        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 	}
 	/**
-	 * Initializes the template object.
+	 * Initializes the templateService object.
 	 * This method gets called as callback when the real object is created in the proxy object.
 	 *
-	 * @param t3lib_TStemplate $template The template object
+	 * @param \TYPO3\CMS\Core\TypoScript\TemplateService $templateService
 	 * @return void
 	 */
-	public function initializeTemplateCallback(t3lib_TStemplate $template) {
-		$template->init();
+	public function initializeTemplateServiceCallback(\TYPO3\CMS\Core\TypoScript\TemplateService $templateService) {
+        $templateService->init();
 		// typolink checks against linksaccrossdomains and thus needs at least the first rootline id:
 		if ($this->firstRootlineId) {
-			$template->rootLine[0]['uid'] = $this->firstRootlineId;
+            $templateService->rootLine[0]['uid'] = $this->firstRootlineId;
 		}
 	}
 
@@ -194,15 +195,15 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	 * @return void
 	 */
 	protected function initializeObjects() {
-        $this->cObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, 'tslib_cObj');
-		$this->csConvObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, 't3lib_cs');
+        $this->cObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, '\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$this->csConvObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, '\TYPO3\CMS\Core\Charset\CharsetConverter');
 		$this->sys_page = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 't3lib_pageSelect', 'initializePageSelectCallback'
+			$this, '\TYPO3\CMS\Frontend\Page\PageRepository', 'initializePageRepositoryCallback'
 		);
 		$this->tmpl = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, 't3lib_TStemplate', 'initializeTemplateCallback'
+			$this, '\TYPO3\CMS\Core\TypoScript\TemplateService', 'initializeTemplateServiceCallback'
 		);
 	}
 }
