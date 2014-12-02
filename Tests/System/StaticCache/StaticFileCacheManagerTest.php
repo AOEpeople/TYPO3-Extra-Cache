@@ -35,7 +35,7 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 	 */
 	private $mockedExtensionManager;
 	/**
-	 * @var ux_tslib_feUserAuth
+	 * @var Tx_Extracache_Xclass_FrontendUserAuthentication
 	 */
 	private $mockedFrontendUser;
 	/**
@@ -57,7 +57,7 @@ class Tx_Extracache_System_StaticCache_StaticFileCacheManagerTest extends Tx_Ext
 		$this->mockedEventDispatcher = $this->getMock('Tx_Extracache_System_Event_Dispatcher', array(), array(), '', FALSE);
 		$this->mockedEventDispatcher->expects($this->any())->method('triggerEvent')->will($this->returnCallback(array($this, 'triggeredEventCallback')));
 		$this->mockedExtensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
-		$this->mockedFrontendUser = $this->getMock('ux_tslib_feUserAuth', array(), array(), '', FALSE);
+		$this->mockedFrontendUser = $this->getMock('Tx_Extracache_Xclass_FrontendUserAuthentication', array(), array(), '', FALSE);
 		$this->mockedRequest = $this->getMock('Tx_Extracache_System_StaticCache_Request', array(), array(), '', FALSE);
 		$this->mockedStorage = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
 		$this->manager = $this->getMock('ExtendedStaticFileCacheManager', array('getArgumentRepository','getFrontendUser'), array($this->mockedEventDispatcher, $this->mockedExtensionManager, $this->mockedStorage, $this->mockedRequest));

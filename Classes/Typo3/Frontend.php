@@ -85,10 +85,10 @@ class Tx_Extracache_Typo3_Frontend extends tslib_fe {
 	/**
 	 * Finalizes the initialization of the frontend user object.
 	 *
-     * @param ux_tslib_feUserAuth $feUser
+     * @param Tx_Extracache_Xclass_FrontendUserAuthentication $feUser
      * @return void
 	 */
-	public function finalizeFrontendUser(ux_tslib_feUserAuth $feUser) {
+	public function finalizeFrontendUser(Tx_Extracache_Xclass_FrontendUserAuthentication $feUser) {
         $this->fe_user = $feUser;
 
             // Unpacks the user contents if not set:

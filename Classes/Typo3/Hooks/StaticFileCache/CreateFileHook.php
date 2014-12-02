@@ -42,7 +42,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 
 			// modify some data if we support FE-usergroups
 			if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
-                /* @var $frontendUser ux_tslib_feUserAuth */
+                /* @var $frontendUser Tx_Extracache_Xclass_FrontendUserAuthentication */
                 $frontendUser = $frontend->fe_user;
 				$frontendUserGroupList = $frontendUser->getGroupList();
 

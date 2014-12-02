@@ -20,7 +20,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	const DATA_PageInformationSuffix = ']-->';
 
 	/**
-	 * @var	ux_tslib_feUserAuth
+	 * @var	Tx_Extracache_Xclass_FrontendUserAuthentication
 	 */
 	protected $frontendUserWithInitializedFeGroups;
 	/**
@@ -79,17 +79,13 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 		return $content;
 	}
 	/**
-	 * @return	ux_tslib_feUserAuth	Frontend user handler
+	 * @return TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
 	 */
 	public function getFrontendUser() {
-        if (false === t3lib_div::compat_version('6.0')) {
-            return t3lib_div::makeInstance ( 'tslib_feUserAuth' );
-        } else {
-            return  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
-        }
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
 	}
     /**
-     * @return	ux_tslib_feUserAuth	Frontend user handler
+     * @return Tx_Extracache_Xclass_FrontendUserAuthentication	Frontend user handler
      */
     public function getFrontendUserWithInitializedFeGroups() {
         if (! isset ( $this->frontendUserWithInitializedFeGroups )) {

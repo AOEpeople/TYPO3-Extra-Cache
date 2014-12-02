@@ -30,7 +30,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	protected $staticFileCache;
 	/**
-	 * @var ux_tslib_feUserAuth
+	 * @var Tx_Extracache_Xclass_FrontendUserAuthentication
 	 */
 	protected $frontendUser;
 	/**
@@ -58,7 +58,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->staticFileCache = $this->getMock('tx_ncstaticfilecache');
 
-		$this->frontendUser = $this->getMock('ux_tslib_feUserAuth', array());
+		$this->frontendUser = $this->getMock('Tx_Extracache_Xclass_FrontendUserAuthentication', array());
 		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 

@@ -12,7 +12,7 @@
  * Enhances the functionality of the user authentication.
  *
  * @package extracache
- * @subpackage Typo3
+ * @subpackage Xclass
  */
 class Tx_Extracache_Xclass_FrontendUserAuthentication extends \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication {
 	/**
