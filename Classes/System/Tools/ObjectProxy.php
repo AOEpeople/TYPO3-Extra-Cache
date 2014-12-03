@@ -8,6 +8,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Implements an object proxy that instanciates the real object when it's required.
  * @package extracache
@@ -113,7 +115,7 @@ class Tx_Extracache_System_Tools_ObjectProxy {
 	protected function initializeInstance() {
 		// Load and create the object if provided:
 		if ($this->className) {
-			$this->instance = t3lib_div::makeInstance ( $this->className );
+            $this->instance = GeneralUtility::makeInstance($this->className);
 		}
 		// Perform a callback (that might also load required files etc.):
 		if ($this->parentCallback) {

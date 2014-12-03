@@ -19,35 +19,10 @@
  */
 class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController {
 	/**
-	 * Member of original TSFE object.
-	 * @var boolean Indicates that cached content is delivered
-	 */
-	public $cacheContentFlag = 1;
-	/**
-	 * Configuration array with TypoScript [config.]
-	 * @var array
-	 */
-	public $config = array();
-	/**
-	 * Defines an object proxy that will load the real object when it's required.
-	 * @var Tx_Extracache_System_Tools_ObjectProxy
-	 */
-	public $csConvObj;
-	/**
 	 * Defines an object proxy that will load the real object when it's required.
 	 * @var Tx_Extracache_System_Tools_ObjectProxy
 	 */
 	public $sys_page;
-	/**
-	 * Defines an object proxy that will load the real object when it's required.
-	 * @var Tx_Extracache_System_Tools_ObjectProxy
-	 */
-	public $tmpl;
-
-	/**
-	 * @var integer
-	 */
-	protected $firstRootlineId;
 
 	/**
 	 * Constructs this object as a light-weight TSFE.
@@ -58,28 +33,17 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 * @return void
 	 */
 	public function __construct($id, $type = 0, $mountPoint = '') {
-		$this->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
+        parent::__construct($GLOBALS['TYPO3_CONF_VARS'], $id, $type);
 
-		$this->id = $id;
-		$this->type = $type;
+        $this->cacheContentFlag = true; // this variable must be true, because we are in a cache-context
+        $this->config = array(); // this variable should be initialized as an empty array
 
-		$this->clientInfo = $GLOBALS['CLIENT'];
-		$this->uniqueString = md5(microtime());
+        // Define charsets since no configuration could be available at this place
+        $this->defaultCharSet = $this->renderCharset = $this->metaCharset = 'utf-8';
 
-		$this->initializeConfiguration();
-		$this->initializeObjects();
-
-			// Initializes the TYPO3 caching framework for core caches:
-		if (TYPO3_UseCachingFramework) {
-			$this->initCaches();
-		}
-			// Use mount point information if enabled:
-		if ($this->TYPO3_CONF_VARS['FE']['enable_mount_pids']) {
-			$this->MP = (string)$mountPoint;
-		}
-
-			// Define charsets since no configuration could be available at this place
-		$this->defaultCharSet = $this->renderCharset = $this->metaCharset = 'utf-8';
+        $this->initializeConfiguration();
+        $this->initializeObjects();
+        $this->initTemplate();
 	}
 
 	/**
@@ -120,23 +84,6 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 		$this->setSysPageWhereClause();
 		$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		$this->page = $this->sys_page->getPage($this->id);
-
-		// Load TCA stuff since enableFields() relies on TCA:
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-	}
-	/**
-	 * Initializes the templateService object.
-	 * This method gets called as callback when the real object is created in the proxy object.
-	 *
-	 * @param \TYPO3\CMS\Core\TypoScript\TemplateService $templateService
-	 * @return void
-	 */
-	public function initializeTemplateServiceCallback(\TYPO3\CMS\Core\TypoScript\TemplateService $templateService) {
-        $templateService->init();
-		// typolink checks against linksaccrossdomains and thus needs at least the first rootline id:
-		if ($this->firstRootlineId) {
-            $templateService->rootLine[0]['uid'] = $this->firstRootlineId;
-		}
 	}
 
 	/**
@@ -160,7 +107,8 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 * @return void
 	 */
 	public function setFirstRootlineId($firstRootlineId) {
-		$this->firstRootlineId = $firstRootlineId;
+        // typolink checks against linksaccrossdomains and thus needs at least the first rootline id:
+        $this->tmpl->rootLine[0]['uid'] = $firstRootlineId;
 	}
 
 	/**
@@ -178,6 +126,9 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 * @return void
 	 */
 	protected function initializeConfiguration() {
+        // Load TCA stuff since enableFields() relies on TCA:
+        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+
 		$this->config = array(
 			'config' => array(),
 			'mainScript' => 'index.php',
@@ -195,15 +146,13 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 * @return void
 	 */
 	protected function initializeObjects() {
-        $this->cObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, '\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-		$this->csConvObj = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, '\TYPO3\CMS\Core\Charset\CharsetConverter');
+        $this->cObj = t3lib_div::makeInstance(
+            'Tx_Extracache_System_Tools_ObjectProxy',
+            $this, 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+        );
 		$this->sys_page = t3lib_div::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, '\TYPO3\CMS\Frontend\Page\PageRepository', 'initializePageRepositoryCallback'
-		);
-		$this->tmpl = t3lib_div::makeInstance(
-			'Tx_Extracache_System_Tools_ObjectProxy',
-			$this, '\TYPO3\CMS\Core\TypoScript\TemplateService', 'initializeTemplateServiceCallback'
+			$this, 'TYPO3\\CMS\\Frontend\\Page\\PageRepository', 'initializePageRepositoryCallback'
 		);
 	}
 }
