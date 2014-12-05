@@ -121,7 +121,9 @@ final class Bootstrap {
         );
 
 		// Define XCLASS for nc_staticfilecache info module:
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS']['ext/nc_staticfilecache/infomodule/class.tx_ncstaticfilecache_infomodule.php'] = PATH_tx_extracache . 'Classes/Controller/ExtendedStaticFileCacheInfoModule.php';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['tx_ncstaticfilecache_infomodule'] = array(
+            'className' => 'Tx_Extracache_Xclass_StaticFileCacheInfoModule',
+        );
 	}
 	/**
 	 * @param Tx_Extracache_System_Event_Dispatcher $dispatcher

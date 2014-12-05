@@ -8,12 +8,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once t3lib_extMgm::extPath ( 'nc_staticfilecache' ,'infomodule/class.tx_ncstaticfilecache_infomodule.php') ;
-
 /**
  * @package extracache
  */
-class ux_tx_ncstaticfilecache_infomodule extends tx_ncstaticfilecache_infomodule {
+class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecache_infomodule {
 	/**
 	 * @var	string
 	 */
