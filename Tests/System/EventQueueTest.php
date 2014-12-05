@@ -41,32 +41,40 @@ class Tx_Extracache_System_EventQueueTest extends Tx_Extracache_Tests_AbstractDa
 		$this->dropDatabase();
 	}
 
+    /**
+     * Test Method addEvent
+     * @test
+     */
+    public function addEventIsNecessaryWhenEventIsNotInQueue() {
+        $this->queue->expects($this->once())->method('getTime')->will($this->returnValue(1));
+
+        $recordsCount1 = count( $this->recordIds );
+        $event = $this->createEvent('eventIsNotInQueue');
+        $this->queue->addEvent( $event );
+        $this->determineRecordIds();
+        $recordsCount2 = count( $this->recordIds );
+        $this->assertEquals($recordsCount1, $recordsCount2-1);
+    }
+
 	/**
 	 * Test Method addEvent
 	 * @test
 	 */
-	public function addEvent_isNecessary() {
-		// event is in queue, but with status 'STATUS_InProcess'
-		$recordsCount1 = count( $this->recordIds );
-		$event = $this->createEvent('testEvent3');
-		$this->queue->addEvent( $event );
-		$this->determineRecordIds();
-		$recordsCount2 = count( $this->recordIds );
-		$this->assertEquals($recordsCount1, $recordsCount2-1);
-
-		// event is not in queue
-		$recordsCount1 = count( $this->recordIds );
-		$event = $this->createEvent('eventIsNotInQueue');
-		$this->queue->addEvent( $event );
-		$this->determineRecordIds();
-		$recordsCount2 = count( $this->recordIds );
-		$this->assertEquals($recordsCount1, $recordsCount2-1);
+	public function addEventIsNecessaryWhenEventIsAllreadyInQueueAndIsInProcess() {
+        $this->queue->expects($this->once())->method('getTime')->will($this->returnValue(1));
+        $recordsCount1 = count($this->recordIds);
+        $event = $this->createEvent('testEvent3');
+        $this->queue->addEvent($event);
+        $this->determineRecordIds();
+        $recordsCount2 = count($this->recordIds);
+        $this->assertEquals($recordsCount1, $recordsCount2-1);
 	}
 	/**
 	 * Test Method addEvent
 	 * @test
 	 */
-	public function addEvent_isNotNecessary() {
+	public function addEventIsNotNecessaryWhenEventIsAllreadyInQueueAndWaitsForProcessing() {
+        $this->queue->expects($this->never())->method('getTime');
 		$recordsCount1 = count( $this->recordIds );
 		$event = $this->createEvent('testEvent1');
 		$this->queue->addEvent( $event );
