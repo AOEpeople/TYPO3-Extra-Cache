@@ -241,34 +241,30 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 * creates the test-database and insert records
 	 */
 	private function createTestDB() {
-		global $TYPO3_DB;
-
 		$this->createDatabase();
-		// create tables 'pages' and 'cache_pages' manually (because it's faster than import the hole cms-extension)
-		$db = $this->useTestDatabase();
 
+		$db = $this->useTestDatabase();
 		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
 		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
 
-		$this->importStdDB();
 		$this->importExtensions(array('cms', 'realurl', 'nc_staticfilecache', 'extracache'));
 		$this->initializeCommonExtensions();
 		$this->importDataSet(PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/TestRecordsForUnittestCleanerInstruction.xml');
 
 		/********** get UID's of records of certain tables *****/
 		$this->pageIds = array();
-		$data = $TYPO3_DB->exec_SELECTgetRows ( 'uid', 'pages');
+		$data = $db->exec_SELECTgetRows( 'uid', 'pages', '');
 		foreach ($data as $row) {
 			$this->pageIds[] = (int) $row['uid'];
 		}
 
 		/********** update records of pages and cache-tables (because we support aoe_dbsequenzer, we use dynamic page-UID's) *****/
-		$TYPO3_DB->exec_UPDATEquery ( 'pages', 'pid=187', array('pid' => $this->pageIds[0]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'cache_pages', 'page_id=187', array('page_id' => $this->pageIds[0],'tags' => 'pageId_'.$this->pageIds[0]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'cache_pages', 'page_id=190', array('page_id' => $this->pageIds[1],'tags' => 'pageId_'.$this->pageIds[1]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'cache_pages', 'page_id=191', array('page_id' => $this->pageIds[2],'tags' => 'pageId_'.$this->pageIds[2]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=187', array('pid' => $this->pageIds[0]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=190', array('pid' => $this->pageIds[1]) );
-		$TYPO3_DB->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=191', array('pid' => $this->pageIds[2]) );
+        $db->exec_UPDATEquery ( 'pages', 'pid=187', array('pid' => $this->pageIds[0]) );
+        $db->exec_UPDATEquery ( 'cache_pages', 'page_id=187', array('page_id' => $this->pageIds[0],'tags' => 'pageId_'.$this->pageIds[0]) );
+        $db->exec_UPDATEquery ( 'cache_pages', 'page_id=190', array('page_id' => $this->pageIds[1],'tags' => 'pageId_'.$this->pageIds[1]) );
+        $db->exec_UPDATEquery ( 'cache_pages', 'page_id=191', array('page_id' => $this->pageIds[2],'tags' => 'pageId_'.$this->pageIds[2]) );
+        $db->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=187', array('pid' => $this->pageIds[0]) );
+        $db->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=190', array('pid' => $this->pageIds[1]) );
+        $db->exec_UPDATEquery ( 'tx_ncstaticfilecache_file', 'pid=191', array('pid' => $this->pageIds[2]) );
 	}
 }

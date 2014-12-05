@@ -67,6 +67,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHookTest extends Tx_Ex
 		unset($this->staticFileCache);
 		unset($this->dirtyPagesHook);
 		unset($this->eventDispatcher);
+        unset($this->typo3DbBackend);
 	}
 
 	/**

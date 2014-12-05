@@ -155,13 +155,9 @@ class Tx_Extracache_System_EventQueueTest extends Tx_Extracache_Tests_AbstractDa
 	 * creates the test-database and insert records
 	 */
 	private function createTestDB() {
-		global $TYPO3_DB;
-
 		$this->createDatabase();
-		// create table 'pages' manually (because it's faster than import the hole cms-extension)
-		$db = $this->useTestDatabase();
+		$this->useTestDatabase();
 
-		$this->importStdDB();
 		$this->importExtensions(array('extracache'));
 		$this->initializeCommonExtensions();
 		$this->importDataSet(PATH_tx_extracache . 'Tests/System/Fixtures/TestRecordsForUnittestEventQueue.xml');

@@ -50,7 +50,13 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueueTest extends Tx_Extracac
 		$this->eventQueue = $this->getMock ( 'Tx_Extracache_System_EventQueue', array(), array(), '', FALSE);
 		$this->eventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
 
-		$this->task = $this->getMock ( 'Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue', array('getCacheEventHandler', 'getEventDispatcher', 'getEventQueue','getEventRepository'));
+		$this->task = $this->getMock (
+            'Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue',
+            array('getCacheEventHandler', 'getEventDispatcher', 'getEventQueue','getEventRepository'),
+            array(),
+            '',
+            FALSE // don't call constructor, otherwise an fatal-error will occour (because scheduler-base-class do to much stuff)
+        );
 		$this->task->expects($this->any())->method('getCacheEventHandler')->will ( $this->returnValue ( $this->cacheEventHandler ) );
 		$this->task->expects($this->any())->method('getEventDispatcher')->will ( $this->returnValue ( $this->eventDispatcher ) );
 		$this->task->expects($this->any())->method('getEventQueue')->will ( $this->returnValue ( $this->eventQueue ) );

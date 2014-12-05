@@ -137,23 +137,9 @@ class Tx_Extracache_System_Persistence_Typo3DbBackend {
 	}
 
 	/**
-	 * @return	t3lib_DB
-	 * @throws	RuntimeException
+	 * @return TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected function getTypo3Db() {
-		global $TYPO3_DB;
-
-		// create link if link doesn't exist
-		if($TYPO3_DB->isConnected() === FALSE) {
-			if (!(
-					TYPO3_db_host && TYPO3_db_username && TYPO3_db_password && TYPO3_db &&
-					$TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password) &&
-					$TYPO3_DB->sql_select_db(TYPO3_db)
-			)) {
-				throw new RuntimeException('Could not connect to TYPO3 database.');
-			}
-		}
-
-		return $TYPO3_DB;
+		return $GLOBALS['TYPO3_DB'];
 	}
 }
