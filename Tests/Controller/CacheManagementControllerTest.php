@@ -123,7 +123,7 @@ class Tx_Extracache_Controller_CacheManagementControllerTest extends Tx_Extracac
 	 */
 	public function allFilesAction() {
 		$this->view->expects($this->once())->method('render');
-		$this->cacheFileRepository->expects($this->once())->method('getAll');
+		$this->cacheFileRepository->expects($this->once())->method('getAllFiles');
 		$this->cacheManagementController->allFilesAction ();
 	}
 	/**

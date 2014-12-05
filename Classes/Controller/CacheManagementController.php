@@ -160,7 +160,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	public function allFilesAction() {
 		try {
 			$searchPhraseForFiles = (string) $this->getModuleData('tx_extracache_manager_searchPhraseForFiles');
-			$this->getView()->assign ( 'allFiles', $this->getCacheFileRepository()->getAll ($searchPhraseForFiles) );
+			$this->getView()->assign ( 'allFiles', $this->getCacheFileRepository()->getAllFiles ($searchPhraseForFiles) );
 			return $this->getView()->render ( 'allFiles' );
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);

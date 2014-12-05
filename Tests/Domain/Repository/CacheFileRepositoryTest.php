@@ -39,53 +39,60 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	public function countAll() {
 		$result = $this->cacheFileRepository->countAll ();
 		$this->assertInternalType ( 'integer', $result );
-		$this->assertEquals(2,$result);
+		$this->assertEquals(3, $result);
 	}
+    /**
+     * Tests Method getAllFiles
+     * @test
+     */
+    public function getAllFilesWhenSearchphraseIsEmpty() {
+        $results = $this->cacheFileRepository->getAllFiles('');
+        $this->assertInternalType('array', $results);
+        $this->assertEquals(3, count($results));
+        foreach ($results as $result) {
+            $this->assertInstanceOf('Tx_Extracache_Domain_Model_CacheFile', $result);
+            $this->assertTrue(in_array($result->getName(), array('test.html','test/test.html', 'test/test2/test3/test.html')));
+        }
+    }
 	/**
-	 * Tests Tx_Extracache_Domain_Repository_CacheFileRepository->getAll()
+	 * Tests Method getAllFiles
 	 * @test
 	 */
-	public function getAll() {
-		// don't use search
-		$results = $this->cacheFileRepository->getAll ('');
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(2,count($results));
-		foreach($results as $result){
-			$this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-			$this->assertTrue( in_array($result->getName(), array('test.html','test/test.html')) );
-		}
+	public function getAllFilesWhenSearchphraseIsNotEmpty() {
+        $results = $this->cacheFileRepository->getAllFiles('test/test');
+        $this->assertInternalType('array', $results);
+        $this->assertEquals(2, count($results));
+        foreach ($results as $result) {
+            $this->assertInstanceOf('Tx_Extracache_Domain_Model_CacheFile', $result);
+            $this->assertTrue(in_array($result->getName(), array('test/test.html', 'test/test2/test3/test.html')));
+        }
+    }
 
-		// use search
-		$results = $this->cacheFileRepository->getAll ('test/test');
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(1,count($results));
-		foreach($results as $result){
-			$this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-			$this->assertTrue( in_array($result->getName(), array('test/test.html')) );
-		}
-	}
+    /**
+     * Tests Method getAllFolders
+     * @test
+     */
+    public function getAllFoldersWhenSearchphraseIsEmpty() {
+        $results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
+        $this->assertInternalType ( 'array', $results );
+        $this->assertEquals(3,count($results));
+        foreach($results as $result){
+            $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
+            $this->assertTrue( in_array($result->getName(), array('test','test/test2','test/test2/test3')) );
+        }
+        $results = $this->cacheFileRepository->getAllFolders ( FALSE, '' );
+        $this->assertInternalType ( 'array', $results );
+        $this->assertEquals(2,count($results));
+        foreach($results as $result){
+            $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
+            $this->assertTrue( in_array($result->getName(), array('test','test/test2/test3')) );
+        }
+    }
 	/**
-	 * Tests Tx_Extracache_Domain_Repository_CacheFileRepository->getAllFolders()
+	 * Tests Method getAllFolders
 	 * @test
 	 */
-	public function getAllFolders() {
-		// don't use search
-		$results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(3,count($results));
-		foreach($results as $result){
-			$this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-			$this->assertTrue( in_array($result->getName(), array('test','test/test2','test/test2/test3')) );
-		}
-		$results = $this->cacheFileRepository->getAllFolders ( FALSE, '' );
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(1,count($results));
-		foreach($results as $result){
-			$this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-			$this->assertEquals( $result->getName(), 'test' );
-		}
-
-		// use search
+	public function getAllFoldersWhenSearchphraseIsNotEmpty() {
 		$results = $this->cacheFileRepository->getAllFolders ( TRUE, 'test/test2' );
 		$this->assertInternalType ( 'array', $results );
 		$this->assertEquals(2,count($results));
@@ -95,6 +102,10 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 		}
 		$results = $this->cacheFileRepository->getAllFolders ( FALSE, 'test/test2' );
 		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(0,count($results));
+		$this->assertEquals(1,count($results));
+        foreach($results as $result){
+            $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
+            $this->assertTrue( in_array($result->getName(), array('test/test2/test3')) );
+        }
 	}
 }

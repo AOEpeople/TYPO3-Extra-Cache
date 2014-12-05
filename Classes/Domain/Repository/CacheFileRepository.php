@@ -29,7 +29,7 @@ class Tx_Extracache_Domain_Repository_CacheFileRepository {
 	 * @param	string $searchPhrase
 	 * @return	array
 	 */
-	public function getAll($searchPhrase) {
+	public function getAllFiles($searchPhrase) {
 		return $this->reconstitute ( $this->getFiles (), $searchPhrase );
 	}
 	/**
