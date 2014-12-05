@@ -27,10 +27,11 @@ class Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepositoryTest extends T
 		$this->cacheDatabaseEntryRepository = new Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository ();
 		$this->cacheDatabaseEntryRepository->setFileTable('tx_ncstaticfilecache_file');
 		$this->cacheDatabaseEntryRepository->setOrderBy( 'host,uri' );
+
+        $this->createDatabase();
 		$this->useTestDatabase();
 		$this->importExtensions(array('nc_staticfilecache'));
-		$path = dirname ( __FILE__ ) . DIRECTORY_SEPARATOR .'fixtures'.DIRECTORY_SEPARATOR.'db'.DIRECTORY_SEPARATOR.'tx_ncstaticfilecache_file.xml';
-		$this->importDataSet($path);
+        $this->importDataSet(PATH_tx_extracache . 'Tests/Domain/Repository/fixtures/db/tx_ncstaticfilecache_file.xml');
 	}
 	/**
 	 * Cleans up the environment after running a test.
