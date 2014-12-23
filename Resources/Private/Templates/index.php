@@ -37,13 +37,14 @@ if($GLOBALS['view_data']['showDatabaseDetails'] === TRUE) {
 	$countDatbaseEntrysForTableEventlog = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTableEventlog'];
 	$countDatbaseEntrysForTableEventqueue = ' - '.$GLOBALS['LANG']->getLL('count').': '.$GLOBALS['view_data']['countDatbaseEntrysForTableEventqueue'];
 }
+$webInfoModuleToken = '&moduleToken=' . \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', 'web_info');
 ?>
 <h2><?php echo $GLOBALS['LANG']->getLL('headline_databaseentries');?></h2>
 <ul>
-	<li><a href="?action=allDatabaseEntrysForTableStaticCache"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableStaticCache'].'\''.$countDatbaseEntrysForTableStaticCache.')'; ?></a></li>
-	<li><a href="?action=allDatabaseEntrysForTablePages"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tablePages'].'\''.$countDatbaseEntrysForTablePages.')'; ?></a></li>
-	<li><a href="?action=allDatabaseEntrysForTableEventlog"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventLog'].'\''.$countDatbaseEntrysForTableEventlog.')'; ?></a></li>
-	<li><a href="?action=allDatabaseEntrysForTableEventqueue"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventQueue'].'\''.$countDatbaseEntrysForTableEventqueue.')'; ?></a></li>
+	<li><a href="?M=web_info&action=allDatabaseEntrysForTableStaticCache<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableStaticCache'].'\''.$countDatbaseEntrysForTableStaticCache.')'; ?></a></li>
+	<li><a href="?M=web_info&action=allDatabaseEntrysForTablePages<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tablePages'].'\''.$countDatbaseEntrysForTablePages.')'; ?></a></li>
+	<li><a href="?M=web_info&action=allDatabaseEntrysForTableEventlog<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventLog'].'\''.$countDatbaseEntrysForTableEventlog.')'; ?></a></li>
+	<li><a href="?M=web_info&action=allDatabaseEntrysForTableEventqueue<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAll').' ('.$GLOBALS['LANG']->getLL('table').' \''.$GLOBALS['view_data']['tableEventQueue'].'\''.$countDatbaseEntrysForTableEventqueue.')'; ?></a></li>
 </ul>
 
 
@@ -57,6 +58,6 @@ if($GLOBALS['view_data']['showFilesDetails'] === TRUE) {
 } // END IF
 ?>
 <ul>
-	<li><a href="?action=allFiles"><?php echo $GLOBALS['LANG']->getLL('showAllFiles');?></a></li>
-	<li><a href="?action=allFolders"><?php echo $GLOBALS['LANG']->getLL('showAllDirectories');?></a></li>
+	<li><a href="?M=web_info&action=allFiles<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAllFiles');?></a></li>
+	<li><a href="?M=web_info&action=allFolders<?php echo $webInfoModuleToken ?>"><?php echo $GLOBALS['LANG']->getLL('showAllDirectories');?></a></li>
 </ul>
