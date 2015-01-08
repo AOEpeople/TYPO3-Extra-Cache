@@ -5,5 +5,6 @@
 $extensionPath = t3lib_extMgm::extPath('extracache');
 return array(
     'tx_extracache_system_tools_fixtures_dummyobject' => $extensionPath . 'Tests/System/Tools/Fixtures/DummyObject.php',
+    'tx_extracache_modfunc1' => $extensionPath . 'modfunc1/class.tx_extracache_modfunc1.php',
 );
 ?>
