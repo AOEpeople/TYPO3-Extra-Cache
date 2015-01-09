@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once (PATH_tx_extracache . 'Classes/System/Tools/Uri.php');
 
@@ -15,7 +17,7 @@ require_once (PATH_tx_extracache . 'Classes/System/Tools/Uri.php');
  * @package extracache
  * @subpackage System_StaticCache
  */
-abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib_Singleton {
+abstract class Tx_Extracache_System_StaticCache_AbstractManager implements \TYPO3\CMS\Core\SingletonInterface {
 	const DATA_PageInformationPrefix = '<!--[page:';
 	const DATA_PageInformationSuffix = ']-->';
 
@@ -127,7 +129,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	public function isRequestProcessible() {
         /* @var $event Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest */
-        $event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest');
+        $event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest');
         $event->setFrontendUser( $this->getFrontendUser() );
         $event->setRequest( $this->getRequest() );
         $this->getDispatcher()->triggerEvent( $event );
@@ -185,7 +187,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements t3lib
 	 */
 	protected function getArgumentRepository() {
 		if($this->argumentRepository === NULL) {
-			$this->argumentRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_ArgumentRepository' );
+			$this->argumentRepository = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_ArgumentRepository' );
 		}
 		return $this->argumentRepository;
 	}

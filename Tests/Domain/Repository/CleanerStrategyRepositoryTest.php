@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -40,8 +42,8 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_E
 	 * @test
 	 */
 	public function addStrategy() {
-		$strategy1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
-		$strategy2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
+		$strategy1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
+		$strategy2 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
 		$this->assertTrue ( count($this->repository->getAllStrategies ()) === 0 );
 		$this->repository->addStrategy($strategy1);
 		$this->assertTrue ( count($this->repository->getAllStrategies ()) === 1 );
@@ -53,7 +55,7 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_E
 	 * @test
 	 */
 	public function hasStrategy() {
-		$strategy1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
+		$strategy1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
 		$this->assertFalse ( $this->repository->hasStrategy ('key1') );
 		$this->repository->addStrategy($strategy1);
 		$this->assertTrue ( $this->repository->hasStrategy ('key1') );
@@ -63,7 +65,7 @@ class Tx_Extracache_Domain_Repository_CleanerStrategyRepositoryTest extends Tx_E
 	 * @test
 	 */
 	public function canGetStrategy() {
-		$strategy1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
+		$strategy1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'key1', 'name1');
 		$this->repository->addStrategy($strategy1);
 		$this->assertEquals ( $this->repository->getStrategy ('key1'), $strategy1 );
 	}

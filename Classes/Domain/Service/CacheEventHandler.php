@@ -2,17 +2,19 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  */
-class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton {
+class Tx_Extracache_Domain_Service_CacheEventHandler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
@@ -70,14 +72,14 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 * @return Tx_Extracache_Domain_Service_CacheCleanerBuilder
 	 */
 	protected function getCacheCleanerBuilder() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
 	}
 	/**
 	 * @return Tx_Extracache_System_Event_Dispatcher
 	 */
 	protected function getEventDispatcher() {
 		if($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 	}
@@ -86,7 +88,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 */
 	protected function getEventQueue() {
 		if($this->eventQueue === NULL) {
-			$this->eventQueue = t3lib_div::makeInstance('Tx_Extracache_System_EventQueue');
+			$this->eventQueue = GeneralUtility::makeInstance('Tx_Extracache_System_EventQueue');
 		}
 		return $this->eventQueue;
 	}
@@ -95,7 +97,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 */
 	protected function getEventRepository() {
 		if($this->eventRepository === NULL) {
-			$this->eventRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
+			$this->eventRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
 		}
 		return $this->eventRepository;
 	}
@@ -104,7 +106,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}
@@ -114,7 +116,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 * @return	Tx_Extracache_Domain_Model_EventLog
 	 */
 	private function createEventLog(Tx_Extracache_Domain_Model_Event $event) {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_EventLog', $event);
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_EventLog', $event);
 	}
 	/**
 	 * @param	string $title
@@ -122,7 +124,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandler implements t3lib_Singleton 
 	 * @return	Tx_Extracache_Domain_Model_Info
 	 */
 	private function createInfo($title, $type) {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Info', $title, $type);
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Info', $title, $type);
 	}
 
 	/**

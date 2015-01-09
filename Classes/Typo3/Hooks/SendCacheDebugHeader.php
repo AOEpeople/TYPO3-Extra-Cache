@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook class for TYPO3 - Sends HTTP headers for debuging caching situations (if developmentContext is set)
@@ -57,7 +59,7 @@ class tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	 */
 	protected function getExtensionManager() {
 		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}

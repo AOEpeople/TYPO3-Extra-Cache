@@ -2,17 +2,19 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  */
-class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleton {
+class Tx_Extracache_Configuration_ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
@@ -37,7 +39,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @throws	RuntimeException
 	 */
 	public function addArgument($type, $name, $value) {
-		$argument  = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument  = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$validator = $this->getArgumentValidator();
 		if($validator->isValid($argument)) {
 			$this->getArgumentRepository()->addArgument($argument);
@@ -67,7 +69,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @param string $path		path (include name of PHP-file) to contentProcessor (must only be defined, if className and path don't use the synthax of extbase)
 	 */
 	public function addContentProcessorDefinition($className, $path=NULL) {
-		$contentProcessorDefinition = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', $className, $path);
+		$contentProcessorDefinition = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', $className, $path);
 		$this->getContentProcessorDefinitionRepository()->addContentProcessorDefinition($contentProcessorDefinition);
 	}
 	/**
@@ -92,7 +94,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 */
 	public function getArgumentRepository() {
 		if($this->argumentRepository === NULL) {
-			$this->argumentRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_ArgumentRepository');
+			$this->argumentRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_ArgumentRepository');
 		}
 		return $this->argumentRepository;
 	}
@@ -100,14 +102,14 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @return Tx_Extracache_Validation_Validator_Argument
 	 */
 	protected function getArgumentValidator() {
-		return t3lib_div::makeInstance('Tx_Extracache_Validation_Validator_Argument');
+		return GeneralUtility::makeInstance('Tx_Extracache_Validation_Validator_Argument');
 	}
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	protected function getCleanerStrategyRepository() {
 		if($this->cleanerStrategyRepository === NULL) {
-			$this->cleanerStrategyRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
+			$this->cleanerStrategyRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 		}
 		return $this->cleanerStrategyRepository;
 	}
@@ -115,14 +117,14 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @return Tx_Extracache_Validation_Validator_CleanerStrategy
 	 */
 	protected function getCleanerStrategyValidator() {
-		return t3lib_div::makeInstance('Tx_Extracache_Validation_Validator_CleanerStrategy');
+		return GeneralUtility::makeInstance('Tx_Extracache_Validation_Validator_CleanerStrategy');
 	}
 	/**
 	 * @return Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository
 	 */
 	protected function getContentProcessorDefinitionRepository() {
 		if($this->contentProcessorDefinitionRepository === NULL) {
-			$this->contentProcessorDefinitionRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository');
+			$this->contentProcessorDefinitionRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepository');
 		}
 		return $this->contentProcessorDefinitionRepository;
 	}
@@ -131,7 +133,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 */
 	protected function getEventRepository() {
 		if($this->eventRepository === NULL) {
-			$this->eventRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
+			$this->eventRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
 		}
 		return $this->eventRepository;
 	}
@@ -139,7 +141,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 	 * @return Tx_Extracache_Validation_Validator_Event
 	 */
 	protected function getEventValidator() {
-		return t3lib_div::makeInstance('Tx_Extracache_Validation_Validator_Event');
+		return GeneralUtility::makeInstance('Tx_Extracache_Validation_Validator_Event');
 	}
 
 	/**
@@ -154,7 +156,7 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 		if($name === '') {
 			$name = $key;
 		}
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode, $key, $name);
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode, $key, $name);
 	}
 	/**
 	 * @param	string	$key
@@ -167,6 +169,6 @@ class Tx_Extracache_Configuration_ConfigurationManager implements t3lib_Singleto
 		if($name === '') {
 			$name = $key;
 		}
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', $key, $name, $interval, $writeLog);
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', $key, $name, $interval, $writeLog);
 	}
 }

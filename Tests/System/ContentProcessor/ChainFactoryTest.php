@@ -40,7 +40,7 @@ class Tx_Extracache_System_ContentProcessor_ChainFactoryTest extends Tx_Extracac
 		$className = 'Tx_Extracache_System_ContentProcessor_Fixtures_DummyContentProcessor';
 		$path = dirname ( __FILE__ ) . '/Fixtures/DummyContentProcessor.php';
 		$this->contentProcessorDefinitions = array();
-		$this->contentProcessorDefinitions[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', $className, $path);
+		$this->contentProcessorDefinitions[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', $className, $path);
 
 		$this->chainFactory = $this->getMock('Tx_Extracache_System_ContentProcessor_ChainFactory',array('createChain','getContentProcessorDefinitions'));
 		$this->chainFactory->expects ( $this->any () )->method ( 'createChain' )->will ( $this->returnValue ( $this->mockedChain ) );

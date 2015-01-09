@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook to post-process entries in cache_pages to add the current group list.
@@ -45,7 +47,7 @@ class tx_Extracache_Typo3_Hooks_InsertPageIncache {
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}

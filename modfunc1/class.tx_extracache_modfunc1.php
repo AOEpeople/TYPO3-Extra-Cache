@@ -21,11 +21,8 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . 'CacheManagementController.php';
 
@@ -34,7 +31,7 @@ require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPAR
  *
  * @package	extracache
  */
-class tx_extracache_modfunc1 extends t3lib_extobjbase {
+class tx_extracache_modfunc1 extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 	/**
 	 * @var Tx_Extracache_Controller_CacheManagementController
 	 */
@@ -45,8 +42,6 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 	 * @return	Array with menuitems
 	 */
 	function modMenu() {
-		global $LANG;
-
 		return Array ("tx_extracache_modfunc1_check" => "" );
 	}
 
@@ -59,15 +54,15 @@ class tx_extracache_modfunc1 extends t3lib_extobjbase {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $SOBE, $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-		$cacheDatabaseEntryRepositoryForTableEventlog  = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
-		$cacheDatabaseEntryRepositoryForTableEventqueue  = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
-		$cacheDatabaseEntryRepositoryForTablePages  = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
-		$cacheDatabaseEntryRepositoryForTableStaticCache = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
-		$cacheFileRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheFileRepository' );
-		$extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
-		$view = t3lib_div::makeInstance ( 'Tx_Extracache_View_View' );
+		$cacheDatabaseEntryRepositoryForTableEventlog  = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTableEventqueue  = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTablePages  = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheDatabaseEntryRepositoryForTableStaticCache = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository' );
+		$cacheFileRepository = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_CacheFileRepository' );
+		$extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+		$view = GeneralUtility::makeInstance ( 'Tx_Extracache_View_View' );
 		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
-		$this->cacheManagementController = t3lib_div::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventlog, $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
+		$this->cacheManagementController = GeneralUtility::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventlog, $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
 
 		$action = t3lib_div::_GP ( 'action' );
 		if(empty($action)){

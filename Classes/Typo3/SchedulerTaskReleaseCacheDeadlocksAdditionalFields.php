@@ -8,6 +8,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * class to define the additional field 'clientIdForProductCatalogue'
  * @package extracache
@@ -103,12 +105,7 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocksAdditionalFields imp
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
 		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 
-        if( version_compare(TYPO3_version,'4.6.0','>=') ) {
-            $deleteEntriesOlderThanSeconds = t3lib_utility_Math::convertToPositiveInteger ((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
-        } else {
-            $deleteEntriesOlderThanSeconds = t3lib_div::intval_positive((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
-        }
-
+        $deleteEntriesOlderThanSeconds = MathUtility::convertToPositiveInteger ((int) trim($submittedData['deleteEntriesOlderThanSeconds']));
 		if (($deleteEntriesOlderThanSeconds >= 0) && ($deleteEntriesOlderThanSeconds<=999999)) {
 			$isValid = TRUE;
 			$submittedData['deleteEntriesOlderThanSeconds'] = $deleteEntriesOlderThanSeconds;

@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook to determine, block and re-queue modifications concerning file references.
@@ -113,7 +115,7 @@ class tx_Extracache_Typo3_Hooks_FileReferenceModification {
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}
@@ -125,7 +127,7 @@ class tx_Extracache_Typo3_Hooks_FileReferenceModification {
 	 */
 	protected function isStaticCacheEnabled() {
 		if (!isset($this->isStaticCacheEnabled)) {
-			$this->isStaticCacheEnabled = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager')->isStaticCacheEnabled();
+			$this->isStaticCacheEnabled = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager')->isStaticCacheEnabled();
 		}
 		return $this->isStaticCacheEnabled;
 	}

@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -36,9 +38,9 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategyTest extends Tx_Extracache_Tes
 	protected function setUp() {
 
 		$this->cleanerStrategies = array();
-		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key1', 'aaaaa');
-		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key2', 'ccccc');
-		$this->cleanerStrategies[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key3', 'BBBBB');
+		$this->cleanerStrategies[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key1', 'aaaaa');
+		$this->cleanerStrategies[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key2', 'ccccc');
+		$this->cleanerStrategies[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', 1, NULL, NULL, 'key3', 'BBBBB');
 
 		$this->mockedCleanerStrategyRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_CleanerStrategyRepository', array(), array(), '', FALSE);
 		$this->mockedCleanerStrategyRepository->expects($this->any())->method('getAllStrategies')->will ( $this->returnValue ( $this->cleanerStrategies ) );

@@ -8,6 +8,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * scheduler-task to to release cache deadlocks
  * 
@@ -80,7 +82,7 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_schedule
 	 */
 	protected function getEventDispatcher() {
 		if($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 	}
@@ -90,7 +92,7 @@ class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_schedule
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}

@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -40,8 +42,8 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 	 * @test
 	 */
 	public function addEvent() {
-		$event1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
-		$event2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'name2', 0);
+		$event1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
+		$event2 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'name2', 0);
 		$this->assertTrue ( count($this->repository->getEvents ()) === 0 );
 		$this->repository->addEvent($event1);
 		$this->assertTrue ( count($this->repository->getEvents ()) === 1 );
@@ -53,7 +55,7 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 	 * @test
 	 */
 	public function getEvent() {
-		$event1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
+		$event1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
 		try {
 			$this->repository->getEvent( $event1->getKey() );
 			$this->assertTrue ( FALSE, 'method should throw Exception!' );
@@ -68,7 +70,7 @@ class Tx_Extracache_Domain_Repository_EventRepositoryTest extends Tx_Extracache_
 	 * @test
 	 */
 	public function hasEvent() {
-		$event = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
+		$event = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'name1', 0);
 		$this->assertFalse ( $this->repository->hasEvent ('key1') );
 		$this->repository->addEvent($event);
 		$this->assertTrue ( $this->repository->hasEvent ('key1') );

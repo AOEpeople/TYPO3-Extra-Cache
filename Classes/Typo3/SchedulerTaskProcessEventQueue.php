@@ -8,13 +8,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * scheduler-task to process event-queue
  * 
  * @package extracache
  * @subpackage Typo3
  */
-class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Task {
+class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * @var Tx_Extracache_Domain_Service_CacheEventHandler
 	 */
@@ -67,7 +69,7 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 */
 	protected function getCacheEventHandler() {
 		if($this->cacheEventHandler === NULL) {
-			$this->cacheEventHandler = t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheEventHandler');
+			$this->cacheEventHandler = GeneralUtility::makeInstance('Tx_Extracache_Domain_Service_CacheEventHandler');
 		}
 		return $this->cacheEventHandler;
 	}
@@ -76,7 +78,7 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 */
 	protected function getEventDispatcher() {
 		if($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 	}
@@ -85,7 +87,7 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 */
 	protected function getEventQueue() {
 		if($this->eventQueue === NULL) {
-			$this->eventQueue = t3lib_div::makeInstance('Tx_Extracache_System_EventQueue');
+			$this->eventQueue = GeneralUtility::makeInstance('Tx_Extracache_System_EventQueue');
 		}
 		return $this->eventQueue;
 	}
@@ -94,7 +96,7 @@ class Tx_Extracache_Typo3_SchedulerTaskProcessEventQueue extends tx_scheduler_Ta
 	 */
 	protected function getEventRepository() {
 		if($this->eventRepository === NULL) {
-			$this->eventRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
+			$this->eventRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_EventRepository');
 		}
 		return $this->eventRepository;
 	}

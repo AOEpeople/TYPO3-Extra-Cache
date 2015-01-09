@@ -2,11 +2,14 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+ *  (c) 2010 AOE GmbH <dev@aoe.com>
  *  All rights reserved
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Handles caches of TypoScript.
@@ -16,7 +19,7 @@
  * @package extracache
  * @subpackage Typo3
  */
-class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
+class tx_Extracache_Typo3_TypoScriptCache implements \TYPO3\CMS\Core\SingletonInterface {
 	const EVENT_Generate = 'onTypoScriptCacheGenerate';
 
 	/**
@@ -36,7 +39,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	 */
 	public function clearCachePostProc(array $params) {
 		if (in_array($params['cacheCmd'], array('all', 'pages'))) {
-			t3lib_div::rmdir($this->getCacheFolder(), TRUE);
+            GeneralUtility::rmdir($this->getCacheFolder(), TRUE);
 		} elseif ($this->isValidInteger($params['cacheCmd'])) {
 			$cacheFilePath = $this->getCacheFilePath( (integer) $params['cacheCmd'] );
 			if (file_exists ( $cacheFilePath )) {
@@ -74,7 +77,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 			// Fetch the cached information and restore it:
 			$cacheFilePath = $this->getCacheFilePath();
 			if (@is_file ( $cacheFilePath )) {
-				$cache = unserialize(t3lib_div::getURL($cacheFilePath));
+				$cache = unserialize(GeneralUtility::getURL($cacheFilePath));
 			} else {
 				// Generate the cache information:
 				$cache = $this->generate ();
@@ -98,7 +101,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	 */
 	protected function getEventDispatcher() {
 		if ($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 	}
@@ -124,7 +127,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 
 		$keysToBeCached = array('config.', 'includeLibs.', 'lib.', 'plugin.', 'tt_content', 'tt_content.');
 		/** @var $event Tx_Extracache_System_Event_Events_Event */
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', self::EVENT_Generate, $this, $keysToBeCached);
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_Event', self::EVENT_Generate, $this, $keysToBeCached);
 		$this->getEventDispatcher()->triggerEvent($event);
 
 		$cache = array();
@@ -160,10 +163,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
      */
     private function isValidInteger($integer)
     {
-        if (version_compare(TYPO3_version, '4.6.0', '>=')) {
-            return t3lib_utility_Math::canBeInterpretedAsInteger($integer);
-        }
-        return t3lib_div::testInt($integer);
+        return MathUtility::canBeInterpretedAsInteger($integer);
     }
 	/**
 	 * Persists the cache to the file system.
@@ -174,8 +174,8 @@ class tx_Extracache_Typo3_TypoScriptCache implements t3lib_Singleton {
 	private function persistCache(array $cache) {
 		$cacheFolder = $this->getCacheFolder ();
 		if (! is_dir ( $cacheFolder )) {
-			t3lib_div::mkdir ( $cacheFolder );
+            GeneralUtility::mkdir ( $cacheFolder );
 		}
-		t3lib_div::writeFile ( $this->getCacheFilePath (), serialize ( $cache ) );
+        GeneralUtility::writeFile ( $this->getCacheFilePath (), serialize ( $cache ) );
 	}
 }

@@ -26,7 +26,7 @@ class Tx_Extracache_Domain_Model_CacheDatabaseEntryTest extends Tx_Extracache_Te
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->dbEntry = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CacheDatabaseEntry');
+		$this->dbEntry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CacheDatabaseEntry');
 	}
 	/**
 	 * Cleans up the environment after running a test.

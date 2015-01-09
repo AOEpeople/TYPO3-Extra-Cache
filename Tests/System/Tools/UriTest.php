@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -27,8 +29,8 @@ class Tx_Extracache_System_Tools_UriTest extends Tx_Extracache_Tests_AbstractTes
 	 */
 	protected function setUp() {
 		$this->ignoreArgumentsConfiguration = array();
-		$this->ignoreArgumentsConfiguration[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'eftbasket', Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache, TRUE);
-		$this->ignoreArgumentsConfiguration[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'cHash', Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache, TRUE);
+		$this->ignoreArgumentsConfiguration[] = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', 'eftbasket', Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache, TRUE);
+		$this->ignoreArgumentsConfiguration[] = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', 'cHash', Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache, TRUE);
 	}
 	/**
 	 * (non-PHPdoc)

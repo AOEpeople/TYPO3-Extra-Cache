@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
@@ -12,7 +12,7 @@
 /**
  * @package extracache
  */
-class Tx_Extracache_Configuration_ExtensionManager implements t3lib_Singleton {
+class Tx_Extracache_Configuration_ExtensionManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */

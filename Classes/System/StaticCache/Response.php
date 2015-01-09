@@ -15,7 +15,7 @@
  * @package extracache
  * @subpackage System_StaticCache
  */
-class Tx_Extracache_System_StaticCache_Response implements t3lib_Singleton {
+class Tx_Extracache_System_StaticCache_Response implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var string
 	 */

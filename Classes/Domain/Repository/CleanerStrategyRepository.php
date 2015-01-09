@@ -12,7 +12,7 @@
 /**
  * @package extracache
  */
-class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements t3lib_Singleton {
+class Tx_Extracache_Domain_Repository_CleanerStrategyRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */

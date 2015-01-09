@@ -151,7 +151,7 @@ class Tx_Extracache_System_EventQueueTest extends Tx_Extracache_Tests_AbstractDa
 	 * @return	Tx_Extracache_Domain_Model_Event
 	 */
 	private function createEvent($key, $interval=100) {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', $key, '', $interval);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', $key, '', $interval);
 	}
 	/**
 	 * create queue-object

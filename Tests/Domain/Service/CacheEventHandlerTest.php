@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -62,7 +64,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	public function canHandleEvent_cacheEventIntervallIsZero() {
 		$this->createCacheEventHandler( TRUE );
 		$cacheEvent = new Tx_Extracache_Domain_Model_Event('testEventKey', 'eventName', 0);
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', $cacheEvent->getKey());
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', $cacheEvent->getKey());
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( TRUE ) );
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'getEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( $cacheEvent ) );
 		$this->cacheEventHandler->expects ( $this->once () )->method ( 'processCacheEvent' )->with( $cacheEvent );
@@ -75,7 +77,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	public function canHandleEvent_cacheEventIntervallIsBiggerThanZero() {
 		$this->createCacheEventHandler( TRUE );
 		$cacheEvent = new Tx_Extracache_Domain_Model_Event('testEventKey', 'eventName', 3600);
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', $cacheEvent->getKey());
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', $cacheEvent->getKey());
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( TRUE ) );
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'getEvent' )->with( $cacheEvent->getKey() )->will ( $this->returnValue ( $cacheEvent ) );
 		$this->mockedEventQueue->expects ( $this->once () )->method ( 'addEvent' )->with( $cacheEvent );
@@ -89,7 +91,7 @@ class Tx_Extracache_Domain_Service_CacheEventHandlerTest extends Tx_Extracache_T
 	public function canNotHandleEvent() {
 		$this->createCacheEventHandler( TRUE );
 
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'unknownEvent');
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'unknownEvent');
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
 		$this->cacheEventHandler->handleEventOnProcessCacheEvent($event);
 	}

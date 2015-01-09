@@ -26,7 +26,7 @@ class Tx_Extracache_System_Event_DispatcherTest extends Tx_Extracache_Tests_Abst
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		$this->eventDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 	}
 	/**
 	 * Cleans up the environment after running a test.

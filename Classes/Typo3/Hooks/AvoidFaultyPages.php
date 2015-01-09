@@ -16,7 +16,7 @@
  * @package extracache
  * @subpackage Typo3_Hooks
  */
-class tx_Extracache_Typo3_Hooks_AvoidFaultyPages implements t3lib_Singleton {
+class tx_Extracache_Typo3_Hooks_AvoidFaultyPages implements \TYPO3\CMS\Core\SingletonInterface {
 	const ERROR_TemplaVoila = '<!-- TemplaVoila ERROR message: -->';
 
 	/**

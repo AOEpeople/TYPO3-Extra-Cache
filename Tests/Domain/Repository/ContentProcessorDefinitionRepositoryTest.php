@@ -40,7 +40,7 @@ class Tx_Extracache_Domain_Repository_ContentProcessorDefinitionRepositoryTest e
 	 * @test
 	 */
 	public function addContentProcessorDefinition() {
-		$contentProcessorDefinition = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', 'dummyClassName', '/dummy/path/');
+		$contentProcessorDefinition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_ContentProcessorDefinition', 'dummyClassName', '/dummy/path/');
 		$this->assertTrue ( count($this->repository->getContentProcessorDefinitions ()) === 0 );
 		$this->repository->addContentProcessorDefinition($contentProcessorDefinition);
 		$this->assertTrue ( count($this->repository->getContentProcessorDefinitions ()) === 1 );

@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package extracache
@@ -52,7 +54,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	protected function getCleanerInstructionRepository() {
 		if($this->cleanerInstructionRepository === NULL) {
-			$this->cleanerInstructionRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerInstructionRepository');
+			$this->cleanerInstructionRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_CleanerInstructionRepository');
 		}
 		return $this->cleanerInstructionRepository;
 	}
@@ -61,7 +63,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	protected function getStaticFileCache() {
 		if($this->staticFileCache === NULL) {
-			$this->staticFileCache = t3lib_div::makeInstance('tx_ncstaticfilecache');
+			$this->staticFileCache = GeneralUtility::makeInstance('tx_ncstaticfilecache');
 		}
 		return $this->staticFileCache;
 	}
@@ -70,7 +72,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	protected function getTceMain() {
 		if($this->tceMain === NULL) {
-			$this->tceMain = t3lib_div::makeInstance('t3lib_TCEmain');
+			$this->tceMain = GeneralUtility::makeInstance('t3lib_TCEmain');
 			$this->tceMain->start(array(), array());
 		}
 		return $this->tceMain;
@@ -80,7 +82,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend =t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend =GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}
@@ -91,6 +93,6 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 * @return	Tx_Extracache_Domain_Model_CleanerInstruction
 	 */
 	private function createCleanerInstruction(Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy, $pageId) {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerInstruction', $this->getStaticFileCache(), $this->getTceMain(), $this->getTypo3DbBackend(), $cleanerStrategy, $pageId);
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerInstruction', $this->getStaticFileCache(), $this->getTceMain(), $this->getTypo3DbBackend(), $cleanerStrategy, $pageId);
 	}
 }

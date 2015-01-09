@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook class for TYPO3 - execute contentProcessors
@@ -39,14 +41,14 @@ class tx_Extracache_Typo3_Hooks_ExecuteContentProcessor {
 	 * @return Tx_Extracache_System_ContentProcessor_Chain
 	 */
 	protected function getContentProcessorChain() {
-		return t3lib_div::makeInstance('Tx_Extracache_System_ContentProcessor_ChainFactory')->getInitialisedChain();
+		return GeneralUtility::makeInstance('Tx_Extracache_System_ContentProcessor_ChainFactory')->getInitialisedChain();
 	}
 	/**
 	 * @return Tx_Extracache_Configuration_ExtensionManager
 	 */
 	protected function getExtensionManager() {
 		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}

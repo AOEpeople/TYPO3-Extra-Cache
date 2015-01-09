@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2013 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2013 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package extracache
@@ -50,14 +52,14 @@ class Tx_Extracache_Domain_Service_CacheCleanerBuilder {
 	 * @return Tx_Extracache_Domain_Service_CacheCleaner
 	 */
 	protected function createCacheCleaner() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleaner');
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Service_CacheCleaner');
 	}
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	protected function getCleanerStrategyRepository() {
 		if($this->cleanerStrategyRepository === NULL) {
-			$this->cleanerStrategyRepository = t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
+			$this->cleanerStrategyRepository = GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 		}
 		return $this->cleanerStrategyRepository;
 	}

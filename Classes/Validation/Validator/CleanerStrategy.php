@@ -2,17 +2,19 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  */
-class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class Tx_Extracache_Validation_Validator_CleanerStrategy extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 	/**
 	 * @param	Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy
 	 * @return	boolean
@@ -31,7 +33,7 @@ class Tx_Extracache_Validation_Validator_CleanerStrategy extends Tx_Extbase_Vali
 	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	protected function getCleanerStrategyRepository() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 	}
 
 	/**

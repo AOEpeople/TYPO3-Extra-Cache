@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook for nc_staticfilecache that is called on processing dirty pages.
@@ -17,7 +19,7 @@
  * @subpackage Typo3_Hooks_StaticFileCache
  *
  */
-class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
+class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements \TYPO3\CMS\Core\SingletonInterface {
 	const EVENT_Process = 'onStaticFileCacheDirtyPagesProcess';
 	const HTTP_Request_Header = 'X-PROCESS-DIRTY-PAGES';
 
@@ -125,7 +127,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 
 		if (t3lib_extMgm::isLoaded('directrequest')) {
 			/* @var $directRequestManager tx_directrequest_manager */
-			$directRequestManager = t3lib_div::makeInstance('tx_directrequest_manager');
+			$directRequestManager = GeneralUtility::makeInstance('tx_directrequest_manager');
 			$response = $directRequestManager->execute($urlToFetch, $requestHeaders);
 			$statusReport = array();
 			if(array_key_exists('error', $response)) {

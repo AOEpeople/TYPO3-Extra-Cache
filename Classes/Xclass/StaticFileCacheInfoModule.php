@@ -2,11 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * @package extracache
@@ -114,19 +117,19 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear;
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
-		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+		$strategies[] = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
 
 		// delete all parent static-cache-elements for given page
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear;
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly;
-		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+		$strategies[] = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
 
 		// update static-cache-element for given page
 		$actions = Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate;
 		$childrenMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction;
 		$elementsMode = Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction;
-		$strategies[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
+		$strategies[] = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerStrategy', $actions, $childrenMode, $elementsMode);
 
 		$this->getCacheCleanerBuilder()->buildCacheCleanerForPageByStrategies( $strategies, $pageId )->process();
 	}
@@ -197,7 +200,7 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 	 * @return Tx_Extracache_Domain_Service_CacheCleanerBuilder
 	 */
 	private function getCacheCleanerBuilder() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Service_CacheCleanerBuilder');
 	}
 	/**
 	 * Gets the icon image tag used to visualize a link.
@@ -221,7 +224,7 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 	 * @return Tx_Extracache_System_Persistence_Typo3DbBackend
 	 */
 	private function getTypo3DbBackend() {
-		return t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+		return GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 	}
 	/**
 	 * @param integer $pageId
@@ -239,10 +242,7 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
      */
     private function isValidInteger($integer)
     {
-        if (version_compare(TYPO3_version, '4.6.0', '>=')) {
-            return t3lib_utility_Math::canBeInterpretedAsInteger($integer);
-        }
-        return t3lib_div::testInt($integer);
+        return MathUtility::canBeInterpretedAsInteger($integer);
     }
 	/**
 	 * Wraps content with the original link of the cache element.

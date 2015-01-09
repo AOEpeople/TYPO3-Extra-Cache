@@ -135,6 +135,6 @@ class Tx_Extracache_System_LoggingEventHandlerTest extends Tx_Extracache_Tests_A
 	 * @return	Tx_Extracache_System_Event_Events_Event
 	 */
 	private function createSimpleEvent($message) {
-		return t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', 'testName', $this, array('message' => $message));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_Event', 'testName', $this, array('message' => $message));
 	}
 }

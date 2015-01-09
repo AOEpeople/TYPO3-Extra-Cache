@@ -32,33 +32,33 @@ Overview of system related internals used or defined by the extension 'extracach
 
 3) Which interfaces provides this extension?
 	* You can define several arguments (take a look at class Tx_Extracache_Domain_Model_Argument for further information):
-		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addArgument( [type], [name], [value] );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addArgument( [type], [name], [value] );
 
 	* You can define several cache-cleanerStrategies (take a look at class Tx_Extracache_Domain_Model_CleanerStrategy for further information):
-		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addCleanerStrategy( [actions], [childrenMode], [elementsMode], [key], [name] );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addCleanerStrategy( [actions], [childrenMode], [elementsMode], [key], [name] );
 
 	* You can define several cache-events (take a look at class Tx_Extracache_Domain_Model_Event for further information):
-		t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addEvent( [key], [name], [interval] );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addEvent( [key], [name], [interval] );
 
 	* You can use several events to modfiy/add logic (the most important events are defined in Classes/System/Event/Events/) if you add your own eventHandler to Tx_Extracache_System_Event_Dispatcher: 
-		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );
-		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addLazyLoadingHandler( [eventName], [handlerObjectName], [handlerObjectMethod] );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addHandler( [eventName], [handlerObject], [handlerObjectMethod] );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->addLazyLoadingHandler( [eventName], [handlerObjectName], [handlerObjectMethod] );
 
 	* You can trigger the event 'onFaultyPages' to define, that the called page should not be cached statically (because e.g. an error/exception occured, so the generated page maybe contains a warning, which you don't want to cache statically):
-		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( 'onFaultyPages' );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( 'onFaultyPages' );
 		OR
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnFaultyPages');
-		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
+		$event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnFaultyPages');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
 
 	* You can trigger cache-events:
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', [cacheEvent]);
-		t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
+		$event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', [cacheEvent]);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
 
 	* You can define contentProcessors (which modify the content before the content will be send to the client):
 		1. You must enable contentProcessors in the Extension-Manager of this extension
 		2. You must implement one or more contentProcessors in your own extension (your contentProcessor must implement the interface Tx_Extracache_System_ContentProcessor_Interface)
 		3. You must add your contentProcessor to this extension:
-			t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addContentProcessorDefinition([classNameOfYourContentProcessor], [pathToYourContentProcessorIncludeThePhpFile])
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager')->addContentProcessorDefinition([classNameOfYourContentProcessor], [pathToYourContentProcessorIncludeThePhpFile])
 
 
 4) How can i define this:
@@ -68,21 +68,21 @@ Overview of system related internals used or defined by the extension 'extracach
 			2. activate option 'markDirtyInsteadOfDeletion' of nc_staticfilecache-Extension inside the extension-manager (this is important, so we can delete the TYPO3-cache, but the statically cached content is still there)
 
 			3. define cache-cleanerStrategies:
-			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+			$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_TYPO3Clear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenWithParent, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, 'clear_frontendcache_all', 'Clear: Frontend-Cache (page with subpages)');
 			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenOnly, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsWithParent, 'clear_subpages_with_elements', 'Clear: subpages (with variants)');
 			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticClear, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsOnly, 'clear_page_only_elements', 'Clear: page (only variants)');
 			$configurationManager->addCleanerStrategy(Tx_Extracache_Domain_Model_CleanerStrategy::ACTION_StaticUpdate, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ChildrenNoAction, Tx_Extracache_Domain_Model_CleanerStrategy::CONSIDER_ElementsNoAction, 'update_page_without_elements', 'Update: page (without variants)');
 
 			4. define cache-event:
-			$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+			$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 			$configurationManager->addEvent( 'onUpdateProductCatalogue', 'productCatalogue was updated' );
 
 			5. Configure page X in TYPO3-BE (add created cache-cleanerStrategies (in correct order, as you defined them) and cache-event to the page-properties of page X)
 
 			6. Process event 'onUpdatedProductCatalogue':
-			$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'onUpdateProductCatalogue');
-			t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
+			$event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'onUpdateProductCatalogue');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher')->triggerEvent( $event );
 
 
 5) Error codes as delivered to Tx_Extbase_Validation_Validator_AbstractValidator:addError()

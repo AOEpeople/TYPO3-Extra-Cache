@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -36,9 +38,9 @@ class Tx_Extracache_Typo3_UserFunc_EventTest extends Tx_Extracache_Tests_Abstrac
 	protected function setUp() {
 
 		$this->events = array();
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'aaaaa', 0);
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'ccccc', 0);
-		$this->events[] =  t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'BBBBB', 0);
+		$this->events[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key1', 'aaaaa', 0);
+		$this->events[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key2', 'ccccc', 0);
+		$this->events[] =  GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', 'key3', 'BBBBB', 0);
 
 		$this->mockedEventRepository = $this->getMock ( 'Tx_Extracache_Domain_Repository_EventRepository', array(), array(), '', FALSE);
 		$this->mockedEventRepository->expects($this->any())->method('getEvents')->will ( $this->returnValue ( $this->events ) );

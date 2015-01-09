@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
 /**
@@ -40,7 +42,7 @@ class Tx_Extracache_Domain_Repository_ArgumentRepositoryTest extends Tx_Extracac
 	 * @test
 	 */
 	public function addArgument() {
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg', Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, true);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg', Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, true);
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_whitelist)) === 0 );
 		$this->repository->addArgument($argument);
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_whitelist)) === 1 );
@@ -50,8 +52,8 @@ class Tx_Extracache_Domain_Repository_ArgumentRepositoryTest extends Tx_Extracac
 	 * @test
 	 */
 	public function getArgumentsByType() {
-		$argument1 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg1', Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, true);
-		$argument2 = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg2', Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, '*');
+		$argument1 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg1', Tx_Extracache_Domain_Model_Argument::TYPE_whitelist, true);
+		$argument2 = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', 'arg2', Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, '*');
 
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible)) === 0 );
 		$this->assertTrue ( count($this->repository->getArgumentsByType (Tx_Extracache_Domain_Model_Argument::TYPE_whitelist)) === 0 );

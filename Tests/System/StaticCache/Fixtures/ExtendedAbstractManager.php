@@ -13,7 +13,7 @@
  * @package extracache_tests
  * @subpackage System_StaticCache_Fixtures
  */
-class ExtendedAbstractManager extends Tx_Extracache_System_StaticCache_AbstractManager implements t3lib_Singleton {
+class ExtendedAbstractManager extends Tx_Extracache_System_StaticCache_AbstractManager {
 	/**
 	 * @return	string
 	 */

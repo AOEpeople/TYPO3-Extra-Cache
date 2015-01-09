@@ -234,7 +234,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$this->mockedCleanerStrategy->expects($this->any())->method('getElementsMode')->will ( $this->returnValue ( $elementsMode ) );
 
 		// create and process cleanerInstruction
-		$this->cleanerInstruction = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CleanerInstruction', $this->mockedStaticFileCache, $this->mockedTceMain, $this->mockedTypo3DbBackend, $this->mockedCleanerStrategy, $pageId);
+		$this->cleanerInstruction = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CleanerInstruction', $this->mockedStaticFileCache, $this->mockedTceMain, $this->mockedTypo3DbBackend, $this->mockedCleanerStrategy, $pageId);
 		$this->cleanerInstruction->process();
 	}
 	/**

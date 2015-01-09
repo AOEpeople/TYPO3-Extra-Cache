@@ -12,7 +12,7 @@
 /**
  * @package extracache
  */
-class Tx_Extracache_Validation_Validator_Argument extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class Tx_Extracache_Validation_Validator_Argument extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 	/**
 	 * @param	Tx_Extracache_Domain_Model_Argument $argument
 	 * @return	boolean

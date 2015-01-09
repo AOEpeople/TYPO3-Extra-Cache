@@ -26,7 +26,7 @@ class Tx_Extracache_System_Event_Events_EventTest extends Tx_Extracache_Tests_Ab
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', 'eventName', $this, array('msg' => 'test-Message'));
+		$this->event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_Event', 'eventName', $this, array('msg' => 'test-Message'));
 	}
 	/**
 	 * Cleans up the environment after running a test.

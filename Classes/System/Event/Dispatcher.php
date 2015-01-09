@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Dispatcher to register an post events.
@@ -18,7 +20,7 @@
  * @package extracache
  * @subpackage System_Event
  */
-class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
+class Tx_Extracache_System_Event_Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * All registered event handler
 	 * @var array
@@ -79,7 +81,7 @@ class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
 	public function triggerEvent($eventOrEventName, $contextObject=null, $infoData=array()) {
 		if (!$eventOrEventName instanceof Tx_Extracache_System_Event_Events_Event) {
 			if (is_string($eventOrEventName)) {
-				$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_Event', $eventOrEventName, $contextObject, $infoData);
+				$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_Event', $eventOrEventName, $contextObject, $infoData);
 			} else {
 				throw new InvalidArgumentException("no supported type as $eventOrEventName given");
 			}
@@ -95,7 +97,7 @@ class Tx_Extracache_System_Event_Dispatcher implements t3lib_Singleton {
 		$i=0;
 		foreach ($this->handlers[$eventName] as $handlerData) {
 			if (!isset($handlerData['object']) && isset ($handlerData['classname'])) {
-				$this->handlers[$eventName][$i]['object'] = $handlerData['object'] = t3lib_div::makeInstance( $handlerData['classname'] );
+				$this->handlers[$eventName][$i]['object'] = $handlerData['object'] = GeneralUtility::makeInstance( $handlerData['classname'] );
 			}
 			call_user_func_array(
 				array($handlerData['object'], $handlerData['method']),

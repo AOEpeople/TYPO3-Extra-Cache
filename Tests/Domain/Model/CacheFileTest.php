@@ -26,7 +26,7 @@ class Tx_Extracache_Domain_Model_CacheFileTest extends Tx_Extracache_Tests_Abstr
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->cacheFile = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_CacheFile');
+		$this->cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_CacheFile');
 	}
 	/**
 	 * Cleans up the environment after running a test.

@@ -2,18 +2,20 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  * @subpackage System
  */
-class Tx_Extracache_System_LoggingEventHandler implements t3lib_Singleton {
+class Tx_Extracache_System_LoggingEventHandler implements \TYPO3\CMS\Core\SingletonInterface {
 	// log-levels are same as they used by t3lib_div::devlog 
 	const LOG_INFO = 0;
 	const LOG_NOTICE = 1;
@@ -55,7 +57,7 @@ class Tx_Extracache_System_LoggingEventHandler implements t3lib_Singleton {
 	 */
 	protected function getExtensionManager() {
 		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}

@@ -9,6 +9,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once dirname ( __FILE__ ) . '/../../../AbstractTestcase.php';
 
 /**
@@ -26,7 +28,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcessTes
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess');
+		$this->event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess');
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -40,8 +42,8 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcessTes
 	 * @test
 	 */
 	public function getMethods() {
-		$frontendUser = t3lib_div::makeInstance ( 'tslib_feUserAuth' );
-		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response');
+		$frontendUser = GeneralUtility::makeInstance ( 'tslib_feUserAuth' );
+		$response = GeneralUtility::makeInstance('Tx_Extracache_System_StaticCache_Response');
 		$this->assertTrue( $this->event->setFrontendUser( $frontendUser ) === $this->event );
 		$this->assertTrue( $this->event->setResponse( $response ) === $this->event );
 		$this->assertTrue( $this->event->getFrontendUser() === $frontendUser );

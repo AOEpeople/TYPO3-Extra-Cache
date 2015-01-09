@@ -2,12 +2,14 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010 AOE media GmbH <dev@aoemedia.de>
+ * (c) 2010 AOE GmbH <dev@aoe.com>
  * All rights reserved
  *
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The bootstrap of extracache extension, initialising basic configurations
@@ -35,7 +37,7 @@ final class Bootstrap {
 	 * initialize event-handler
 	 */
 	static protected function initializeEventHandling() {
-		$dispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+		$dispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		self::addEventHandlerForLogging ( $dispatcher );
 		self::addEventHandlerForStaticCache ( $dispatcher );
 	}

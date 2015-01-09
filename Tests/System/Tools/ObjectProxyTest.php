@@ -32,7 +32,7 @@ class Tx_Extracache_System_Tools_ObjectProxyTest extends Tx_Extracache_Tests_Abs
 	protected function setUp() {
 		$className = 'Tx_Extracache_System_Tools_Fixtures_DummyObject';
 		$parentCallback = 'setDummyObject';
-		$this->objectProxy = t3lib_div::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, $className, $parentCallback);
+		$this->objectProxy = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Tools_ObjectProxy', $this, $className, $parentCallback);
 	}
 	/**
 	 * Cleans up the environment after running a test.

@@ -36,7 +36,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCacheTest extends Tx_Ex
 	protected function setUp() {
 		$this->mockedStaticFileCache = $this->getMock('tx_ncstaticfilecache',array(),array(),'',FALSE);
 		$this->mockedFrontend = $this->getMock('tslib_fe',array(),array(),'',FALSE);
-		$this->event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', 'testEventName', $this, array(), $this->mockedStaticFileCache, $this->mockedFrontend);
+		$this->event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', 'testEventName', $this, array(), $this->mockedStaticFileCache, $this->mockedFrontend);
 	}
 	/**
 	 * Cleans up the environment after running a test.

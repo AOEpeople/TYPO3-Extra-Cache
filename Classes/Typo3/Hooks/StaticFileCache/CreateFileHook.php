@@ -17,7 +17,7 @@
  * @subpackage Typo3_Hooks_StaticFileCache
  *
  */
-class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements t3lib_Singleton {
+class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements \TYPO3\CMS\Core\SingletonInterface {
 	const EVENT_PreInitialize = 'onStaticFileCacheCreateFilePreInitialize';
 	const EVENT_Initialize = 'onStaticFileCacheCreateFileInitialize';
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';

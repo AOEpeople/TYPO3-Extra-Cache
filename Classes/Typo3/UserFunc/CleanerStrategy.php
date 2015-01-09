@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * gets the cacheCleanerStrategy-items, which are used inside the TYPO3-BE
@@ -44,6 +46,6 @@ class Tx_Extracache_Typo3_UserFunc_CleanerStrategy {
 	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository
 	 */
 	protected function getCleanerStrategyRepository() {
-		return t3lib_div::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
+		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Repository_CleanerStrategyRepository');
 	}
 }

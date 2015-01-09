@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Attention: this class-name must begin with 'tx' and NOT with 'Tx'...otherwise this hook will not work!
@@ -15,7 +17,7 @@
  * @package extracache
  * @subpackage System_StaticCache
  */
-class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
+class tx_Extracache_System_StaticCache_Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var	Tx_Extracache_System_StaticCache_AbstractManager
 	 */
@@ -88,9 +90,9 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	protected function getCacheManager() {
 		if($this->cacheManager === NULL) {
 			$className = 'Tx_Extracache_System_StaticCache_' . $this->getExtensionManager()->get ( 'enableStaticCacheManager' );
-			$typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
-			$request = t3lib_div::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
-			$this->cacheManager = t3lib_div::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
+			$typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$request = GeneralUtility::makeInstance ( 'Tx_Extracache_System_StaticCache_Request' );
+			$this->cacheManager = GeneralUtility::makeInstance ( $className, $this->getEventDispatcher(), $this->getExtensionManager(), $typo3DbBackend, $request );
 		}
 		return $this->cacheManager;
 	}
@@ -98,14 +100,14 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @return Tx_Extracache_System_ContentProcessor_Chain
 	 */
 	protected function getContentProcessorChain() {
-		return t3lib_div::makeInstance('Tx_Extracache_System_ContentProcessor_ChainFactory')->getInitialisedChain();
+		return GeneralUtility::makeInstance('Tx_Extracache_System_ContentProcessor_ChainFactory')->getInitialisedChain();
 	}
 	/**
 	 * @return Tx_Extracache_System_Event_Dispatcher
 	 */
 	protected function getEventDispatcher() {
 		if($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 		
@@ -115,7 +117,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 */
 	protected function getExtensionManager() {
 		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}
@@ -128,7 +130,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	protected function halt() {
 		$this->getCacheManager()->getFrontendUserWithInitializedFeGroups ()->storeSessionData ();
 		$this->getEventDispatcher()->triggerEvent ( 'onStaticCacheLoaded', $this, array ('message' => 'Cache: Request served by static cache' ) );
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponseHalt');
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponseHalt');
 		$this->getEventDispatcher()->triggerEvent( $event );
 		exit ();
 	}
@@ -142,13 +144,14 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	protected function initializeFrontEnd($content) {
 		$pageInformation = $this->getCacheManager()->getPageInformationFromCachedRepresentation($content);
 
-		// Re-publish $_GET information if found in cached representation (GET-params/arguments of type 'TYPE_whitelist' will be re-published if they exist when the staticCache was written):
+		// Re-publish $_GET information if found in cached representation (GET-params/arguments of
+        // type 'TYPE_whitelist' will be re-published if they exist when the staticCache was written)
 		if (isset($pageInformation['GET'])) {
 			$_GET = array_merge($_GET, $pageInformation['GET']);
 		}
 
 		/** @var $frontend Tx_Extracache_Typo3_Frontend */
-		$GLOBALS['TSFE'] = t3lib_div::makeInstance(
+		$GLOBALS['TSFE'] = GeneralUtility::makeInstance(
 			'Tx_Extracache_Typo3_Frontend',
 			$pageInformation['id'],
 			$pageInformation['type'],
@@ -166,7 +169,7 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 
 		$GLOBALS['TSFE']->finalizeFrontendUser ($this->getCacheManager()->getFrontendUserWithInitializedFeGroups());
 
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnInitializeFrontEnd');
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnInitializeFrontEnd');
 		$event->setFrontendUser($GLOBALS['TSFE']->fe_user);
 		$this->getEventDispatcher()->triggerEvent( $event );
 	}
@@ -218,14 +221,14 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @return Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess
 	 */
 	private function triggerEventOnStaticCachePreprocess() {
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess');
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCachePreprocess');
 		return $this->getEventDispatcher()->triggerEvent( $event );
 	}
 	/**
 	 * @param boolean $staticCacheContext
 	 */
 	private function triggerEventOnStaticCacheContext($staticCacheContext) {
-		$event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext')->setStaticCacheContext( $staticCacheContext );
+		$event = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheContext')->setStaticCacheContext( $staticCacheContext );
 		$this->getEventDispatcher()->triggerEvent( $event );
 	}
 	/**
@@ -233,8 +236,8 @@ class tx_Extracache_System_StaticCache_Dispatcher implements t3lib_Singleton {
 	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess
 	 */
 	private function triggerEventOnStaticCacheResponsePostProcess($content) {
-		$response = t3lib_div::makeInstance('Tx_Extracache_System_StaticCache_Response')->setContent( $content );
-		$event    = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess')->setFrontendUser( $this->getCacheManager()->getFrontendUserWithInitializedFeGroups() )->setResponse( $response );
+		$response = GeneralUtility::makeInstance('Tx_Extracache_System_StaticCache_Response')->setContent( $content );
+		$event    = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticCacheResponsePostProcess')->setFrontendUser( $this->getCacheManager()->getFrontendUserWithInitializedFeGroups() )->setResponse( $response );
 		return $this->getEventDispatcher()->triggerEvent( $event );
 	}
 }

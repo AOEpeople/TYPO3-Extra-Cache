@@ -30,7 +30,7 @@ class Tx_Extracache_System_Persistence_Typo3DbBackendTest extends Tx_Extracache_
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+		$this->typo3DbBackend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 	}
 	/**
 	 * Cleans up the environment after running a test.

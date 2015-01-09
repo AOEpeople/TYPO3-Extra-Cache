@@ -2,12 +2,14 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2009 AOE media GmbH <dev@aoemedia.de>
+ * (c) 2009 AOE GmbH <dev@aoe.com>
  * All rights reserved
  *
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
@@ -45,11 +47,11 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$value = true;
 
 		$name = 'testname';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 
 		$name = '*';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 	}
 	/**
@@ -61,11 +63,11 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$value = true;
 
 		$name = '';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertFalse( $this->validator->isValid($argument) );
 
 		$name = '[testname]';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertFalse( $this->validator->isValid($argument) );
 	}
 	/**
@@ -77,15 +79,15 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$value = true;
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache;
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible;
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_whitelist;
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 	}
 	/**
@@ -97,7 +99,7 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$value = true;
 
 		$type = 'unknownTestType';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertFalse( $this->validator->isValid($argument) );
 	}
 	/**
@@ -109,15 +111,15 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$name = 'testname';
 
 		$value = true;
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 
 		$value = array('action' => 'show');
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 
 		$value = 'show';
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertTrue( $this->validator->isValid($argument) );
 	}
 	/**
@@ -129,11 +131,11 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 		$name = 'testname';
 
 		$value = false;
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertFalse( $this->validator->isValid($argument) );
 
 		$value = array();
-		$argument = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
 		$this->assertFalse( $this->validator->isValid($argument) );
 	}
 }

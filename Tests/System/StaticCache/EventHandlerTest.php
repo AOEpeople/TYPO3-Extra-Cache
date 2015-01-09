@@ -207,7 +207,7 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	private function createArgumentObjects(array $argumentsConfig) {
 		$arguments = array();
 		foreach($argumentsConfig as $name => $value) {
-			$arguments[] = t3lib_div::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, $value);
+			$arguments[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible, $value);
 		}
 		return $arguments;
 	}

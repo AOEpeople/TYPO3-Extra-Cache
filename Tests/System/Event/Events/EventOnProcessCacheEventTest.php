@@ -26,7 +26,7 @@ class Tx_Extracache_System_Event_Events_EventOnProcessCacheEventTest extends Tx_
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
-		$this->event = t3lib_div::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'cacheEventName');
+		$this->event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnProcessCacheEvent', 'cacheEventName');
 	}
 	/**
 	 * Cleans up the environment after running a test.

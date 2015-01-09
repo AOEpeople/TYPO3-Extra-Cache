@@ -2,11 +2,13 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hook for nc_staticfilecache that is called on creating the file with the cached content.
@@ -50,7 +52,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 */
 	protected function getConfigurationManager() {
 		if ($this->configurationManager === NULL) {
-			$this->configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+			$this->configurationManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 		}
 		return $this->configurationManager;
 	}
@@ -59,7 +61,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 */
 	protected function getEventDispatcher() {
 		if ($this->eventDispatcher === NULL) {
-			$this->eventDispatcher = t3lib_div::makeInstance('Tx_Extracache_System_Event_Dispatcher');
+			$this->eventDispatcher = GeneralUtility::makeInstance('Tx_Extracache_System_Event_Dispatcher');
 		}
 		return $this->eventDispatcher;
 	}
@@ -70,7 +72,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 */
 	protected function getExtensionManager() {
 		if ($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}
@@ -84,7 +86,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 * @return Tx_Extracache_System_Event_Events_Event
 	 */
 	protected function getNewEvent($name, array $information, tx_ncstaticfilecache $parent, tslib_fe $frontend = NULL) {
-		return t3lib_div::makeInstance(
+		return GeneralUtility::makeInstance(
 			'Tx_Extracache_System_Event_Events_EventOnStaticFileCache',
 			$name, $this, $information, $parent, $frontend
 		);
@@ -94,7 +96,7 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}

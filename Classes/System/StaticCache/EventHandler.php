@@ -2,12 +2,14 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
 
@@ -15,7 +17,7 @@ require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPage
  * @package extracache
  * @subpackage System_StaticCache
  */
-class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
+class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var Tx_Extracache_Domain_Repository_ArgumentRepository
 	 */
@@ -89,7 +91,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	protected function getArgumentRepository() {
 		if($this->argumentRepository === NULL) {
-			$this->argumentRepository = t3lib_div::makeInstance ( 'Tx_Extracache_Domain_Repository_ArgumentRepository' );
+			$this->argumentRepository = GeneralUtility::makeInstance ( 'Tx_Extracache_Domain_Repository_ArgumentRepository' );
 		}
 		return $this->argumentRepository;
 	}
@@ -104,7 +106,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	protected function getExtensionManager() {
 		if($this->extensionManager === NULL) {
-			$this->extensionManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
+			$this->extensionManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ExtensionManager');
 		}
 		return $this->extensionManager;
 	}
@@ -113,7 +115,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 	 */
 	protected function getStorage() {
 		if($this->storage === NULL) {
-			$this->storage = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->storage = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->storage;
 	}
@@ -129,7 +131,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements t3lib_Singleton {
 		// @todo:	ADMCMD_prev used for previewing workspaces in front-end is currently not implemented
 		if ($event->getRequest()->getCookie ( 'be_typo_user' )) {
 			/* @var $backendUser t3lib_tsfeBeUserAuth */
-			$backendUser = t3lib_div::makeInstance ( 't3lib_tsfeBeUserAuth' );
+			$backendUser = GeneralUtility::makeInstance ( 't3lib_tsfeBeUserAuth' );
 			$backendUser->dontSetCookie = true;
 			$backendUser->OS = TYPO3_OS;
 			$backendUser->lockIP = $GLOBALS ['TYPO3_CONF_VARS'] ['BE'] ['lockIP'];

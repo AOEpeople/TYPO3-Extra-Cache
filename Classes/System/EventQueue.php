@@ -2,18 +2,20 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  * @subpackage System
  */
-class Tx_Extracache_System_EventQueue implements t3lib_Singleton {
+class Tx_Extracache_System_EventQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	const TABLE_Queue = 'tx_extracache_eventqueue';
 	const STATUS_WaitForProcessing = 0;
 	const STATUS_InProcess = 1;
@@ -80,7 +82,7 @@ class Tx_Extracache_System_EventQueue implements t3lib_Singleton {
 	 */
 	protected function getTypo3DbBackend() {
 		if($this->typo3DbBackend === NULL) {
-			$this->typo3DbBackend = t3lib_div::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
+			$this->typo3DbBackend = GeneralUtility::makeInstance('Tx_Extracache_System_Persistence_Typo3DbBackend');
 		}
 		return $this->typo3DbBackend;
 	}
