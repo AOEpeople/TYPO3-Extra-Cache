@@ -33,9 +33,8 @@ $tempColumns = array(
 	),
 );
 
-t3lib_div::loadTCA('pages');
-t3lib_extMgm::addTCAcolumns('pages',$tempColumns);
-t3lib_extMgm::addToAllTCAtypes('pages','--div--;Cache,tx_extracache_cleanerstrategies,tx_extracache_events,tx_ncstaticfilecache_cache');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages',$tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages','--div--;Cache,tx_extracache_cleanerstrategies,tx_extracache_events,tx_ncstaticfilecache_cache');
 
 if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::insertModuleFunction(
