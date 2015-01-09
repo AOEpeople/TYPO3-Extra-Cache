@@ -2,12 +2,15 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * defines an staticCache-request
@@ -15,7 +18,7 @@
  * @package extracache
  * @subpackage System_StaticCache
  */
-class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
+class Tx_Extracache_System_StaticCache_Request implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */
@@ -69,8 +72,10 @@ class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
 	 */
 	public function getArguments() {
 		if (!isset($this->arguments)) {
-			$this->arguments = t3lib_div::array_merge_recursive_overrule($_GET, $_POST);
-			t3lib_div::stripSlashesOnArray($this->arguments);
+            $this->arguments = array();
+            ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $_GET);
+            ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $_POST);
+            GeneralUtility::stripSlashesOnArray($this->arguments);
 		}
 		return $this->arguments;
 	}
@@ -174,6 +179,6 @@ class Tx_Extracache_System_StaticCache_Request implements t3lib_Singleton {
 	 * @return	string
 	 */
 	protected function getIndpEnvFromTypo3($getEnvName) {
-		return t3lib_div::getIndpEnv( $getEnvName );
+		return GeneralUtility::getIndpEnv( $getEnvName );
 	}
 }

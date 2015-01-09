@@ -8,6 +8,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Defines an overlay for TSFE to get a better performance in static cache disposal.
  * This "light TSFE" is used together with the Tx_Extracache_System_Tools_ObjectProxy
@@ -94,7 +97,7 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 */
 	public function mergeConfiguration(array $configuration) {
 		// Merges additional configuration with the current configuration
-		$this->config = t3lib_div::array_merge_recursive_overrule($this->config, $configuration);
+        ArrayUtility::mergeRecursiveWithOverrule($this->config, $configuration);
 
 		// Set config 'absRefPrefix' (this is needed to build correct links, if this config is set)
 		if(array_key_exists('config', $this->config) && is_array($this->config['config']) && array_key_exists('absRefPrefix', $this->config['config'])) {
@@ -116,7 +119,7 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 */
 	protected function getArgumentRepository() {
 		/** @var $configurationManager Tx_Extracache_Configuration_ConfigurationManager */
-		$configurationManager = t3lib_div::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
+		$configurationManager = GeneralUtility::makeInstance('Tx_Extracache_Configuration_ConfigurationManager');
 		return $configurationManager->getArgumentRepository();
 	}
 
@@ -146,11 +149,11 @@ class Tx_Extracache_Typo3_Frontend extends \TYPO3\CMS\Frontend\Controller\TypoSc
 	 * @return void
 	 */
 	protected function initializeObjects() {
-        $this->cObj = t3lib_div::makeInstance(
+        $this->cObj = GeneralUtility::makeInstance(
             'Tx_Extracache_System_Tools_ObjectProxy',
             $this, 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
         );
-		$this->sys_page = t3lib_div::makeInstance(
+		$this->sys_page = GeneralUtility::makeInstance(
 			'Tx_Extracache_System_Tools_ObjectProxy',
 			$this, 'TYPO3\\CMS\\Frontend\\Page\\PageRepository', 'initializePageRepositoryCallback'
 		);
