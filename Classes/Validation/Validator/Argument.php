@@ -15,14 +15,14 @@
 class Tx_Extracache_Validation_Validator_Argument extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 	/**
 	 * @param	Tx_Extracache_Domain_Model_Argument $argument
-	 * @return	boolean
+	 * @return	void
 	 */
-	public function isValid($argument) {
+	protected function isValid($argument) {
 		$this->checkName( $argument->getName() );
 		$this->checkType( $argument->getType() );
 		$this->checkValue( $argument->getValue() );
-		return (count($this->getErrors()) === 0);
 	}
+
 	/**
 	 * @param string $name
 	 */

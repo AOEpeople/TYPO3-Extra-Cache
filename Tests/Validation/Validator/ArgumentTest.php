@@ -48,11 +48,11 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$name = 'testname';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 
 		$name = '*';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -64,11 +64,11 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$name = '';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertFalse( $this->validator->isValid($argument) );
+        $this->assertTrue($this->validator->validate($argument)->hasErrors());
 
 		$name = '[testname]';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertFalse( $this->validator->isValid($argument) );
+        $this->assertTrue($this->validator->validate($argument)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -80,15 +80,15 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache;
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible;
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 
 		$type = Tx_Extracache_Domain_Model_Argument::TYPE_whitelist;
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -100,7 +100,7 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$type = 'unknownTestType';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertFalse( $this->validator->isValid($argument) );
+        $this->assertTrue($this->validator->validate($argument)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -112,15 +112,15 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$value = true;
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 
 		$value = array('action' => 'show');
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 
 		$value = 'show';
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertTrue( $this->validator->isValid($argument) );
+        $this->assertFalse($this->validator->validate($argument)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -132,10 +132,10 @@ class Tx_Extracache_Validation_Validator_ArgumentTest extends Tx_Extracache_Test
 
 		$value = false;
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertFalse( $this->validator->isValid($argument) );
+        $this->assertTrue($this->validator->validate($argument)->hasErrors());
 
 		$value = array();
 		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$this->assertFalse( $this->validator->isValid($argument) );
+        $this->assertTrue($this->validator->validate($argument)->hasErrors());
 	}
 }

@@ -49,7 +49,8 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 */
 	public function eventIsValid() {
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
-		$this->assertTrue( $this->validator->isValid( $this->createEvent(0) ) );
+        $event = $this->createEvent(0);
+		$this->assertFalse($this->validator->validate($event)->hasErrors());
 	}
 	/**
 	 * test method isValid
@@ -57,11 +58,13 @@ class Tx_Extracache_Validation_Validator_EventTest extends Tx_Extracache_Tests_A
 	 */
 	public function eventIsNotValid() {
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( TRUE ) );
-		$this->assertFalse( $this->validator->isValid( $this->createEvent(0) ) );
+        $event = $this->createEvent(0);
+        $this->assertTrue($this->validator->validate($event)->hasErrors());
 
 		$this->setUp();
 		$this->mockedEventRepository->expects ( $this->once () )->method ( 'hasEvent' )->will ( $this->returnValue ( FALSE ) );
-		$this->assertFalse( $this->validator->isValid( $this->createEvent(-1) ) );
+        $event = $this->createEvent(-1);
+        $this->assertTrue($this->validator->validate($event)->hasErrors());
 	}
 
 	/**

@@ -17,17 +17,17 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 class Tx_Extracache_Validation_Validator_CleanerStrategy extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 	/**
 	 * @param	Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy
-	 * @return	boolean
+	 * @return	void
 	 */
-	public function isValid($cleanerStrategy) {
+    protected function isValid($cleanerStrategy) {
 		if($this->getCleanerStrategyRepository()->hasStrategy($cleanerStrategy->getKey())) {
 			$this->addError('cleanerStrategy with key ' . $cleanerStrategy->getKey() . ' does already exist!', 1289897851);
 		}
 		$this->childrenModeIsValid( $cleanerStrategy->getChildrenMode() );
 		$this->elementModeIsValid( $cleanerStrategy->getElementsMode() );
 		$this->actionsAreValid( $cleanerStrategy->getActions() );
-		return (count($this->getErrors()) === 0);
 	}
+
 	
 	/**
 	 * @return Tx_Extracache_Domain_Repository_CleanerStrategyRepository

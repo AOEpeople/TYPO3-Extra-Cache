@@ -78,8 +78,10 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @test
 	 */
 	public function canAddArgument() {
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (FALSE));
+        $this->mockedArgumentValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
 		$this->mockedArgumentRepository->expects ( $this->once () )->method ( 'addArgument' );
-		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( TRUE ) );
 		$this->manager->addArgument('', '', '');
 	}
 	/**
@@ -88,10 +90,12 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @expectedException RuntimeException
 	 */
 	public function canNotAddArgument() {
-		$this->mockedArgumentRepository->expects ( $this->never () )->method ( 'addArgument' );
-		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
-		$this->mockedArgumentValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
-
+        $error = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Error', array (), array (), '', FALSE );
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'getErrors' )->will ($this->returnValue (array($error)));
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (TRUE));
+        $this->mockedArgumentValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
+        $this->mockedArgumentRepository->expects ( $this->never () )->method ( 'addArgument' );
 		$this->manager->addArgument('', '', '');
 	}
 	/**
@@ -99,9 +103,11 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @test
 	 */
 	public function canAddCleanerStrategy() {
-		$this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'addStrategy' );
-		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( TRUE ) );
-		$this->manager->addCleanerStrategy(0, '', '', '', '');
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (FALSE));
+        $this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
+        $this->mockedCleanerStrategyRepository->expects ( $this->once () )->method ( 'addStrategy' );
+        $this->manager->addCleanerStrategy(0, '', '', '', '');
 	}
 	/**
 	 * Test method addCleanerStrategy
@@ -109,10 +115,13 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @expectedException RuntimeException
 	 */
 	public function canNotAddCleanerStrategy() {
-		$this->mockedCleanerStrategyRepository->expects ( $this->never () )->method ( 'addStrategy' );
-		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
-		$this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
-		$this->manager->addCleanerStrategy(0, '', '', '', '');
+        $error = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Error', array (), array (), '', FALSE );
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'getErrors' )->will ($this->returnValue (array($error)));
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (TRUE));
+        $this->mockedCleanerStrategyValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
+        $this->mockedCleanerStrategyRepository->expects ( $this->never () )->method ( 'addStrategy' );
+        $this->manager->addCleanerStrategy(0, '', '', '', '');
 	}
 	/**
 	 * Test method addContentProcessorDefinition
@@ -127,8 +136,10 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @test
 	 */
 	public function canAddEvent() {
-		$this->mockedEventRepository->expects ( $this->once () )->method ( 'addEvent' );
-		$this->mockedEventValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( TRUE ) );
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (FALSE));
+        $this->mockedEventValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
+        $this->mockedEventRepository->expects ( $this->once () )->method ( 'addEvent' );
 		$this->manager->addEvent('');
 	}
 	/**
@@ -137,10 +148,13 @@ class Tx_Extracache_Configuration_ConfigurationManagerTest extends Tx_Extracache
 	 * @expectedException RuntimeException
 	 */
 	public function canNotAddEvent() {
-		$this->mockedEventRepository->expects ( $this->never () )->method ( 'addEvent' );
-		$this->mockedEventValidator->expects ( $this->once () )->method ( 'isValid' )->will ( $this->returnValue ( FALSE ) );
-		$this->mockedEventValidator->expects ( $this->once () )->method ( 'getErrors' )->will ( $this->returnValue ( array() ) );
-		$this->manager->addEvent('');
+        $error = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Error', array (), array (), '', FALSE );
+        $result = $this->getMock ( '\TYPO3\CMS\Extbase\Error\Result', array (), array (), '', FALSE );
+        $result->expects($this->once())->method ( 'getErrors' )->will ($this->returnValue (array($error)));
+        $result->expects($this->once())->method ( 'hasErrors' )->will ($this->returnValue (TRUE));
+        $this->mockedEventValidator->expects ( $this->once () )->method ( 'validate' )->will ( $this->returnValue ( $result ) );
+        $this->mockedEventRepository->expects ( $this->never () )->method ( 'addEvent' );
+        $this->manager->addEvent('');
 	}
 
 	/**

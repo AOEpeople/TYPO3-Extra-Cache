@@ -39,14 +39,14 @@ class Tx_Extracache_Configuration_ConfigurationManager implements \TYPO3\CMS\Cor
 	 * @throws	RuntimeException
 	 */
 	public function addArgument($type, $name, $value) {
-		$argument  = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
-		$validator = $this->getArgumentValidator();
-		if($validator->isValid($argument)) {
-			$this->getArgumentRepository()->addArgument($argument);
-		} else {
-			throw new RuntimeException( implode(',',$validator->getErrors()) );
-		}
+		$argument = GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Argument', $name, $type, $value);
+        $result = $this->getArgumentValidator()->validate($argument);
+        if ($result->hasErrors()) {
+            $this->throwException($result->getErrors());
+        }
+        $this->getArgumentRepository()->addArgument($argument);
 	}
+
 	/**
 	 * @param	integer $actions
 	 * @param	string $childrenMode
@@ -57,12 +57,11 @@ class Tx_Extracache_Configuration_ConfigurationManager implements \TYPO3\CMS\Cor
 	 */
 	public function addCleanerStrategy($actions, $childrenMode, $elementsMode, $key, $name='') {
 		$cleanerStrategy = $this->createCleanerStrategy($actions, $childrenMode, $elementsMode, $key, $name);
-		$validator = $this->getCleanerStrategyValidator();
-		if($validator->isValid($cleanerStrategy)) {
-			$this->getCleanerStrategyRepository()->addStrategy($cleanerStrategy);
-		} else {
-			throw new RuntimeException( implode(',',$validator->getErrors()) );
-		}
+        $result = $this->getCleanerStrategyValidator()->validate($cleanerStrategy);
+        if ($result->hasErrors()) {
+            $this->throwException($result->getErrors());
+        }
+        $this->getCleanerStrategyRepository()->addStrategy($cleanerStrategy);
 	}
 	/**
 	 * @param string $className	className of contentProcessor
@@ -81,12 +80,11 @@ class Tx_Extracache_Configuration_ConfigurationManager implements \TYPO3\CMS\Cor
 	 */
 	public function addEvent($key, $name='', $interval=0, $writeLog=FALSE) {
 		$event = $this->createEvent($key, $name, $interval, $writeLog);
-		$validator = $this->getEventValidator();
-		if($validator->isValid($event)) {
-			$this->getEventRepository()->addEvent($event);
-		} else {
-			throw new RuntimeException( implode(',',$validator->getErrors()) );
-		}
+        $result = $this->getEventValidator()->validate($event);
+        if ($result->hasErrors()) {
+            $this->throwException($result->getErrors());
+        }
+        $this->getEventRepository()->addEvent($event);
 	}
 	
 	/**
@@ -171,4 +169,18 @@ class Tx_Extracache_Configuration_ConfigurationManager implements \TYPO3\CMS\Cor
 		}
 		return GeneralUtility::makeInstance('Tx_Extracache_Domain_Model_Event', $key, $name, $interval, $writeLog);
 	}
+
+    /***
+     * @param array $errors
+     * @throws	RuntimeException
+     */
+    private function throwException(array $errors)
+    {
+        $errorDetails = array();
+        foreach($errors as $error) {
+            /* @var $error \TYPO3\CMS\Extbase\Error\Error */
+            $errorDetails[] = $error->getMessage() . ' [' . $error->getCode() . ']';
+        }
+        throw new RuntimeException('object is not valid (' . implode(',', $errorDetails) . ')!');
+    }
 }
