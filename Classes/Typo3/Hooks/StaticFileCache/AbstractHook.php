@@ -8,6 +8,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -108,6 +109,6 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 * @return boolean
 	 */
 	protected function isExtensionLoaded($extensionKey) {
-		return t3lib_extMgm::isLoaded($extensionKey);
+		return ExtensionManagementUtility::isLoaded($extensionKey);
 	}
 }

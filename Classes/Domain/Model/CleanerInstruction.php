@@ -26,7 +26,7 @@ class Tx_Extracache_Domain_Model_CleanerInstruction {
 	 */
 	private $staticFileCache;
 	/**
-	 * @var t3lib_TCEmain
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private $tceMain;
 	/**
@@ -36,12 +36,12 @@ class Tx_Extracache_Domain_Model_CleanerInstruction {
 	
 	/**
 	 * @param tx_ncstaticfilecache $staticFileCache
-	 * @param t3lib_TCEmain $tceMain
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
 	 * @param Tx_Extracache_System_Persistence_Typo3DbBackend $typo3DbBackend 
 	 * @param Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy
 	 * @param integer $pageId
 	 */
-	public function __construct(tx_ncstaticfilecache $staticFileCache, t3lib_TCEmain $tceMain, Tx_Extracache_System_Persistence_Typo3DbBackend $typo3DbBackend, Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy, $pageId) {
+	public function __construct(tx_ncstaticfilecache $staticFileCache, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, Tx_Extracache_System_Persistence_Typo3DbBackend $typo3DbBackend, Tx_Extracache_Domain_Model_CleanerStrategy $cleanerStrategy, $pageId) {
 		$this->cleanerStrategy = $cleanerStrategy;
 		$this->pageId = $pageId;
 		$this->staticFileCache = $staticFileCache;
@@ -207,7 +207,7 @@ class Tx_Extracache_Domain_Model_CleanerInstruction {
 		return $this->staticFileCache;
 	}
 	/**
-	 * @return t3lib_TCEmain
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private function getTceMain() {
 		return $this->tceMain;

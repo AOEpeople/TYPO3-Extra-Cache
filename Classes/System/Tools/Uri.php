@@ -9,6 +9,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package extracache
  * @subpackage System_Tools
@@ -37,7 +39,7 @@ class Tx_Extracache_System_Tools_Uri {
 
 		// Process the query arguments if there are some:
 		if (count($ignoreArgumentKeys) && $queryPartStart !== false) {
-			$arguments = t3lib_div::trimExplode('&', substr($uri, $queryPartStart + 1));
+			$arguments = GeneralUtility::trimExplode('&', substr($uri, $queryPartStart + 1));
 				// If all arguments shall be ignored, set the cleaned URI:
 			if (self::canCleanAllArguments($arguments, $ignoreArgumentKeys)) {
 				$uri = substr($uri, 0, strpos($uri, '?'));

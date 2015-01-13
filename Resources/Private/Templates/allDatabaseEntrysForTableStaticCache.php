@@ -41,7 +41,7 @@ if(count($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache']) > 0) {
 
 	<?php 
 	foreach($GLOBALS['view_data']['allDatabaseEntrysForTableStaticCache'] as $databaseEntry){
-		$timeout = ($databaseEntry->getTstamp() > 0) ? t3lib_BEfunc::calcAge(($databaseEntry->getCache_timeout()),$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) : '';
+		$timeout = ($databaseEntry->getTstamp() > 0) ? \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(($databaseEntry->getCache_timeout()),$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) : '';
 		?>
 		<tr class="bgColor4">
 			<td class="nowrap"><?php echo date('d.m.Y H:i:s',$databaseEntry->getTstamp()); ?></td>

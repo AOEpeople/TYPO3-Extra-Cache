@@ -121,7 +121,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements \TYPO3\CMS\Core\SingletonIn
 	private function generate() {
 		$frontend = $this->getFrontend();
 		// Clone the Template rendering object since we don't want to influence the processing:
-		/** @var $template t3lib_TStemplate */
+		/** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
 		$template = clone $frontend->tmpl;
 		$template->start ( $frontend->sys_page->getRootLine($this->getTemplatePageId($frontend)));
 

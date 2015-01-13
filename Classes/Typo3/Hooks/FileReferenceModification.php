@@ -42,10 +42,10 @@ class tx_Extracache_Typo3_Hooks_FileReferenceModification {
 	 * @param	string			$table
 	 * @param	mixed			$id
 	 * @param	array			$fieldArray
-	 * @param	t3lib_TCEmain	$parent
+	 * @param	\TYPO3\CMS\Core\DataHandling\DataHandler	$parent
 	 * @return	void
 	 */
-	public function processDatamap_afterDatabaseOperations($status, $table, $id, array $fieldArray, t3lib_TCEmain $parent) {
+	public function processDatamap_afterDatabaseOperations($status, $table, $id, array $fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $parent) {
 		if ($this->isStaticCacheEnabled() && is_array($parent->removeFilesStore) && count($parent->removeFilesStore)) {
 			$this->filesToBeRemoved = array_unique(
 				array_merge(
@@ -60,10 +60,10 @@ class tx_Extracache_Typo3_Hooks_FileReferenceModification {
 	/**
 	 * Processes any storing action after all data has been persisted.
 	 *
-	 * @param	t3lib_TCEmain	$parent
+	 * @param	\TYPO3\CMS\Core\DataHandling\DataHandler	$parent
 	 * @return	void
 	 */
-	public function processDatamap_afterAllOperations(t3lib_TCEmain $parent) {
+	public function processDatamap_afterAllOperations(\TYPO3\CMS\Core\DataHandling\DataHandler $parent) {
 		if ($this->isStaticCacheEnabled() && count($this->filesToBeRemoved)) {
 			$this->addRemovedFilesToQueue(
 				$this->getRelativeFiles($this->filesToBeRemoved)

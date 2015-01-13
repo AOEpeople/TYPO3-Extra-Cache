@@ -23,7 +23,7 @@ class Tx_Extracache_Typo3_Hooks_FileReferenceModificationTest extends Tx_Extraca
 	private $hook;
 
 	/**
-	 * @var	t3lib_TCEmain
+	 * @var	\TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private $tceMain;
 
@@ -33,7 +33,7 @@ class Tx_Extracache_Typo3_Hooks_FileReferenceModificationTest extends Tx_Extraca
 	protected function setUp() {
 
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_FileReferenceModification', array('isStaticCacheEnabled'));
-		$this->tceMain = $this->getMock('t3lib_TCEmain', array(), array(), '', FALSE);
+		$this->tceMain = $this->getMock('\TYPO3\CMS\Core\DataHandling\DataHandler', array(), array(), '', FALSE);
 
 		$this->createDatabase();
 		$this->useTestDatabase();

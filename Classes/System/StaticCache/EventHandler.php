@@ -9,6 +9,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
@@ -130,8 +131,8 @@ class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\S
 		$result = false;
 		// @todo:	ADMCMD_prev used for previewing workspaces in front-end is currently not implemented
 		if ($event->getRequest()->getCookie ( 'be_typo_user' )) {
-			/* @var $backendUser t3lib_tsfeBeUserAuth */
-			$backendUser = GeneralUtility::makeInstance ( 't3lib_tsfeBeUserAuth' );
+			/* @var $backendUser \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
+			$backendUser = GeneralUtility::makeInstance ( 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication' );
 			$backendUser->dontSetCookie = true;
 			$backendUser->OS = TYPO3_OS;
 			$backendUser->lockIP = $GLOBALS ['TYPO3_CONF_VARS'] ['BE'] ['lockIP'];
@@ -158,7 +159,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\S
 	 */
 	protected function isCrawlerExtensionRunning(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$result = false;
-		if (t3lib_extMgm::isLoaded ( 'crawler' ) && NULL !== $crawlerHeader = $event->getRequest()->getServerVariable ( 'HTTP_X_T3CRAWLER' )) {
+		if (ExtensionManagementUtility::isLoaded ( 'crawler' ) && NULL !== $crawlerHeader = $event->getRequest()->getServerVariable ( 'HTTP_X_T3CRAWLER' )) {
 			list ( $crawlerQueueId, $crawlerQueueHash ) = explode ( ':', $crawlerHeader );
 			$queueRecords = $this->getStorage()->selectQuery ( 'qid,set_id', 'tx_crawler_queue', 'qid=' . intval ( $crawlerQueueId ),'','1' );
 			$result = ($queueRecords && $crawlerQueueHash == $this->getCrawlerQueueHash ( $queueRecords [0] ));
@@ -204,7 +205,7 @@ class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\S
 	 */
 	protected function isPageMailerExtensionRunning(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$result = FALSE;
-		if (t3lib_extMgm::isLoaded('aoe_pagemailer') && $event->getRequest()->getServerVariable('HTTP_X_PAGEMAILER')) {
+		if (ExtensionManagementUtility::isLoaded('aoe_pagemailer') && $event->getRequest()->getServerVariable('HTTP_X_PAGEMAILER')) {
 			$result = TRUE;
 		}
 		return $result;

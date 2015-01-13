@@ -11,6 +11,8 @@
 
 require_once dirname ( __FILE__ ) . '/../../AbstractDatabaseTestcase.php';
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * test case for Tx_Extracache_System_Persistence_Typo3DbBackend
  * @package extracache_tests
@@ -73,7 +75,7 @@ class Tx_Extracache_System_Persistence_Typo3DbBackendTest extends Tx_Extracache_
 	private function createTestDB() {
 		$this->createDatabase();
 		$db = $this->useTestDatabase();
-		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
+		$db->admin_query( GeneralUtility::getUrl( PATH_tx_extracache . 'Tests/System/Persistence/Fixtures/SqlQueryForUnittestTypo3DbBackend_createTablePages.txt' ) );
 
 		$this->importExtensions(array('extracache'));
 		$this->initializeCommonExtensions();

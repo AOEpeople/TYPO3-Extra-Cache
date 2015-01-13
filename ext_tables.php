@@ -37,7 +37,7 @@ $tempColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages','--div--;Cache,tx_extracache_cleanerstrategies,tx_extracache_events,tx_ncstaticfilecache_cache');
 
 if (TYPO3_MODE == 'BE') {
-	t3lib_extMgm::insertModuleFunction(
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_info',
         'tx_extracache_modfunc1',
         NULL,

@@ -8,6 +8,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -24,7 +25,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 	const HTTP_Request_Header = 'X-PROCESS-DIRTY-PAGES';
 
 	/**
-	 * @var t3lib_cli
+	 * @var \TYPO3\CMS\Core\Controller\CommandLineController
 	 */
 	protected $cliDispatcher;
 	/**
@@ -125,7 +126,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 			$this->cliDispatcher->cli_echo('Re-caching ' . $urlToFetch . '... ');
 		}
 
-		if (t3lib_extMgm::isLoaded('directrequest')) {
+		if (ExtensionManagementUtility::isLoaded('directrequest')) {
 			/* @var $directRequestManager tx_directrequest_manager */
 			$directRequestManager = GeneralUtility::makeInstance('tx_directrequest_manager');
 			$response = $directRequestManager->execute($urlToFetch, $requestHeaders);
@@ -136,7 +137,7 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook extends Tx_Extrac
 			$result = $response['content'];
 		} else {
 			$statusReport = array();
-			$result = t3lib_div::getURL($urlToFetch, 1, $requestHeaders, $statusReport);
+			$result = GeneralUtility::getURL($urlToFetch, 1, $requestHeaders, $statusReport);
 		}
 		$result = (bool) trim( $result ); // if fetching failed, it can happen, that the returned result contains some space characters!
 

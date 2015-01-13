@@ -22,6 +22,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR . 'CacheManagementController.php';
@@ -64,13 +65,13 @@ class tx_extracache_modfunc1 extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		$GLOBALS['LANG']->includeLLFile('EXT:extracache/Resources/Private/Language/locallang.xml');
 		$this->cacheManagementController = GeneralUtility::makeInstance ( 'Tx_Extracache_Controller_CacheManagementController', $cacheDatabaseEntryRepositoryForTableEventlog, $cacheDatabaseEntryRepositoryForTableEventqueue, $cacheDatabaseEntryRepositoryForTablePages, $cacheDatabaseEntryRepositoryForTableStaticCache, $cacheFileRepository, $extensionManager, $view);
 
-		$action = t3lib_div::_GP ( 'action' );
+		$action = GeneralUtility::_GP ( 'action' );
 		if(empty($action)){
 			$action = 'index';
 		}
 		$action = $action.'Action';
 		$output = call_user_func(array($this->cacheManagementController, $action));
-		$output.= '<p class="c-refresh"><a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a></p>';
+		$output.= '<p class="c-refresh"><a href="'.htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')).'"><img'.IconUtility::skinImg($BACK_PATH,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a></p>';
 		return $output;
 	}
 }

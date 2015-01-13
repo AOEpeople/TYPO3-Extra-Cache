@@ -12,6 +12,8 @@ require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPAR
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Domain' . DIRECTORY_SEPARATOR . 'Repository' . DIRECTORY_SEPARATOR . 'CacheFileRepository.php';
 require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'View.php';
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Controller for Cache Management
  * @package extracache
@@ -245,9 +247,9 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigDateFilterForDbRecordsAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_startDateFilterForDbRecords', t3lib_div::_GP('startDateFilterForDbRecords'));
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_stopDateFilterForDbRecords', t3lib_div::_GP('stopDateFilterForDbRecords'));
-			switch(t3lib_div::_GP('routeToAction')) {
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_startDateFilterForDbRecords', GeneralUtility::_GP('startDateFilterForDbRecords'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_stopDateFilterForDbRecords', GeneralUtility::_GP('stopDateFilterForDbRecords'));
+			switch(GeneralUtility::_GP('routeToAction')) {
 				case 'allDatabaseEntrysForTableEventlogAction':
 					return $this->allDatabaseEntrysForTableEventlogAction();
 					break;
@@ -264,7 +266,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigGetFoldersWhichDoesNotContainFilesAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles', (boolean) t3lib_div::_GP('getFoldersWhichDoesNotContainFiles'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_getFoldersWhichDoesNotContainFiles', (boolean) GeneralUtility::_GP('getFoldersWhichDoesNotContainFiles'));
 			return $this->allFoldersAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -275,7 +277,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigSearchPhraseForTablePagesAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTablePages', (string) t3lib_div::_GP('searchPhraseForTablePages'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTablePages', (string) GeneralUtility::_GP('searchPhraseForTablePages'));
 			return $this->allDatabaseEntrysForTablePagesAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -286,7 +288,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigSearchPhraseForTableStaticCacheAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTableStaticCache', (string) t3lib_div::_GP('searchPhraseForTableStaticCache'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForTableStaticCache', (string) GeneralUtility::_GP('searchPhraseForTableStaticCache'));
 			return $this->allDatabaseEntrysForTableStaticCacheAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -297,7 +299,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigSearchPhraseForFilesAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFiles', (string) t3lib_div::_GP('searchPhraseForFiles'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFiles', (string) GeneralUtility::_GP('searchPhraseForFiles'));
 			return $this->allFilesAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -308,7 +310,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigSearchPhraseForFoldersAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFolders', (string) t3lib_div::_GP('searchPhraseForFolders'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_searchPhraseForFolders', (string) GeneralUtility::_GP('searchPhraseForFolders'));
 			return $this->allFoldersAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -319,7 +321,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigShowDatabaseDetailsAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showDatabaseDetails', (boolean) t3lib_div::_GP('showDatabaseDetails'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showDatabaseDetails', (boolean) GeneralUtility::_GP('showDatabaseDetails'));
 			return $this->indexAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);
@@ -330,7 +332,7 @@ class Tx_Extracache_Controller_CacheManagementController {
 	 */
 	public function setConfigShowFilesDetailsAction() {
 		try {
-			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showFilesDetails', (boolean) t3lib_div::_GP('showFilesDetails'));
+			$GLOBALS['BE_USER']->pushModuleData('tx_extracache_manager_showFilesDetails', (boolean) GeneralUtility::_GP('showFilesDetails'));
 			return $this->indexAction();
 		} catch (Exception $e) {
 			return $this->showErrorMessage($e);

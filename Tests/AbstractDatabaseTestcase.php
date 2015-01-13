@@ -9,6 +9,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * Abstract base class for extracache Database-Tests
  *
@@ -22,7 +24,7 @@ abstract class Tx_Extracache_Tests_AbstractDatabaseTestcase extends tx_phpunit_d
 	 * @return void
 	 */
 	protected function initializeCommonExtensions() {
-		if (t3lib_extMgm::isLoaded('aoe_dbsequenzer')) {
+		if (ExtensionManagementUtility::isLoaded('aoe_dbsequenzer')) {
 			$this->importExtensions(array('aoe_dbsequenzer'));
 		}
 	}

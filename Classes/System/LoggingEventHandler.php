@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage System
  */
 class Tx_Extracache_System_LoggingEventHandler implements \TYPO3\CMS\Core\SingletonInterface {
-	// log-levels are same as they used by t3lib_div::devlog 
+	// log-levels are same as they used by GeneralUtility::devlog
 	const LOG_INFO = 0;
 	const LOG_NOTICE = 1;
 	const LOG_WARNING = 2;
@@ -75,7 +75,7 @@ class Tx_Extracache_System_LoggingEventHandler implements \TYPO3\CMS\Core\Single
 			$additional ['requestUrl'] = $_SERVER['REQUEST_URI'];
 		}
 		$additional['debug_backtrace'] = $exception->getTraceAsString();
-		t3lib_div::devlog($message, 'extracache', $severity, $additional);
+        GeneralUtility::devlog($message, 'extracache', $severity, $additional);
 	}
 
 	/**

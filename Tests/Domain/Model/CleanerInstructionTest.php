@@ -11,6 +11,8 @@
 
 require_once dirname ( __FILE__ ) . '/../../AbstractDatabaseTestcase.php';
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * test case for Tx_Extracache_Domain_Model_CleanerInstruction
  * @package extracache_tests
@@ -34,7 +36,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 	 */
 	private $mockedTypo3DbBackend;
 	/**
-	 * @var t3lib_TCEmain
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private $mockedTceMain;
 	/**
@@ -49,7 +51,7 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$this->mockedCleanerStrategy = $this->getMock ( 'Tx_Extracache_Domain_Model_CleanerStrategy', array(), array(), '', FALSE);
 		$this->mockedStaticFileCache = $this->getMock ( 'tx_ncstaticfilecache', array('deleteStaticCacheDirectory', 'processDirtyPagesElement'));
 		$this->mockedTypo3DbBackend  = $this->getMock ( 'Tx_Extracache_System_Persistence_Typo3DbBackend', array('deleteQuery','updateQuery'));
-		$this->mockedTceMain = $this->getMock ( 't3lib_TCEmain', array(), array(), '', FALSE);
+		$this->mockedTceMain = $this->getMock ( '\TYPO3\CMS\Core\DataHandling\DataHandler', array(), array(), '', FALSE);
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -244,8 +246,8 @@ class Tx_Extracache_Domain_Model_CleanerInstructionTest extends Tx_Extracache_Te
 		$this->createDatabase();
 
 		$db = $this->useTestDatabase();
-		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
-		$db->admin_query( t3lib_div::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
+		$db->admin_query( GeneralUtility::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTablePages.txt' ) );
+		$db->admin_query( GeneralUtility::getUrl( PATH_tx_extracache . 'Tests/Domain/Model/Fixtures/SqlQueryForUnittestCleanerInstruction_createTableCachePages.txt' ) );
 
 		$this->importExtensions(array('cms', 'realurl', 'nc_staticfilecache', 'extracache'));
 		$this->initializeCommonExtensions();

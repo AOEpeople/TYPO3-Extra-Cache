@@ -24,7 +24,7 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 	 */
 	private $staticFileCache;
 	/**
-	 * @var t3lib_TCEmain
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private $tceMain;
 	/**
@@ -68,11 +68,11 @@ class Tx_Extracache_Domain_Service_CacheCleaner {
 		return $this->staticFileCache;
 	}
 	/**
-	 * @return t3lib_TCEmain
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getTceMain() {
 		if($this->tceMain === NULL) {
-			$this->tceMain = GeneralUtility::makeInstance('t3lib_TCEmain');
+			$this->tceMain = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$this->tceMain->start(array(), array());
 		}
 		return $this->tceMain;

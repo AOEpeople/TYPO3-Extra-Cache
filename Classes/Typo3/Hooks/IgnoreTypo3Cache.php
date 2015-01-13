@@ -21,7 +21,7 @@ require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPage
  */
 class tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	/**
-	 * @var t3lib_beUserAuth
+	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
 	protected $backendUser;
 
@@ -58,16 +58,16 @@ class tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	}
 
 	/**
-	 * @return t3lib_beUserAuth
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
 	protected function getBackendUser() {
 		return $this->backendUser;
 	}
 	/**
-	 * @param t3lib_beUserAuth $backendUser
+	 * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser
 	 * @return void
 	 */
-	protected function setBackendUser(t3lib_beUserAuth $backendUser = NULL) {
+	protected function setBackendUser(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser = NULL) {
 		$this->backendUser = $backendUser;
 	}
 

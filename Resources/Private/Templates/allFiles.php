@@ -30,7 +30,7 @@ foreach($GLOBALS['view_data']['allFiles'] as $file){
 	?>
 	<tr class="bgColor4">
 		<td class="nowrap"><?php echo $file->getName(); ?></td>
-		<td class="nowrap"><?php echo t3lib_BEfunc::datetime($file->getLastModificationTime()); ?></td>
+		<td class="nowrap"><?php echo \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($file->getLastModificationTime()); ?></td>
 		<td class="nowrap"><a href="?action=deleteFile&id=<?php echo $file->getIdentifier(); ?>"><?php echo $GLOBALS['LANG']->getLL('entityActionDelete');?></a></td>
 	</tr>
 	<?php 

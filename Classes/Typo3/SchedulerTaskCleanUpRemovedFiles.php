@@ -18,7 +18,7 @@ require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/FileReferenceModification
  * @package extracache
  * @subpackage Typo3
  */
-class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends tx_scheduler_Task {
+class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * @var Tx_Extracache_System_Event_Dispatcher
 	 */
@@ -50,7 +50,7 @@ class Tx_Extracache_Typo3_SchedulerTaskCleanUpRemovedFiles extends tx_scheduler_
 	protected function cleanUpRemovedFiles() {
 		$rows = $this->getTypo3DbBackend()->selectQuery('*', tx_Extracache_Typo3_Hooks_FileReferenceModification::TABLE_Queue);
 		foreach ($rows as $row) {
-			$files = t3lib_div::trimExplode(',', $row['files'], true);
+			$files = GeneralUtility::trimExplode(',', $row['files'], true);
 			foreach ($files as $file) {
 				if (is_file(PATH_site . $file)) {
 					unlink(PATH_site . $file);

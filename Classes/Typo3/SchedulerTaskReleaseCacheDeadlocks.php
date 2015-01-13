@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package extracache
  * @subpackage Typo3
  */
-class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends tx_scheduler_Task {
+class Tx_Extracache_Typo3_SchedulerTaskReleaseCacheDeadlocks extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/** @var Tx_Extracache_System_Event_Dispatcher */
 	private $eventDispatcher;
 

@@ -70,7 +70,7 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 * @test
 	 */
 	public function isExistingCacheIgnoredOnActiveBackendUser() {
-		$backendUser = $this->getMock('t3lib_beUserAuth');
+		$backendUser = $this->getMock('\TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
 		$backendUser->user = array('uid' => 1);
 		$this->ignoreTypo3Cache->expects($this->once())->method('getBackendUser')->will($this->returnValue($backendUser));
 

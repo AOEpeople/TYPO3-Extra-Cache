@@ -8,6 +8,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -23,8 +24,8 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 	 * handle actions
 	 */
 	protected function handleActions() {
-		$action = t3lib_div::_GP('ACTION');
-		$pageId = (integer) t3lib_div::_GP('id');
+		$action = GeneralUtility::_GP('ACTION');
+		$pageId = (integer) GeneralUtility::_GP('id');
 
 		if (isset($action['uxMarkAllDirty'])) {
 			$this->uxMarkDirty();
@@ -181,7 +182,7 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 	 * @return	void
 	 */
 	private function uxUpdateAllCaches() {
-		$pageId=t3lib_div::_GP('id');
+		$pageId=GeneralUtility::_GP('id');
 		if (!is_numeric($pageId)) {
 			throw new Exception('pageid not set');
 		}
@@ -209,7 +210,7 @@ class Tx_Extracache_Xclass_StaticFileCacheInfoModule extends tx_ncstaticfilecach
 	 */
 	private function getLinkIcon() {
 		if (!isset($this->linkIcon)) {
-			$this->linkIcon = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/link_popup.gif') . ' hspace="5" />';
+			$this->linkIcon = '<img' . IconUtility::skinImg($this->backPath, 'gfx/link_popup.gif') . ' hspace="5" />';
 		}
 		return $this->linkIcon;
 	}

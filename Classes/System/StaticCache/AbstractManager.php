@@ -84,7 +84,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements \TYPO
 	 * @return TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
 	 */
 	public function getFrontendUser() {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 	}
     /**
      * @return Tx_Extracache_Xclass_FrontendUserAuthentication	Frontend user handler
