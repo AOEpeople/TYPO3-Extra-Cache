@@ -25,13 +25,14 @@
 		<th><?php echo $GLOBALS['LANG']->getLL('headline_entityAction');?></th>
 	</tr>
 
-<?php 
+<?php
+$webInfoModuleToken = '?M=web_info&moduleToken=' . \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', 'web_info');
 foreach($GLOBALS['view_data']['allFiles'] as $file){
 	?>
 	<tr class="bgColor4">
 		<td class="nowrap"><?php echo $file->getName(); ?></td>
 		<td class="nowrap"><?php echo \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($file->getLastModificationTime()); ?></td>
-		<td class="nowrap"><a href="?action=deleteFile&id=<?php echo $file->getIdentifier(); ?>"><?php echo $GLOBALS['LANG']->getLL('entityActionDelete');?></a></td>
+		<td class="nowrap"><a href="<?php echo $webInfoModuleToken;?>&action=deleteFile&id=<?php echo $file->getIdentifier(); ?>"><?php echo $GLOBALS['LANG']->getLL('entityActionDelete');?></a></td>
 	</tr>
 	<?php 
 }
