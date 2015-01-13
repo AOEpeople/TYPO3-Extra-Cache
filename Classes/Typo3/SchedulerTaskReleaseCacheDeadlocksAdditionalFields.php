@@ -8,7 +8,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * class to define the additional field 'clientIdForProductCatalogue'
