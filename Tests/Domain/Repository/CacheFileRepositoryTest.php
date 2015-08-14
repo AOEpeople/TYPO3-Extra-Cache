@@ -46,6 +46,8 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
      * @test
      */
     public function getAllFilesWhenSearchphraseIsEmpty() {
+        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
+
         $results = $this->cacheFileRepository->getAllFiles('');
         $this->assertInternalType('array', $results);
         $this->assertEquals(3, count($results));
@@ -59,6 +61,8 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFilesWhenSearchphraseIsNotEmpty() {
+        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
+
         $results = $this->cacheFileRepository->getAllFiles('test/test');
         $this->assertInternalType('array', $results);
         $this->assertEquals(2, count($results));
@@ -73,6 +77,8 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
      * @test
      */
     public function getAllFoldersWhenSearchphraseIsEmpty() {
+        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
+
         $results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
         $this->assertInternalType ( 'array', $results );
         $this->assertEquals(3,count($results));
@@ -93,6 +99,8 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFoldersWhenSearchphraseIsNotEmpty() {
+        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
+
 		$results = $this->cacheFileRepository->getAllFolders ( TRUE, 'test/test2' );
 		$this->assertInternalType ( 'array', $results );
 		$this->assertEquals(2,count($results));
