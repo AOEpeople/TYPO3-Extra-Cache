@@ -10,6 +10,8 @@
 
 require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * Test case for tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
  *
@@ -22,15 +24,11 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 */
 	protected $backupGlobals = TRUE;
 	/**
-	 * @var string
-	 */
-	private $cacheData;
-	/**
 	 * @var tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache
 	 */
 	private $ignoreTypo3Cache;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $tsfe;
 
@@ -38,10 +36,8 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->cacheData = uniqid('cache');
 		$this->ignoreTypo3Cache = $this->getMock('tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache', array('getBackendUser'));
-		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
-		$this->tsfe->all = $this->cacheData;
+		$this->tsfe = $this->getMock('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', array(), array(), '', FALSE);
 	}
 	/**
 	 * Cleans this test case
@@ -60,8 +56,12 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 		$_SERVER['HTTP_' . str_replace('-', '_', tx_Extracache_Typo3_Hooks_StaticFileCache_DirtyPagesHook::HTTP_Request_Header)]= TRUE;
 		$this->ignoreTypo3Cache->expects($this->once())->method('getBackendUser')->will($this->returnValue( NULL ));
 
-		$this->ignoreTypo3Cache->ignoreExistingCache (array(), $this->tsfe);
-		$this->assertEquals('', $this->tsfe->all);
+		$disableAcquireCacheData = FALSE;
+		$parameters = array('disableAcquireCacheData' => &$disableAcquireCacheData);
+
+		$this->ignoreTypo3Cache->ignoreExistingCache ($parameters, $this->tsfe);
+		$this->assertFalse((bool) $this->tsfe->no_cache);
+		$this->assertTrue($disableAcquireCacheData);
 	}
 
 	/**
@@ -78,7 +78,6 @@ class Tx_Extracache_Typo3_Hooks_IgnoreTypo3CacheTest extends Tx_Extracache_Tests
 		$parameters = array('disableAcquireCacheData' => &$disableAcquireCacheData);
 
 		$this->ignoreTypo3Cache->ignoreExistingCache ($parameters, $this->tsfe);
-		$this->assertEquals($this->cacheData, $this->tsfe->all);
 		$this->assertTrue((bool) $this->tsfe->no_cache);
 		$this->assertTrue($disableAcquireCacheData);
 	}

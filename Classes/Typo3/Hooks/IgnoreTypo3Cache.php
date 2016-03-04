@@ -10,6 +10,8 @@
 
 require_once(PATH_tx_extracache . 'Classes/Typo3/Hooks/StaticFileCache/DirtyPagesHook.php');
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * Hook to ensure that there is no TYPO3 cached used.
  * The hook is called by the regular TYPO3 frontend object (TSFE).
@@ -40,16 +42,18 @@ class tx_Extracache_Typo3_Hooks_IgnoreTypo3Cache {
 	 * for the requested page.
 	 *
 	 * @param array $parameters
-	 * @param tslib_fe $parent
+	 * @param TypoScriptFrontendController $parent
 	 * @return void
-	 * @see tslib_fe::headerNoCache
-	 * @see tslib_fe::getFromCache
+	 * @see TypoScriptFrontendController::headerNoCache
+	 * @see TypoScriptFrontendController::getFromCache
 	 */
-	public function ignoreExistingCache(array $parameters, tslib_fe $parent) {
+	public function ignoreExistingCache(array &$parameters, TypoScriptFrontendController $parent) {
 		// This modification triggers invalidating the TYPO3 Cache and recaching:
 		if($this->isProcessingDirtyPages()) {
-			$parent->all = '';
+			// Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.
+			$parameters['disableAcquireCacheData'] = TRUE;
 		}
+
 			// This modification just disables reading from and writing to the cache:
 		if ($this->isBackendUserActive()) {
 			$parameters['disableAcquireCacheData'] = TRUE;
