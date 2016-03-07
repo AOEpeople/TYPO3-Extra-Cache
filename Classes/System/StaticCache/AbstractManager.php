@@ -253,22 +253,7 @@ abstract class Tx_Extracache_System_StaticCache_AbstractManager implements \TYPO
 	 * @return	boolean
 	 */
 	protected function isCachedRepresentationAvailable() {
-		$result = $this->isCachedRepresentationAccessible($this->getCachedRepresentation());
-
-			// Tries to use the anonymous representation (if available):
-			// @todo BUFFALO_3-0: Reactivate anonymous page delivery
-		/*
-			if ($result === FALSE && $this->cachedRepresentationGroupList !== '0,-1') {
-				$this->cachedRepresentationGroupList = '0,-1';
-				$cachedRepresentation = $this->getCachedRepresentation();
-				if ($this->isCachedRepresentationAccessible($cachedRepresentation)) {
-					$pageInformation = $this->getPageInformationFromCachedRepresentation(file_get_contents($cachedRepresentation));
-					$result = (isset($pageInformation['isAnonymous']) && $pageInformation['isAnonymous']);
-				}
-			}
-		*/
-
-		return $result;
+		return $this->isCachedRepresentationAccessible($this->getCachedRepresentation());
 	}
 
 	/**

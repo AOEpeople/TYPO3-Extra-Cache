@@ -81,16 +81,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 				);
 			}
 
-
-			// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
-			// @todo BUFFALO_3-0: Reactivate anonymous page delivery
-			/*
-				if ($frontendUserGroupList !== '0,-1' && $this->isAnonymous($frontend)) {
-					$parameters['staticCacheable'] = FALSE;
-					// Override staticCacheable status and recreate with ignoring active frontend users:
-				} elseif ($parameters['staticCacheable'] === FALSE) {
-			*/
-
 			$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
 			$this->getEventDispatcher()->triggerEvent($event);
 		}
@@ -114,7 +104,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 				'config' => $frontend->config['config'],
 			),
 			'GET' => $this->getWhiteListedArguments(),
-			'isAnonymous' => $this->isAnonymous($frontend),
 			'firstRootlineId' => (isset($frontend->rootLine[0]['uid']) ? $frontend->rootLine[0]['uid'] : NULL),
 			'content' => $parameters['content']
 		);
@@ -225,25 +214,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	}
 
 	/**
-	 * Determines whether all pages in the rootline and
-	 * the content on the current page are anonymous.
-	 *
-	 * @param TypoScriptFrontendController $frontend
-	 * @return boolean
-	 */
-	protected function isAnonymous(TypoScriptFrontendController $frontend) {
-		// @todo This feature is currently disabled
-		return FALSE;
-
-		foreach ($frontend->rootLine as $page) {
-			if (!empty($page['fe_group'])) {
-				return FALSE;
-			}
-		}
-
-		return $this->hasOnlyAnonymousContent($frontend->page['uid']);
-	}
-	/**
 	 * Determines whether the current request cannot be cached staticaly in general.
 	 * The behaviour can be configured via creating Tx_Extracache_Domain_Model_Argument-objects with Type Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible
 	 *
@@ -257,24 +227,6 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 			$this->getGetArguments(),
 			$this->getArgumentRepository()->getArgumentsByType( Tx_Extracache_Domain_Model_Argument::TYPE_unprocessible )
 		);
-	}
-	/**
-	 * Determines whether all content on a page is anonymous.
-	 *
-	 * @param integer $pageId
-	 * @return boolean
-	 */
-	protected function hasOnlyAnonymousContent($pageId) {
-		// @todo This feature is currently disabled
-		return FALSE;
-
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-			'uid',
-			'tt_content',
-			'hidden=0 AND deleted=0 AND pid=' . intval($pageId) . ' AND fe_group'
-		);
-
-		return ($count === 0 || $count === '0');
 	}
 
 	/**
