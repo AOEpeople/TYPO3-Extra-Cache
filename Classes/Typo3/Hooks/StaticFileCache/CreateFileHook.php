@@ -34,56 +34,62 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * @return	void
 	 */
 	public function initialize(array $parameters, tx_ncstaticfilecache $parent) {
-		$event = $this->getNewEvent(self::EVENT_PreInitialize, $parameters, $parent);
-		$this->getEventDispatcher()->triggerEvent($event);
+		$frontend = $this->getFrontend($parameters);
+
+		if ($frontend->page['tx_ncstaticfilecache_cache'] !== '1') {
+			// page should not be static cacheable
+			return;
+		}
 
 		if($this->isUnprocessibleRequestAction()) {
 			// change parameters, so nc_staticfilecache will NOT cache this request
 			$parameters['isHttp'] = FALSE;
 			$parameters['staticCacheable'] = FALSE;
-		} else {
-			$frontend = $this->getFrontend($parameters);
-
-			// modify some data if we support FE-usergroups
-			if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
-                /* @var $frontendUser Tx_Extracache_Xclass_FrontendUserAuthentication */
-                $frontendUser = $frontend->fe_user;
-				$frontendUserGroupList = $frontendUser->getGroupList();
-
-				// Adds the frontend user groups to the cache directory path:
-				$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
-
-				// Adds the frontend user groups to the static cache table:
-				$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
-
-				// Defines the additionalHash value for database lookups:
-				$parameters['additionalHash'] = md5($frontendUserGroupList);
-			}
-
-			// Fixes a non speaking URI request (e.g. /index.php?id=13):
-			list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);
-
-			// Modifies the URI to be cached to not contain any unwanted arguments:
-			$parameters['uri'] = Tx_Extracache_System_Tools_Uri::filterUriArguments(
-				$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
-			);
-			$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
-
-			if (strpos($parameters['uri'], '?') !== false) {
-				$data = array(
-					'uri' => $parameters['uri'],
-					'getParams' => explode('&', substr($parameters['uri'], strpos($parameters['uri'], '?')+1))
-				);
-				$this->logMessage(
-					'static cache can not be written because URI contains GET-params (which are not configured as \'ignoreOnCreatingCache\')!',
-					GeneralUtility::SYSLOG_SEVERITY_WARNING,
-					$data
-				);
-			}
-
-			$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
-			$this->getEventDispatcher()->triggerEvent($event);
+			return;
 		}
+
+		$event = $this->getNewEvent(self::EVENT_PreInitialize, $parameters, $parent);
+		$this->getEventDispatcher()->triggerEvent($event);
+
+		// modify some data if we support FE-usergroups
+		if($this->getExtensionManager()->isSupportForFeUsergroupsSet() === TRUE) {
+			/* @var $frontendUser Tx_Extracache_Xclass_FrontendUserAuthentication */
+			$frontendUser = $frontend->fe_user;
+			$frontendUserGroupList = $frontendUser->getGroupList();
+
+			// Adds the frontend user groups to the cache directory path:
+			$parameters['cacheDir'] .= DIRECTORY_SEPARATOR . $frontendUserGroupList;
+
+			// Adds the frontend user groups to the static cache table:
+			$parameters['fieldValues'][Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook::FIELD_GroupList] = $frontendUserGroupList;
+
+			// Defines the additionalHash value for database lookups:
+			$parameters['additionalHash'] = md5($frontendUserGroupList);
+		}
+
+		// Fixes a non speaking URI request (e.g. /index.php?id=13):
+		list($parameters['host'], $parameters['uri']) = $this->fixNonSpeakingUri($parameters['host'], $parameters['uri'], $frontend);
+
+		// Modifies the URI to be cached to not contain any unwanted arguments:
+		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::filterUriArguments(
+			$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
+		);
+		$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
+
+		if (strpos($parameters['uri'], '?') !== false) {
+			$data = array(
+				'uri' => $parameters['uri'],
+				'getParams' => explode('&', substr($parameters['uri'], strpos($parameters['uri'], '?')+1))
+			);
+			$this->logMessage(
+				'static cache can not be written because URI contains GET-params (which are not configured as \'ignoreOnCreatingCache\')!',
+				GeneralUtility::SYSLOG_SEVERITY_WARNING,
+				$data
+			);
+		}
+
+		$event = $this->getNewEvent(self::EVENT_Initialize, $parameters, $parent, $frontend);
+		$this->getEventDispatcher()->triggerEvent($event);
 	}
 
 	/**
@@ -171,10 +177,10 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 *
 	 * @param	string $host
 	 * @param	string $uri
-	 * @param	tslib_fe $frontend
+	 * @param	TypoScriptFrontendController $frontend
 	 * @return	array
 	 */
-	protected function fixNonSpeakingUri($host, $uri, tslib_fe $frontend) {
+	protected function fixNonSpeakingUri($host, $uri, TypoScriptFrontendController $frontend) {
 		$matches = array();
 
 		if ($this->isCrawlerExtensionRunning($frontend) && preg_match('#^/index.php\?&?id=(\d+)$#', $uri, $matches)) {
