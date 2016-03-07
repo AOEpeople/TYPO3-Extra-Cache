@@ -70,7 +70,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 
 		$this->createFileHook = $this->getMock(
 			'tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook',
-			array('getArgumentRepository', 'getExtensionManager', 'getEventDispatcher', 'isAnonymous', 'isUnprocessibleRequestAction', 'getGetArguments', 'isCrawlerExtensionRunning')
+			array('getArgumentRepository', 'getExtensionManager', 'getEventDispatcher', 'isAnonymous', 'isUnprocessibleRequestAction', 'getGetArguments', 'isCrawlerExtensionRunning', 'logMessage')
 		);
 		$this->createFileHook->expects($this->any())->method('getArgumentRepository')->will($this->returnValue($this->argumentRepository));
 		$this->createFileHook->expects($this->any())->method('getEventDispatcher')->will($this->returnValue($this->eventDispatcher));

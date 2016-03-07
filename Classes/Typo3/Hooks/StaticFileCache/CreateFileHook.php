@@ -2,11 +2,15 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 AOE media GmbH <dev@aoemedia.de>
+*  (c) 2010 AOE GmbH <dev@aoe.com>
 *  All rights reserved
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook for nc_staticfilecache that is called on creating the file with the cached content.
@@ -17,7 +21,7 @@
  * @subpackage Typo3_Hooks_StaticFileCache
  *
  */
-class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements \TYPO3\CMS\Core\SingletonInterface {
+class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook implements SingletonInterface {
 	const EVENT_PreInitialize = 'onStaticFileCacheCreateFilePreInitialize';
 	const EVENT_Initialize = 'onStaticFileCacheCreateFileInitialize';
 	const EVENT_Process = 'onStaticFileCacheCreateFileProcess';
@@ -64,6 +68,19 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 				$parameters['uri'], $this->getArgumentRepository()->getArgumentsByType(Tx_Extracache_Domain_Model_Argument::TYPE_ignoreOnCreatingCache)
 			);
 			$parameters['uri'] = Tx_Extracache_System_Tools_Uri::fixIndexUri($parameters['uri']);
+
+			if (strpos($parameters['uri'], '?') !== false) {
+				$data = array(
+					'uri' => $parameters['uri'],
+					'getParams' => explode('&', substr($parameters['uri'], strpos($parameters['uri'], '?')+1))
+				);
+				$this->logMessage(
+					'static cache can not be written because URI contains GET-params (which are not configured as \'ignoreOnCreatingCache\')!',
+					GeneralUtility::SYSLOG_SEVERITY_WARNING,
+					$data
+				);
+			}
+
 
 			// Avoid writing a static cache file and entry if the page is still anonymous with logged in frontend user:
 			// @todo BUFFALO_3-0: Reactivate anonymous page delivery
@@ -195,10 +212,10 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	/**
 	 * Determine whether the crawler extension is running and initiated the current request.
 	 *
-	 * @param tslib_fe $frontend
+	 * @param TypoScriptFrontendController $frontend
 	 * @return boolean
 	 */
-	protected function isCrawlerExtensionRunning(tslib_fe $frontend) {
+	protected function isCrawlerExtensionRunning(TypoScriptFrontendController $frontend) {
 		return (
 			$this->isExtensionLoaded('crawler')
 			&& isset($frontend->applicationData['tx_crawler']['running'])
@@ -211,10 +228,10 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * Determines whether all pages in the rootline and
 	 * the content on the current page are anonymous.
 	 *
-	 * @param tslib_fe $frontend
+	 * @param TypoScriptFrontendController $frontend
 	 * @return boolean
 	 */
-	protected function isAnonymous(tslib_fe $frontend) {
+	protected function isAnonymous(TypoScriptFrontendController $frontend) {
 		// @todo This feature is currently disabled
 		return FALSE;
 
@@ -264,10 +281,20 @@ class tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook extends Tx_Extrac
 	 * Gets the frontend.
 	 *
 	 * @param array $parameters
-	 * @return tslib_fe
+	 * @return TypoScriptFrontendController
 	 */
 	protected function getFrontend(array $parameters) {
 		return $parameters['TSFE'];
+	}
+
+	/**
+	 * @param string $message
+	 * @param integer $severity
+	 * @param array $data
+	 */
+	protected function logMessage($message, $severity, array $data)
+	{
+		GeneralUtility::devLog($message, 'extracache', $severity, $data);
 	}
 
 	/**
