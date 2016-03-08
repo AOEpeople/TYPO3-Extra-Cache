@@ -9,6 +9,7 @@
 ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook to post-process entries in cache_pages to add the current group list.
@@ -28,16 +29,16 @@ class tx_Extracache_Typo3_Hooks_InsertPageIncache {
 	/**
 	 * Modifies the group list column of a cache_pages entry.
 	 *
-	 * @param tslib_fe $parent
+	 * @param TypoScriptFrontendController $frontend
 	 * @param integer $expires
 	 * @return void
 	 */
-	public function insertPageIncache(tslib_fe $parent, $expires) {
+	public function insertPageIncache(TypoScriptFrontendController $frontend, $expires) {
 		// @todo Add tag for group list if Caching Framework is used
-		if ($parent->gr_list !== '0,-1') {
+		if ($frontend->gr_list !== '0,-1') {
 			$sqlFrom = 'cache_pages';
-			$sqlWhere = 'hash=' . $this->getTypo3DbBackend()->fullQuoteStr($parent->newHash, 'cache_pages') . ' AND page_id=' . intval($parent->id);
-			$modifiedValues = array('tx_extracache_grouplist' => $parent->gr_list); 
+			$sqlWhere = 'hash=' . $this->getTypo3DbBackend()->fullQuoteStr($frontend->newHash, 'cache_pages') . ' AND page_id=' . intval($frontend->id);
+			$modifiedValues = array('tx_extracache_grouplist' => $frontend->gr_list);
 			$this->getTypo3DbBackend()->updateQuery($sqlFrom, $sqlWhere, $modifiedValues);
 		}
 	}

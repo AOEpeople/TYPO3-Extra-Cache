@@ -10,8 +10,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-require_once dirname ( __FILE__ ) . '/../../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * test case for Tx_Extracache_System_Event_Events_EventOnInitializeFrontEnd
@@ -42,7 +41,7 @@ class Tx_Extracache_System_Event_Events_EventOnInitializeFrontEndTest extends Tx
 	 * @test
 	 */
 	public function getMethods() {
-		$frontendUser = GeneralUtility::makeInstance ( 'tslib_feUserAuth' );
+		$frontendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		$this->assertTrue( $this->event->setFrontendUser( $frontendUser ) === $this->event );
 		$this->assertTrue( $this->event->getFrontendUser() === $frontendUser );
 	}

@@ -8,8 +8,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..'  . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR . 'Domain' . DIRECTORY_SEPARATOR . 'Repository' . DIRECTORY_SEPARATOR . 'CacheDatabaseEntryRepository.php';
-require_once dirname ( __FILE__ ) . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'AbstractDatabaseTestcase.php';
+
 /**
  * Tx_Extracache_Domain_Repository_CacheDatabaseEntryRepository test case.
  * @package extracache_tests

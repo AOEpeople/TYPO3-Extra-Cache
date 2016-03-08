@@ -10,8 +10,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-require_once dirname ( __FILE__ ) . '/../../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * test case for Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
@@ -43,7 +42,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequestTest extends Tx
 	 */
 	public function getMethods() {
 		$request = GeneralUtility::makeInstance('Tx_Extracache_System_StaticCache_Request');
-		$frontendUser = GeneralUtility::makeInstance ( 'tslib_feUserAuth' );
+		$frontendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		$reasonForCancelation = 'test';
 		$this->assertTrue( $this->event->setFrontendUser( $frontendUser ) === $this->event );
 		$this->assertTrue( $this->event->setRequest( $request ) === $this->event );

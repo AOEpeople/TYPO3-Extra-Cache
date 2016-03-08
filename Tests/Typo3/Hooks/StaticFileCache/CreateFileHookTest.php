@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-#require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHook
@@ -34,7 +34,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 	 */
 	protected $frontendUser;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	protected $frontend;
 	/**
@@ -59,7 +59,7 @@ class Tx_Extracache_Typo3_Hooks_StaticFileCache_CreateFileHookTest extends Tx_Ex
 		$this->staticFileCache = $this->getMock('tx_ncstaticfilecache');
 
 		$this->frontendUser = $this->getMock('Tx_Extracache_Xclass_FrontendUserAuthentication', array());
-		$this->frontend = $this->getMock ('tslib_fe', array(), array(), '', FALSE);
+		$this->frontend = $this->getMock ('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->frontend->fe_user = $this->frontendUser;
 		$this->frontend->page = array('tx_ncstaticfilecache_cache' => '1');
 

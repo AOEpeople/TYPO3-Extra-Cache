@@ -9,9 +9,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
-require_once dirname ( __FILE__ ) . '/Fixtures/DummyContentProcessor.php';
-
 /**
  * test case for Tx_Extracache_System_ContentProcessor_Chain
  * @package extracache_tests

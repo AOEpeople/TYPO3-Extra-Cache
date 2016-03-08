@@ -10,6 +10,7 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Handles caches of TypoScript.
@@ -51,10 +52,10 @@ class tx_Extracache_Typo3_TypoScriptCache implements \TYPO3\CMS\Core\SingletonIn
 	/**
 	 * Gets the pageId of the current page.
 	 *
-	 * @param tslib_fe $frontend
+	 * @param TypoScriptFrontendController $frontend
 	 * @return integer
 	 */
-	public function getTemplatePageId(tslib_fe $frontend) {
+	public function getTemplatePageId(TypoScriptFrontendController $frontend) {
 		return $frontend->id;
 	}
 
@@ -106,7 +107,7 @@ class tx_Extracache_Typo3_TypoScriptCache implements \TYPO3\CMS\Core\SingletonIn
 		return $this->eventDispatcher;
 	}
 	/**
-	 * @return tslib_fe
+	 * @return TypoScriptFrontendController
 	 */
 	protected function getFrontend() {
 		return $GLOBALS['TSFE'];

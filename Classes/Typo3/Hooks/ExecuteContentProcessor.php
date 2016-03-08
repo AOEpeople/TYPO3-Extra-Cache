@@ -9,6 +9,7 @@
 ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook class for TYPO3 - execute contentProcessors
@@ -28,12 +29,12 @@ class tx_Extracache_Typo3_Hooks_ExecuteContentProcessor {
 	 * execute contentProcessors
 	 *
 	 * @param	array		$parameters Parameters delivered by the calling parent object (not used here)
-	 * @param	tslib_fe	$parent The calling parent object
+	 * @param	TypoScriptFrontendController	$frontend The calling parent object
 	 * @return	void
 	 */
-	public function executeContentProcessor(array $parameters, tslib_fe $parent) {
+	public function executeContentProcessor(array $parameters, TypoScriptFrontendController $frontend) {
 		if($this->getExtensionManager()->areContentProcessorsEnabled()) {
-			$parent->content = $this->getContentProcessorChain()->process( $parent->content );
+			$frontend->content = $this->getContentProcessorChain()->process($frontend->content);
 		}
 	}
 

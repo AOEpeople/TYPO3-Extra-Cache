@@ -9,8 +9,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
-
 /**
  * test case for Tx_Extracache_System_StaticCache_Request
  * @package extracache_tests

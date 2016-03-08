@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for tx_Extracache_Typo3_Hooks_SendCacheDebugHeader
@@ -26,7 +26,7 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 	 */
 	private $hook;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $tsfeMock;
 
@@ -37,7 +37,7 @@ class Tx_Extracache_Typo3_Hooks_SendCacheDebugHeaderTest extends Tx_Extracache_T
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_SendCacheDebugHeader', array('getExtensionManager','sendHttpRequestHeader'));
 		$this->hook->expects($this->any())->method('getExtensionManager')->will($this->returnValue( $this->extensionManager ));
-		$this->tsfeMock = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$this->tsfeMock = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 	}
 
 	/**

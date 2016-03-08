@@ -8,6 +8,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * This event will be thrown when static files are written or cleaned up in:
  *  - Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook
@@ -17,7 +19,7 @@
  */
 class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extracache_System_Event_Events_Event {
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $frontend;
 	/**
@@ -32,9 +34,9 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extrac
 	 * @param object $contextObject
 	 * @param array $infos
 	 * @param tx_ncstaticfilecache $parent
-	 * @param tslib_fe $frontend (optional)
+	 * @param TypoScriptFrontendController $frontend (optional)
 	 */
-	public function __construct($name, $contextObject, array $infos, tx_ncstaticfilecache $parent, tslib_fe $frontend = NULL) {
+	public function __construct($name, $contextObject, array $infos, tx_ncstaticfilecache $parent, TypoScriptFrontendController $frontend = NULL) {
 		parent::__construct($name, $contextObject, $infos);
 		
 		$this->setParent( $parent );
@@ -43,7 +45,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extrac
 		}
 	}
 	/**
-	 * @return tslib_fe
+	 * @return TypoScriptFrontendController
 	 */
 	public function getFrontend() {
 		return $this->frontend;
@@ -56,10 +58,10 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCache extends Tx_Extrac
 	}
 
 	/**
-	 * @param tslib_fe $frontend
+	 * @param TypoScriptFrontendController $frontend
 	 * @return void
 	 */
-	private function setFrontend(tslib_fe $frontend) {
+	private function setFrontend(TypoScriptFrontendController $frontend) {
 		$this->frontend = $frontend;
 	}
 	/**

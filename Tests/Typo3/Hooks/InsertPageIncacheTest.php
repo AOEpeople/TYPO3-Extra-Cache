@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for tx_Extracache_Typo3_Hooks_InsertPageIncache
@@ -22,7 +22,7 @@ class Tx_Extracache_Typo3_Hooks_InsertPageIncacheTest extends Tx_Extracache_Test
 	 */
 	private $hook;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $tsfe;
 	/**
@@ -35,7 +35,7 @@ class Tx_Extracache_Typo3_Hooks_InsertPageIncacheTest extends Tx_Extracache_Test
 	 */
 	protected function setUp() {
 
-		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$this->tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->typo3DbBackend = $this->getMock('Tx_Extracache_System_Persistence_Typo3DbBackend', array(), array(), '', FALSE);
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_InsertPageIncache', array('getTypo3DbBackend'));
 		$this->hook->expects($this->any())->method('getTypo3DbBackend')->will($this->returnValue( $this->typo3DbBackend ));

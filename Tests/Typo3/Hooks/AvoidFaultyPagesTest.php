@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for tx_Extracache_Typo3_Hooks_AvoidFaultyPages
@@ -22,7 +22,7 @@ class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesTest extends Tx_Extracache_Tests
 	 */
 	private $hook;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $tsfeMock;
 
@@ -31,7 +31,7 @@ class Tx_Extracache_Typo3_Hooks_AvoidFaultyPagesTest extends Tx_Extracache_Tests
 	 */
 	protected function setUp() {
 		$this->hook = new tx_Extracache_Typo3_Hooks_AvoidFaultyPages();
-		$this->tsfeMock = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$this->tsfeMock = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 	}
 
 	/**

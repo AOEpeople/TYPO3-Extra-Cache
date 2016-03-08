@@ -10,6 +10,7 @@
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook for nc_staticfilecache that is called on creating the file with the cached content.
@@ -83,10 +84,10 @@ abstract class Tx_Extracache_Typo3_Hooks_StaticFileCache_AbstractHook {
 	 * @param string $name
 	 * @param array $information
 	 * @param tx_ncstaticfilecache $parent
-	 * @param tslib_fe $frontend (optional)
+	 * @param TypoScriptFrontendController $frontend (optional)
 	 * @return Tx_Extracache_System_Event_Events_Event
 	 */
-	protected function getNewEvent($name, array $information, tx_ncstaticfilecache $parent, tslib_fe $frontend = NULL) {
+	protected function getNewEvent($name, array $information, tx_ncstaticfilecache $parent, TypoScriptFrontendController $frontend = NULL) {
 		return GeneralUtility::makeInstance(
 			'Tx_Extracache_System_Event_Events_EventOnStaticFileCache',
 			$name, $this, $information, $parent, $frontend

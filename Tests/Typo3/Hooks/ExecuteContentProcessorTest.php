@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for tx_Extracache_Typo3_Hooks_ExecuteContentProcessor
@@ -30,7 +30,7 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 	 */
 	private $hook;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $tsfeMock;
 
@@ -41,7 +41,7 @@ class Tx_Extracache_Typo3_Hooks_ExecuteContentProcessorTest extends Tx_Extracach
 
 		$this->chain = $this->getMock('Tx_Extracache_System_ContentProcessor_Chain', array(), array(), '', FALSE);
 		$this->extensionManager = $this->getMock('Tx_Extracache_Configuration_ExtensionManager', array(), array(), '', FALSE);
-		$this->tsfeMock = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$this->tsfeMock = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 
 		$this->hook = $this->getMock('tx_Extracache_Typo3_Hooks_ExecuteContentProcessor', array('getContentProcessorChain','getExtensionManager'));
 		$this->hook->expects($this->any())->method('getContentProcessorChain')->will($this->returnValue( $this->chain ));

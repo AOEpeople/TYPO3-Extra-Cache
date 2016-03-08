@@ -9,6 +9,7 @@
 ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook class for TYPO3 - Sends HTTP headers for debuging caching situations (if developmentContext is set)
@@ -32,20 +33,20 @@ class tx_Extracache_Typo3_Hooks_SendCacheDebugHeader {
 	 * disabled during rendering by setting TSFE->set_no_cache().
 	 *
 	 * @param	array		$parameters Parameters delivered by the calling parent object (not used here)
-	 * @param	tslib_fe	$parent The calling parent object
+	 * @param	TypoScriptFrontendController	$frontend The calling parent object
 	 * @return	void
 	 */
-	public function sendCacheDebugHeader(array $parameters, tslib_fe $parent) {
+	public function sendCacheDebugHeader(array $parameters, TypoScriptFrontendController $frontend) {
 		if ($this->getExtensionManager()->isDevelopmentContextSet()) {
 			$cacheDebug = array();
 
-			if ($parent->isINTincScript()) {
+			if ($frontend->isINTincScript()) {
 				$cacheDebug[] = 'INT';
 			}
-			if ($parent->no_cache) {
+			if ($frontend->no_cache) {
 				$cacheDebug[] = 'no_cache';
 			}
-			if ($parent->cacheContentFlag) {
+			if ($frontend->cacheContentFlag) {
 				$cacheDebug[] = 'cached';
 			}
 			if (count($cacheDebug)) {

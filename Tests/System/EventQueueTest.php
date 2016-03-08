@@ -9,8 +9,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../AbstractDatabaseTestcase.php';
-
 /**
  * test case for Tx_Extracache_System_EventQueue
  * @package extracache_tests

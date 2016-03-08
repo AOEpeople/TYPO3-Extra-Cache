@@ -9,7 +9,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * test case for Tx_Extracache_System_Event_Events_EventOnStaticFileCache
@@ -26,7 +26,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCacheTest extends Tx_Ex
 	 */
 	private $mockedStaticFileCache;
 	/**
-	 * @var tslib_fe
+	 * @var TypoScriptFrontendController
 	 */
 	private $mockedFrontend;
 
@@ -35,7 +35,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticFileCacheTest extends Tx_Ex
 	 */
 	protected function setUp() {
 		$this->mockedStaticFileCache = $this->getMock('tx_ncstaticfilecache',array(),array(),'',FALSE);
-		$this->mockedFrontend = $this->getMock('tslib_fe',array(),array(),'',FALSE);
+		$this->mockedFrontend = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',array(),array(),'',FALSE);
 		$this->event = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extracache_System_Event_Events_EventOnStaticFileCache', 'testEventName', $this, array(), $this->mockedStaticFileCache, $this->mockedFrontend);
 	}
 	/**

@@ -9,6 +9,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+
 /**
  * this event will be thrown, when we must check, if we can respond the request in:
  *  - Tx_Extracache_System_StaticCache_AbstractManager
@@ -23,7 +25,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 	 */
 	protected $name = 'onStaticCacheRequest';
 	/**
-	 * @var tslib_feUserAuth
+	 * @var FrontendUserAuthentication
 	 */
 	private $frontendUser;
 	/**
@@ -40,7 +42,7 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 	 */
 	public function __construct(){}
 	/**
-	 * @return tslib_feUserAuth
+	 * @return FrontendUserAuthentication
 	 */
 	public function getFrontendUser() {
 		return $this->frontendUser;
@@ -59,10 +61,10 @@ class Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest extends Tx_Ext
 	}
 
 	/**
-	 * @param	tslib_feUserAuth $frontendUser
+	 * @param	FrontendUserAuthentication $frontendUser
 	 * @return	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest
 	 */
-	public function setFrontendUser(tslib_feUserAuth $frontendUser) {
+	public function setFrontendUser(FrontendUserAuthentication $frontendUser) {
 		$this->frontendUser = $frontendUser;
 		return $this;
 	}

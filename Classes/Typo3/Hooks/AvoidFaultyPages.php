@@ -8,6 +8,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * This hook avoids putting faulty pages (e.g. if templaVoila could not render page or Event 'Tx_Extracache_System_Event_Events_EventOnFaultyPages' was thrown) into the cache.
  * 
@@ -28,12 +30,12 @@ class tx_Extracache_Typo3_Hooks_AvoidFaultyPages implements \TYPO3\CMS\Core\Sing
 	 * Disables the caching on faulty pages
 	 *
 	 * @param	array		$parameters Additional parameters delivered by the calling parent
-	 * @param	tslib_fe	$parent The calling parent object (TSFE)
+	 * @param	TypoScriptFrontendController	$frontend The calling parent object (TSFE)
 	 * @return	void
 	 */
-	public function disableCachingOnFaultyPages(array $parameters, tslib_fe $parent) {
-		if ($this->hasFaultyEvents || $this->hasTemplaVoilaError($parent)) {
-			$parent->no_cache = 1;
+	public function disableCachingOnFaultyPages(array $parameters, TypoScriptFrontendController $frontend) {
+		if ($this->hasFaultyEvents || $this->hasTemplaVoilaError($frontend)) {
+			$frontend->no_cache = 1;
 		}
 	}
 	/**
@@ -48,10 +50,10 @@ class tx_Extracache_Typo3_Hooks_AvoidFaultyPages implements \TYPO3\CMS\Core\Sing
 	/**
 	 * Determines whether a TemplaVoila error was found in the content.
 	 *
-	 * @param tslib_fe $tsfe
+	 * @param TypoScriptFrontendController $frontend
 	 * @return boolean
 	 */
-	private function hasTemplaVoilaError(tslib_fe $tsfe) {
-		return (stripos($tsfe->content, self::ERROR_TemplaVoila) !== FALSE);
+	private function hasTemplaVoilaError(TypoScriptFrontendController $frontend) {
+		return (stripos($frontend->content, self::ERROR_TemplaVoila) !== FALSE);
 	}
 }

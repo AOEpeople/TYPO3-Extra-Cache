@@ -8,8 +8,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
-
 /**
  * Test case for tx_Extracache_Typo3_Hooks_ClearCachePostProc
  *

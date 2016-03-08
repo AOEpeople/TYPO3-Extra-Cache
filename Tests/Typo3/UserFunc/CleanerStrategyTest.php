@@ -11,8 +11,6 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
-
 /**
  * test case for Tx_Extracache_Typo3_UserFunc_CleanerStrategy
  * @package extracache_tests

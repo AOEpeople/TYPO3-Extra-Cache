@@ -11,8 +11,6 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
-
 /**
  * test case for Tx_Extracache_Domain_Repository_EventRepository
  * @package extracache_tests

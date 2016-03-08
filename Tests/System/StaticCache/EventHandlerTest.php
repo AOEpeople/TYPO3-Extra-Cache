@@ -8,7 +8,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname ( __FILE__ ) . '/../../AbstractTestcase.php';
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Test case for Tx_Extracache_System_StaticCache_EventHandler
@@ -26,7 +26,7 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	 */
 	private $eventOnStaticCacheRequest;
 	/**
-	 * @var tslib_feUserAuth
+	 * @var FrontendUserAuthentication
 	 */
 	private $frontendUser;
 	/**
@@ -53,7 +53,7 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 		$this->eventHandler->expects($this->any())->method('getStorage')->will($this->returnValue($this->storage));
 		$this->eventHandler->expects($this->any())->method('isUnprocessibleRequestAction')->will($this->returnValue(FALSE));
 
-		$this->frontendUser = $this->getMock('tslib_feUserAuth', array(), array(), '', FALSE);
+		$this->frontendUser = $this->getMock('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication', array(), array(), '', FALSE);
 		$this->request = $this->getMock('Tx_Extracache_System_StaticCache_Request', array(), array(), '', FALSE);
 		$this->eventOnStaticCacheRequest = $this->getMock('Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest', array('getFrontendUser', 'getRequest'));
 		$this->eventOnStaticCacheRequest->expects($this->any())->method('getFrontendUser')->will($this->returnValue($this->frontendUser));
