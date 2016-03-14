@@ -1,0 +1,41 @@
+{
+    "name": "aoe/extracache",
+    "description": "Extends staticcache with more functionality.",
+    "type": "typo3-cms-extension",
+    "homepage": "https://forge.typo3.org/projects/extension-extracache",
+    "license": "GPL-3.0",
+    "support": {
+        "email": "dev@aoe.com",
+        "issues": "https://forge.typo3.org/projects/extension-extracache/issues",
+        "source": "https://forge.typo3.org/projects/extension-extracache"
+    },
+    "authors": [
+        {
+            "name": "AOE GmbH",
+            "email": "dev@aoe.com",
+            "homepage": "http://www.aoe.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "typo3/cms-core": "*",
+        "typo3/cms-extbase": "*",
+        "aoe/nc-staticfilecache": "*"
+    },
+    "require-dev": {
+        "typo3/cms": "6.2.*",
+        "phpunit/phpunit": "4.8.*",
+        "phpunit/phpcov": "2.0.*",
+        "squizlabs/php_codesniffer": "2.3.*",
+        "sebastian/phpcpd": "2.0.*",
+        "phpmd/phpmd": "2.2.*"
+    },
+    "replace": {
+        "extracache": "*"
+    },
+    "keywords": [
+        "TYPO3",
+        "extbase",
+        "extracache"
+    ]
+}
