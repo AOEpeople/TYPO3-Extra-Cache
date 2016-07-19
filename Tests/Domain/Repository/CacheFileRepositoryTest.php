@@ -9,6 +9,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+
 /**
  * Tx_Extracache_Domain_Repository_CacheFileRepository test case.
  * @package extracache_tests
@@ -19,12 +22,19 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @var Tx_Extracache_Domain_Repository_CacheFileRepository
 	 */
 	private $cacheFileRepository;
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $virtualRootDirectory;
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
+	    $this->virtualRootDirectory = vfsStream::setup();
+        vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/files');
+
 		$this->cacheFileRepository = new Tx_Extracache_Domain_Repository_CacheFileRepository ();
-		$this->cacheFileRepository->setCacheDir(dirname(__FILE__).DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR);
+		$this->cacheFileRepository->setCacheDir($this->virtualRootDirectory->url() . '/');
 	}
 	/**
 	 * Cleans up the environment after running a test.
@@ -37,23 +47,19 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function countAll() {
-		$result = $this->cacheFileRepository->countAll ();
-		$this->assertInternalType ( 'integer', $result );
-		$this->assertEquals(3, $result);
+		$this->assertEquals(3, $this->cacheFileRepository->countAll());
 	}
     /**
      * Tests Method getAllFiles
      * @test
      */
     public function getAllFilesWhenSearchphraseIsEmpty() {
-        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
-
         $results = $this->cacheFileRepository->getAllFiles('');
-        $this->assertInternalType('array', $results);
-        $this->assertEquals(3, count($results));
+        $this->assertCount(3, $results);
+
         foreach ($results as $result) {
             $this->assertInstanceOf('Tx_Extracache_Domain_Model_CacheFile', $result);
-            $this->assertTrue(in_array($result->getName(), array('test.html','test/test.html', 'test/test2/test3/test.html')));
+            $this->assertContains($result->getName(), array('test.html', 'test/test.html', 'test/test2/test3/test.html'));
         }
     }
 	/**
@@ -61,14 +67,12 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFilesWhenSearchphraseIsNotEmpty() {
-        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
-
         $results = $this->cacheFileRepository->getAllFiles('test/test');
-        $this->assertInternalType('array', $results);
-        $this->assertEquals(2, count($results));
+        $this->assertCount(2, $results);
+
         foreach ($results as $result) {
             $this->assertInstanceOf('Tx_Extracache_Domain_Model_CacheFile', $result);
-            $this->assertTrue(in_array($result->getName(), array('test/test.html', 'test/test2/test3/test.html')));
+            $this->assertContains($result->getName(), array('test/test.html', 'test/test2/test3/test.html'));
         }
     }
 
@@ -77,21 +81,20 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
      * @test
      */
     public function getAllFoldersWhenSearchphraseIsEmpty() {
-        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
-
         $results = $this->cacheFileRepository->getAllFolders ( TRUE, '' );
-        $this->assertInternalType ( 'array', $results );
-        $this->assertEquals(3,count($results));
+        $this->assertCount(3, $results);
+
         foreach($results as $result){
             $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-            $this->assertTrue( in_array($result->getName(), array('test','test/test2','test/test2/test3')) );
+            $this->assertContains($result->getName(), array('test','test/test2','test/test2/test3'));
         }
+
         $results = $this->cacheFileRepository->getAllFolders ( FALSE, '' );
-        $this->assertInternalType ( 'array', $results );
-        $this->assertEquals(2,count($results));
+        $this->assertCount(2, $results);
+
         foreach($results as $result){
             $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-            $this->assertTrue( in_array($result->getName(), array('test','test/test2/test3')) );
+            $this->assertContains($result->getName(), array('test','test/test2/test3'));
         }
     }
 	/**
@@ -99,21 +102,20 @@ class Tx_Extracache_Domain_Repository_CacheFileRepositoryTest extends tx_phpunit
 	 * @test
 	 */
 	public function getAllFoldersWhenSearchphraseIsNotEmpty() {
-        $this->markTestSkipped('this test is unstable - we need the vfs-stream to mock the filesystem');
-
 		$results = $this->cacheFileRepository->getAllFolders ( TRUE, 'test/test2' );
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(2,count($results));
+		$this->assertCount(2, $results);
+
 		foreach($results as $result){
 			$this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-			$this->assertTrue( in_array($result->getName(), array('test/test2','test/test2/test3')) );
+			$this->assertContains($result->getName(), array('test/test2','test/test2/test3'));
 		}
+
 		$results = $this->cacheFileRepository->getAllFolders ( FALSE, 'test/test2' );
-		$this->assertInternalType ( 'array', $results );
-		$this->assertEquals(1,count($results));
+		$this->assertCount(1, $results);
+
         foreach($results as $result){
             $this->assertInstanceOf ( 'Tx_Extracache_Domain_Model_CacheFile', $result );
-            $this->assertTrue( in_array($result->getName(), array('test/test2/test3')) );
+            $this->assertContains($result->getName(), array('test/test2/test3'));
         }
 	}
 }
