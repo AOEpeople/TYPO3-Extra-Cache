@@ -25,10 +25,18 @@ class Tx_Extracache_Configuration_TypoScriptConfiguration
     public function __construct(
         \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
     ) {
+
         if (isset($typoScriptFrontendController->tmpl->setup['config.']) &&
             isset($typoScriptFrontendController->tmpl->setup['config.']['tx_extracache.'])
         ) {
             $this->configuration = $typoScriptFrontendController->tmpl->setup['config.']['tx_extracache.'];
+        } else {
+            $pagesTSConfig = $typoScriptFrontendController->getPagesTSconfig();
+            if (isset($pagesTSConfig['config.']) &&
+                isset($pagesTSConfig['config.']['tx_extracache.'])
+            ) {
+                $this->configuration = $pagesTSConfig['config.']['tx_extracache.'];
+            }
         }
     }
 
