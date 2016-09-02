@@ -28,19 +28,6 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'version' => '0.8.1',
-	'constraints' => array(
-		'depends' => array(
-			'cms' => '',
-			'typo3' => '6.2.0-6.2.99',
-			'php' => '5.3.0',
-			'extbase' => '1.2.1',
-			'nc_staticfilecache' => '2.5.1',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
 	'_md5_values_when_last_written' => '',
 );
 ?>
