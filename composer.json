@@ -38,5 +38,11 @@
         "TYPO3",
         "extbase",
         "extracache"
-    ]
+    ],
+    "autoload": {
+        "classmap": ["Classes/"]
+    },
+    "autoload-dev": {
+        "classmap": ["Tests/"]
+    }
 }
