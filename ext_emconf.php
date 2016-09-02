@@ -16,7 +16,6 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'dev@aoe.com',
 	'author_company' => 'AOE GmbH',
 	'shy' => '',
-	'dependencies' => 'cms,extbase,nc_staticfilecache',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
