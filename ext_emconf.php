@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
-	'version' => '0.8.1',
+	'version' => '0.8.5',
 	'_md5_values_when_last_written' => '',
 );
 ?>

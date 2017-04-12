@@ -166,25 +166,6 @@ class Tx_Extracache_System_StaticCache_EventHandlerTest extends Tx_Extracache_Te
 	/**
 	 * @test
 	 */
-	public function handleEventOnStaticCacheRequest_isPageMailerExtensionRunning() {
-		// pageMailer is not running
-		$GLOBALS ['TYPO3_LOADED_EXT'] ['aoe_pagemailer'] = true;
-		$this->eventHandler->expects($this->any())->method('getCheckMethods')->will($this->returnValue( array('isPageMailerExtensionRunning' => FALSE)));
-		$this->request->expects ( $this->once () )->method ( 'getServerVariable' )->with ( 'HTTP_X_PAGEMAILER' )->will ( $this->returnValue ( NULL ) );
-		$this->eventHandler->handleEventOnStaticCacheRequest( $this->eventOnStaticCacheRequest );
-		$this->assertFalse( $this->eventOnStaticCacheRequest->isCanceled() );
-
-		// pageMailer is running
-		$this->setUp();
-		$GLOBALS ['TYPO3_LOADED_EXT'] ['aoe_pagemailer'] = true;
-		$this->eventHandler->expects($this->any())->method('getCheckMethods')->will($this->returnValue( array('isPageMailerExtensionRunning' => FALSE)));
-		$this->request->expects ( $this->once () )->method ( 'getServerVariable' )->with ( 'HTTP_X_PAGEMAILER' )->will ( $this->returnValue ( 1 ) );
-		$this->eventHandler->handleEventOnStaticCacheRequest( $this->eventOnStaticCacheRequest );
-		$this->assertTrue( $this->eventOnStaticCacheRequest->isCanceled() );
-	}
-	/**
-	 * @test
-	 */
 	public function handleEventOnStaticCacheRequest_isProcessingDirtyPages() {
 		// process 'dirtyPages' is not running
 		$this->eventHandler->expects($this->any())->method('getCheckMethods')->will($this->returnValue( array('isProcessingDirtyPages' => FALSE)));

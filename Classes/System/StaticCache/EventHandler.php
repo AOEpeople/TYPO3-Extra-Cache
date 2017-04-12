@@ -65,7 +65,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\S
 		}
 
 		$checkMethods['isUnprocessibleRequestAction'] = FALSE;
-		$checkMethods['isPageMailerExtensionRunning'] = FALSE;
 		$checkMethods['isCrawlerExtensionRunning'] = FALSE;
 		$checkMethods['isBackendUserActive'] = FALSE;
 		$this->setCheckMethods($checkMethods);
@@ -197,18 +196,6 @@ class Tx_Extracache_System_StaticCache_EventHandler implements \TYPO3\CMS\Core\S
 	protected function isFrontendUserLoggingOut(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
 		$loginData = $event->getFrontendUser ()->getLoginFormData ();
 		return (isset ( $loginData ['status'] ) && $loginData ['status'] == 'logout');
-	}
-	/**
-	 * Determines whether the page mailer extension is running and initiated the current request.
-	 * @param	Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event
-	 * @return	boolean
-	 */
-	protected function isPageMailerExtensionRunning(Tx_Extracache_System_Event_Events_EventOnStaticCacheRequest $event) {
-		$result = FALSE;
-		if (ExtensionManagementUtility::isLoaded('aoe_pagemailer') && $event->getRequest()->getServerVariable('HTTP_X_PAGEMAILER')) {
-			$result = TRUE;
-		}
-		return $result;
 	}
 	/**
 	 * Determines whether dirty pages are processed.
