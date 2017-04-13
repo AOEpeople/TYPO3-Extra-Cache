@@ -17,12 +17,12 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "*",
+        "typo3/cms-core": "6.2.*",
         "typo3/cms-extbase": "*",
         "aoe/nc-staticfilecache": "*"
     },
     "require-dev": {
-        "typo3/cms": "6.2.*",
+        "typo3/cms": "^6.2",
         "phpunit/phpunit": "4.8.*",
         "mikey179/vfsStream": "1.6.*",
         "phpunit/phpcov": "2.0.*",
