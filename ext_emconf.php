@@ -10,7 +10,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'extracache',
-	'description' => 'extend staticcache with more functionality',
+	'description' => 'Extend static cache with more functionality',
 	'category' => '',
 	'author' => '',
 	'author_email' => 'dev@aoe.com',
@@ -27,6 +27,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'version' => '0.8.5',
+	'constraints' => array(
+		'depends' => array(
+			'typo3' => '6.2.0-6.2.99',
+			'extbase' => '',
+			'nc_staticfilecache' => ''
+		),
+		'conflicts' => array(),
+		'suggests' => array(),
+	),
 	'_md5_values_when_last_written' => '',
 );
-?>
