@@ -101,3 +101,7 @@ Overview of system related internals used or defined by the extension 'extracach
 	* Tx_Extracache_Validation_Validator_Event
 		+ 1289898441: isValid() -> 'event with key does already exist'
 		+ 1291388576: isValid() -> 'interval is not a positive integer-value'
+		
+		
+		
+This extension is no longer actively maintained.
